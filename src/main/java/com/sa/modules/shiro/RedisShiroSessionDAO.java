@@ -11,11 +11,9 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * shiro session dao
- *
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2017/9/27 21:35
+ * @Author: moe
+ * @Date: 2018/04/16
+ * @Description: shiro session dao
  */
 @Component
 public class RedisShiroSessionDAO extends EnterpriseCacheSessionDAO {

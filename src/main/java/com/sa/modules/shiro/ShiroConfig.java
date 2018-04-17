@@ -16,11 +16,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Shiro的配置文件
- *
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2017/9/27 22:02
+ * @Author: moe
+ * @Date: 2018/04/16
+ * @Description: Shiro的配置文件
  */
 @Configuration
 public class ShiroConfig {

@@ -6,10 +6,9 @@ import java.util.List;
 
 /**
  * @Author: moe
- * @Date: 2017/12/17 17:49
- * @Description:
+ * @Date: 2018/04/17
+ * @Description: 用户Dao
  */
-//@Mapper
 public interface UserDao extends BaseDao<UserEntity>{
     /**
      * 根据用户名，查询系统用户

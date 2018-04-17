@@ -14,10 +14,9 @@ import java.util.*;
 
 /**
  * @Author: moe
- * @Date: 2017/12/17 20:46
- * @Description:
+ * @Date: 2018/04/17
+ * @Description: 模块实现类
  */
-
 @Service("MenuService")
 public class MenuServiceImpl implements MenuService {
 

@@ -6,10 +6,9 @@ import java.util.List;
 
 /**
  * @Author: moe
- * @Date: 2017/12/17 17:50
- * @Description:
+ * @Date: 2018/04/17
+ * @Description: 模块Dao
  */
-//@Mapper
 public interface MenuDao extends BaseDao<MenuEntity>{
     /**
      * 根据父菜单，查询子菜单

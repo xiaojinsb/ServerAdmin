@@ -6,11 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 返回数据
- * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年10月27日 下午9:59:27
+ * @Author: moe
+ * @Date: 2018/04/16
+ * @Description: 返回数据
  */
 public class R extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;

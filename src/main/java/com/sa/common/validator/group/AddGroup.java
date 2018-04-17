@@ -1,10 +1,9 @@
 package com.sa.common.validator.group;
 
 /**
- * 新增数据 Group
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2017-03-16 0:04
+ * @Author: moe
+ * @Date: 2018/04/16
+ * @Description: 新增数据
  */
 public interface AddGroup {
 }

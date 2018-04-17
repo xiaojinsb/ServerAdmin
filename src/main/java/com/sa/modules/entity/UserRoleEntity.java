@@ -1,74 +1,58 @@
 package com.sa.modules.entity;
 
-
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- * 用户与角色对应关系
- * @author wt
- * @date 2017/12/20
+ * @Author: moe
+ * @Date: 2018/04/17
+ * @Description: 用户角色实体类
  */
 public class UserRoleEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
 	
 	private Long id;
-
-	/**
-	 * 用户ID
-	 */
 	private Long userId;
-
-	/**
-	 * 角色ID
-	 */
 	private Long roleId;
+	private Long createUserId;
+	private Date createTime;
 
-	/**
-	 * 设置：
-	 * @param id 
-	 */
+	public Long getId() {
+		return id;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	/**
-	 * 获取：
-	 * @return Long
-	 */
-	public Long getId() {
-		return id;
+	public Long getUserId() {
+		return userId;
 	}
-	
-	/**
-	 * 设置：用户ID
-	 * @param userId 用户ID
-	 */
+
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * 获取：用户ID
-	 * @return Long
-	 */
-	public Long getUserId() {
-		return userId;
+	public Long getRoleId() {
+		return roleId;
 	}
-	
-	/**
-	 * 设置：角色ID
-	 * @param roleId 角色ID
-	 */
+
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
 
-	/**
-	 * 获取：角色ID
-	 * @return Long
-	 */
-	public Long getRoleId() {
-		return roleId;
+	public Long getCreateUserId() {
+		return createUserId;
 	}
-	
+
+	public void setCreateUserId(Long createUserId) {
+		this.createUserId = createUserId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 }

@@ -7,8 +7,8 @@ import java.util.Map;
 
 /**
  * @Author: moe
- * @Date: 2017/12/17 18:00
- * @Description:
+ * @Date: 2018/04/17
+ * @Description: 用户server接口
  */
 public interface UserService {
 

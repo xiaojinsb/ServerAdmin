@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * @Author: moe
+ * @Date: 2018/04/17
+ * @Description: 角色实现类
+ */
 @Service("RoleService")
 public class RoleServiceImpl implements RoleService {
 

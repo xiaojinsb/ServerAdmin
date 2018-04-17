@@ -1,74 +1,58 @@
 package com.sa.modules.entity;
 
-
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- * 角色与菜单对应关系
- * @author wt
- * @date 2017/12/20 
+ * @Author: moe
+ * @Date: 2018/04/17
+ * @Description: 角色模块实体类
  */
 public class RoleMenuEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
-
-	/**
-	 * 角色ID
-	 */
 	private Long roleId;
-
-	/**
-	 * 菜单ID
-	 */
 	private Long menuId;
+	private Long createUserId;
+	private Date createTime;
 
-	/**
-	 * 设置：
-	 * @param id 
-	 */
+	public Long getId() {
+		return id;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	/**
-	 * 获取：
-	 * @return Long
-	 */
-	public Long getId() {
-		return id;
+	public Long getRoleId() {
+		return roleId;
 	}
-	
-	/**
-	 * 设置：角色ID
-	 * @param roleId 角色ID
-	 */
+
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
 
-	/**
-	 * 获取：角色ID
-	 * @return Long
-	 */
-	public Long getRoleId() {
-		return roleId;
+	public Long getMenuId() {
+		return menuId;
 	}
-	
-	/**
-	 * 设置：菜单ID
-	 * @param menuId 菜单ID
-	 */
+
 	public void setMenuId(Long menuId) {
 		this.menuId = menuId;
 	}
 
-	/**
-	 * 获取：菜单ID
-	 * @return Long
-	 */
-	public Long getMenuId() {
-		return menuId;
+	public Long getCreateUserId() {
+		return createUserId;
 	}
-	
+
+	public void setCreateUserId(Long createUserId) {
+		this.createUserId = createUserId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 }

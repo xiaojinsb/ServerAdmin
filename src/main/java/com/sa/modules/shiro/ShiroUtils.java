@@ -8,11 +8,9 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
 /**
- * Shiro工具类
- * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年11月12日 上午9:49:19
+ * @Author: moe
+ * @Date: 2018/04/16
+ * @Description: Shiro工具类
  */
 public class ShiroUtils {
 	/**  加密算法 */

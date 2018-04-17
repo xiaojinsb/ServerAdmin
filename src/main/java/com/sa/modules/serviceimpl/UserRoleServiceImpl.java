@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Author: moe
+ * @Date: 2018/04/17
+ * @Description: 用户角色实现类
+ */
 @Service("UserRoleService")
 public class UserRoleServiceImpl implements UserRoleService {
 

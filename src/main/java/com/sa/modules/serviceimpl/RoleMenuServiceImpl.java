@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Author: moe
+ * @Date: 2018/04/17
+ * @Description: 角色模块实现类
+ */
 @Service("RoleMenuService")
 public class RoleMenuServiceImpl implements RoleMenuService {
 

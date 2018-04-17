@@ -1,11 +1,9 @@
 package com.sa.common.utils;
 
 /**
- * Redis所有Keys
- *
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2017-07-18 19:51
+ * @Author: moe
+ * @Date: 2018/04/16
+ * @Description: Redis所有Keys
  */
 public class RedisKeys {
 

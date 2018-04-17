@@ -5,6 +5,11 @@ import com.sa.modules.entity.RoleEntity;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @Author: moe
+ * @Date: 2018/04/17
+ * @Description: 角色server接口
+ */
 public interface RoleService {
 
     /**

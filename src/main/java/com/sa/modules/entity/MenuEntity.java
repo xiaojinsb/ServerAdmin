@@ -1,91 +1,51 @@
 package com.sa.modules.entity;
 
-
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
- * 菜单管理
- * @author wt
- * @date  2017/12/20 
+ * @Author: moe
+ * @Date: 2018/04/17
+ * @Description: 模块实体类
  */
 public class MenuEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * 菜单ID
-	 */
+
 	private Long menuId;
-
-	/**
-	 * 父菜单ID，一级菜单为0
-	 */
 	private Long parentId;
-	
-	/**
-	 * 父菜单名称
-	 */
 	private String parentName;
-
-	/**
-	 * 菜单名称
-	 */
 	private String menuName;
-
-	/**
-	 * 菜单URL
-	 */
 	private String url;
-
-	/**
-	 * 授权(多个用逗号分隔，如：user:list,user:create)
-	 */
 	private String perms;
-
-	/**
-	 * 类型     0：目录   1：菜单   2：按钮
-	 */
 	private Integer type;
-
-	/**
-	 * 菜单图标
-	 */
 	private String icon;
-
-	/**
-	 * 排序
-	 */
 	private Integer orderNum;
-	
-	/**
-	 * ztree属性
-	 */
-	private Boolean open;
-	
+	private Long createUserID;
+	private Date createTime;
 	private List<?> list;
+
+	public Long getMenuId() {
+		return menuId;
+	}
 
 	public void setMenuId(Long menuId) {
 		this.menuId = menuId;
 	}
 
-	public Long getMenuId() {
-		return menuId;
+	public Long getParentId() {
+		return parentId;
 	}
-	
-	/**
-	 * 设置：父菜单ID，一级菜单为0
-	 * @param parentId 父菜单ID，一级菜单为0
-	 */
+
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
 
-	/**
-	 * 获取：父菜单ID，一级菜单为0
-	 * @return Long
-	 */
-	public Long getParentId() {
-		return parentId;
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 
 	public String getMenuName() {
@@ -96,22 +56,14 @@ public class MenuEntity implements Serializable {
 		this.menuName = menuName;
 	}
 
-	/**
-	 * 设置：菜单URL
-	 * @param url 菜单URL
-	 */
+	public String getUrl() {
+		return url;
+	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
-	/**
-	 * 获取：菜单URL
-	 * @return String
-	 */
-	public String getUrl() {
-		return url;
-	}
-	
 	public String getPerms() {
 		return perms;
 	}
@@ -128,36 +80,36 @@ public class MenuEntity implements Serializable {
 		this.type = type;
 	}
 
-	/**
-	 * 设置：菜单图标
-	 * @param icon 菜单图标
-	 */
+	public String getIcon() {
+		return icon;
+	}
+
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
 
-	/**
-	 * 获取：菜单图标
-	 * @return String
-	 */
-	public String getIcon() {
-		return icon;
+	public Integer getOrderNum() {
+		return orderNum;
 	}
-	
-	/**
-	 * 设置：排序
-	 * @param orderNum 排序
-	 */
+
 	public void setOrderNum(Integer orderNum) {
 		this.orderNum = orderNum;
 	}
 
-	/**
-	 * 获取：排序
-	 * @return Integer
-	 */
-	public Integer getOrderNum() {
-		return orderNum;
+	public Long getCreateUserID() {
+		return createUserID;
+	}
+
+	public void setCreateUserID(Long createUserID) {
+		this.createUserID = createUserID;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public List<?> getList() {
@@ -166,21 +118,5 @@ public class MenuEntity implements Serializable {
 
 	public void setList(List<?> list) {
 		this.list = list;
-	}
-
-	public String getParentName() {
-		return parentName;
-	}
-
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
-	}
-
-	public Boolean getOpen() {
-		return open;
-	}
-
-	public void setOpen(Boolean open) {
-		this.open = open;
 	}
 }

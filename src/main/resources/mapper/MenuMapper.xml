@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sa.modules.dao.MenuDao">
+
+    <!--根据父菜单，查询子菜单-->
+    <select id="queryListParentId" resultType="com.sa.modules.entity.MenuEntity">
+        select * from sa_menu where parent_id = #{parentId} order by order_num asc
+    </select>
+
+    <!--列出所有菜单 数-->
+    <select id="queryTotal" resultType="int">
+        select COUNT(*) from sa_menu WHERE 1=1
+        <if test="menuName !=null and menuName!=''">
+            AND menu_name LIKE "%"#{menuName}"%"
+        </if>
+        <if test="type !=null and type!=''">
+            AND type LIKE #{type}
+        </if>
+    </select>
+
+    <!--列出所有菜单-->
+    <select id="queryList" resultType="com.sa.modules.entity.MenuEntity">
+        select m.*,(select p.menu_name from sa_menu p where p.menu_id = m.parent_id) as parentName
+        from sa_menu m WHERE 1=1
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by m.${sidx} ${order}
+            </when>
+        </choose>
+        <if test="menuName !=null and menuName!=''">
+            AND menu_name LIKE "%"#{menuName}"%"
+        </if>
+        <if test="type !=null and type!=''">
+            AND type = #{type}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--新增菜单-->
+    <insert id="add" parameterType="com.sa.modules.entity.MenuEntity" useGeneratedKeys="true" keyProperty="userId">
+      INSERT INTO sa_menu(menu_id, parent_id, menu_name, url, perms, type, icon, order_num)
+      VALUES (#{menuId},#{parentId},#{menuName},#{url},#{perms},#{type},#{icon},#{orderNum});
+    </insert>
+
+    <!--列出一级 菜单-->
+    <select id="oneMenu" resultType="com.sa.modules.entity.MenuEntity">
+        SELECT * FROM sa_menu WHERE parent_id = 0;
+    </select>
+
+    <!--列出所有不是三级的模块-->
+    <select id="twoMenu" resultType="com.sa.modules.entity.MenuEntity">
+        SELECT * FROM sa_menu WHERE type != 2
+    </select>
+
+    <!--删除模块-->
+    <delete id="delete">
+        delete from sa_menu where menu_id = #{id}
+    </delete>
+
+    <!--更新模块-->
+    <update id="update" parameterType="com.sa.modules.entity.MenuEntity">
+        UPDATE sa_menu SET parent_id = #{parentId},menu_name = #{menuName},url = #{url},perms = #{perms},type = #{type},icon = #{icon}
+        WHERE menu_id = #{menuId};
+    </update>
+</mapper>

@@ -1,6 +1,5 @@
 package com.sa.modules.shiro;
 
-
 import com.sa.modules.dao.MenuDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.MenuEntity;
@@ -20,11 +19,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
- * 认证
- *
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年11月10日 上午11:55:49
+ * @Author: moe
+ * @Date: 2018/04/16
+ * @Description: 认证
  */
 @Component
 public class UserRealm extends AuthorizingRealm {
@@ -77,6 +74,7 @@ public class UserRealm extends AuthorizingRealm {
 
         //查询用户信息
         UserEntity user = UserDao.queryByUserName(token.getUsername());
+		System.out.println(user);
         //账号不存在
         if(user == null) {
             throw new UnknownAccountException("账号或密码不正确");

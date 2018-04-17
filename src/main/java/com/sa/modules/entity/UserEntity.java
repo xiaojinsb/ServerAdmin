@@ -1,14 +1,13 @@
 package com.sa.modules.entity;
 
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
- * 用户
- * @author wt
- * @date 2017/12/20
+ * @Author: moe
+ * @Date: 2018/04/17
+ * @Description: 用户实体类
  */
 public class UserEntity implements Serializable {
 
@@ -24,7 +23,6 @@ public class UserEntity implements Serializable {
   private Date createTime;
   private Date lastLoginTime;
   private Date lockingTime;
-
 
   public long getUserId() {
     return userId;
