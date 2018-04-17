@@ -16,7 +16,7 @@ public interface MenuService {
     /**
      * 获取模块菜单列表
      */
-    List<MenuEntity> getUserMenuList(Long userId);
+    List<MenuEntity> queryUserMenuList(Long userId);
 
     /**
      * 查询模块列表

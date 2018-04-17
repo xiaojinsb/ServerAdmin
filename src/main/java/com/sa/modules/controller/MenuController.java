@@ -29,7 +29,7 @@ public class MenuController extends AbstractController {
      */
     @RequestMapping("/nav")
     public Object nav() {
-        List<MenuEntity> menuList = menuService.getUserMenuList(getUserId());
+        List<MenuEntity> menuList = menuService.queryUserMenuList(getUserId());
         return menuList;
     }
 

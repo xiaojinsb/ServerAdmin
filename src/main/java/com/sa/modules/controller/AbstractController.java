@@ -2,8 +2,6 @@ package com.sa.modules.controller;
 
 import com.sa.modules.entity.UserEntity;
 import org.apache.shiro.SecurityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @Author: moe
@@ -11,16 +9,24 @@ import org.slf4j.LoggerFactory;
  * @Description: Controller公共组件
  */
 public abstract class AbstractController {
-	protected Logger logger = LoggerFactory.getLogger(getClass());
-	
+
+	/**
+	 * 从用户实体类中得到当前用户信息
+	 */
 	protected UserEntity getUser() {
 		return (UserEntity) SecurityUtils.getSubject().getPrincipal();
 	}
 
+	/**
+	 * 得到当前登录用户id
+	 */
 	protected Long getUserId() {
 		return getUser().getUserId();
 	}
 
+	/**
+	 * 得到当前登录用户名字
+	 */
 	protected String getUserNname(){
 		return getUser().getUsername();
 	}

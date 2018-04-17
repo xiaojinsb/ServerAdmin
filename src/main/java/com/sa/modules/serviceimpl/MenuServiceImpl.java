@@ -28,7 +28,7 @@ public class MenuServiceImpl implements MenuService {
     private UserService userService;
 
     @Override
-    public List<MenuEntity> getUserMenuList(Long userId) {
+    public List<MenuEntity> queryUserMenuList(Long userId) {
         //系统管理员，拥有最高权限
         if(userId == 1){
             return getAllMenuList(null);
