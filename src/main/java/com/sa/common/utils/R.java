@@ -11,7 +11,6 @@ import java.util.Map;
  * @Description: 返回数据
  */
 public class R extends HashMap<String, Object> {
-	private static final long serialVersionUID = 1L;
 	
 	public R() {
 		put("code", 0);

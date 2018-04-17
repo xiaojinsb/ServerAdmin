@@ -13,6 +13,7 @@ import org.apache.shiro.subject.Subject;
  * @Description: Shiro工具类
  */
 public class ShiroUtils {
+
 	/**  加密算法 */
 	public final static String hashAlgorithmName = "SHA-256";
 	/**  循环次数 */
