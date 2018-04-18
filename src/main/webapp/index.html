@@ -4,11 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>KIT ADMIN</title>
+    <title>Server Admin</title>
     <link rel="stylesheet" href="statics/plugins/layui/css/layui.css" media="all" />
-    <link rel="stylesheet" href="statics/plugins/font-awesome/css/font-awesome.min.css" media="all" />
     <link rel="stylesheet" href="statics/src/css/app.css" media="all" />
+    <link rel="stylesheet" href="statics/plugins/font-awesome/css/font-awesome.min.css" media="all" />
     <link rel="stylesheet" href="statics/src/css/themes/default.css" media="all" id="skin" kit-skin />
+
+    <style>
+        .layui-form-item{margin-left: 25px}
+    </style>
 </head>
 
 <body class="kit-theme">
@@ -20,11 +24,12 @@
 
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="http://m.zhengjinfan.cn/images/0.jpg" class="layui-nav-img"> Van
+                    <img src="statics/src/images/pic.png" class="layui-nav-img">
+                    <span id="userName"></span>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i> 修改密码</a></dd>
-                    <dd><a href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></dd>
+                    <dd class="editPas"><a href="javascript:void(0)"><i class="fa fa-key" aria-hidden="true"></i> 修改密码</a></dd>
+                    <dd><a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></dd>
                 </dl>
             </li>
 
@@ -62,31 +67,61 @@
         2017 &copy; ServerAdmin
     </div>
 </div>
+
+<div id="editPas" style="display: none;">
+    <form class="layui-form" method="post">
+
+        <div class="layui-form-item" style="margin-top: 30px">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="userName" lay-verify="userName" id="userName1"  autocomplete="off" class="layui-input" disabled>
+            </div>
+            <div class="layui-form-mid layui-word-aux">不可修改</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">当前密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" lay-verify="required" placeholder="请输入当前密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password"  lay-verify="required" placeholder="请输入新密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">确认新密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" lay-verify="required" placeholder="请再次输入新密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
 <script src="statics/plugins/layui/layui.js"></script>
 <script>
-    var message;
     layui.config({
         base: 'statics/src/js/',
         version: '1.0.1'
-    }).use(['app', 'message'], function() {
+    }).use(['app'], function() {
         var app = layui.app,
-            $ = layui.jquery,
-            layer = layui.layer;
-        //将message设置为全局以便子页面调用
-        message = layui.message;
+            $ = layui.jquery;
+
         //主入口
         app.set({
             type: 'iframe'
         }).init();
-        $('#pay').on('click', function() {
-            layer.open({
-                title: false,
-                type: 1,
-                content: '<img src="/src/images/pay.png" />',
-                area: ['500px', '250px'],
-                shadeClose: true
-            });
-        });
+
         $('dl.skin > dd').on('click', function() {
             var $that = $(this);
             var skin = $that.children('a').data('skin');
@@ -111,6 +146,37 @@
                 var skin = getSkinName();
                 switchSkin(skin === undefined ? 'default' : skin);
             }();
+
+        //修改密码
+        $(".edit-pas").click(function(){
+            layer.open({
+                title: '修改密码'//窗口名
+                ,type: 1 //打开类型
+                ,shade: 0.4//遮罩 浓度0.4
+                ,maxmin: true //最小化开关 开
+                ,content: $('#editPas') //打开div模版
+                ,offset: 'auto' //坐标
+                ,area: ['450px', '350px']//弹出窗口大小 宽 高
+                //,btn: ['保存', '取消'] // 顶部按钮
+            });
+            $(".editpas").removeClass("layui-this");
+        });
+
+        //获取用户名
+        $.ajax({
+            type: "GET",
+            url: '../../user/getUserName',
+            contentType: "application/json",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                $("#userName").text(data.name);
+                $("#userName1").val(data.name);
+            },
+            error: function () {
+                window.location.href="/login.html";
+            }
+        });
     });
 </script>
 </body>

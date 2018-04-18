@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="../../statics/plugins/layui/css/layui.css" media="all">
+</head>
+<body>
+
+    <form name="searchform" id="searchform" class="layui-form layui-form-pane" method="post" action="" style="margin: 20px 0px 0px 20px">
+        <!--搜索组-->
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="functionNm" placeholder="请输入" maxlength="50" autocomplete="off" class="layui-input" />
+                </div>
+            </div>
+            <!-- 按钮组 -->
+            <button class="layui-btn" id="btnSearch" type="button">立即查询</button>
+            <button type="reset" id="btnRetSet" type="button" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+
+    </form>
+
+<table id="usersList" lay-filter="usersList"></table>
+
+    <script type="text/html" id="statusTpl">
+        {{#  if(d.status == 0){ }}
+        锁定
+        {{#  } else { }}
+        正常
+        {{#  } }}
+    </script>
+
+<script src="../../statics/plugins/layui/layui.js"></script>
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table, //获取表格
+            form = layui.form, //获取from
+            $ = layui.jquery; //获取jq
+
+        //渲染表格
+        usertable = table.render({
+            id: 'table'
+            , elem: '#usersList' //选择表单
+            , url: '../../user/list' //json返回地址
+            , page: true //分页 开启
+            , height: 'full-135' // 高度 距离底部
+            , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                [
+                    {type: 'checkbox', fixed: "left"}
+                    , {field: 'userId', title: 'id', width: 60, sort: true}
+                    , {field: 'username', title: '用户名', width: 100, style: 'color: #01AAED;'}
+                    , {field: 'email', title: '邮箱', width: 200}
+                    , {field: 'mobile', title: '手机号', width: 130}
+                    , {field: 'status', title: '状态', width: 70, templet: '#statusTpl'}
+                    , {field: 'lockingTime', title: '锁定时间', width: 150, sort: true}
+                    // , {field: 'createTime', title: '创建时间', width: 150, sort: true}
+                    , {field: 'lastLoginTime', title: '最后登录时间', width: 150, sort: true}
+                    // , {title: '操作', width: 250, toolbar: '#operationTpl', fixed: "right"}
+                ]
+            ]
+        });
+    });
+</script>
+</body>
+</html>

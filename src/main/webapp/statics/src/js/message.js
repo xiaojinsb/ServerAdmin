@@ -8,8 +8,6 @@
 layui.define(['jquery', 'kitconfig'], function(exports) {
     var $ = layui.jquery,
         kitconfig = layui.kitconfig,
-        _modName = 'message',
-        _doc = $(document),
         _body = $('body'),
         _MESSAGE = '.kit-message';
     var message = {

@@ -57,7 +57,7 @@
         });
         //监听提交
         form.on('submit(user-login-submit)', function (data) {
-            $.post("user/userlogin", data.field, function (res) {
+            $.post("/login", data.field, function (res) {
 
                 if (res.msg == 'success') {
                     parent.location.href ='index.html';
