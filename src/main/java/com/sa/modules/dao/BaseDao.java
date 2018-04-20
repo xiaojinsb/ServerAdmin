@@ -18,7 +18,7 @@ public interface BaseDao<T> {
 	void addBatch(List<T> list);
 
 	//更新
-	int update(T t);
+	int edit(T t);
 
 	int edit(Map<String, Object> map);
 

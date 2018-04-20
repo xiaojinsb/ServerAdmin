@@ -80,11 +80,32 @@ public class UserController extends AbstractController {
     /**
      * 更新用户
      */
-    @RequestMapping("/update")
+    @RequestMapping("/edit")
     @RequiresPermissions("user:edit")
-    public R update(UserEntity user, Integer status1) {
+    public R edit(UserEntity user, Integer status1) {
 
+        //赋值
+        user.setStatus(status1);
+        user.setLockingTime(getTime());
 
+        //判断是否要重置密码
+        if (user.getPassword() == "1"){
+            userDao.edit(user);
+        }else {
+            userDao.edit(user);
+            //密码重置
+        }
+
+        return R.ok();
+    }
+
+    /**
+     * 删除用户
+     */
+    @RequestMapping("/delete")
+    @RequiresPermissions("user:delete")
+    public R delete(long id) {
+        userDao.delete(id);
         return R.ok();
     }
 

@@ -46,10 +46,19 @@
         {{#  } }}
     </script>
 
+    <!--根据锁定状态判断时间是否显示-->
+    <script type="text/html" id="lockingTpl">
+        {{#  if(d.status == 0){ }}
+            {{ d.lockingTime }}
+        {{#  } else { }}
+
+        {{#  } }}
+    </script>
+
     <!--操作工具栏-->
     <script type="text/html" id="operationTpl">
         <button class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</button>
-        <button class="layui-btn layui-btn-sm  layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</button>
+        <button class="layui-btn layui-btn-sm  layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</button>
     </script>
 
     <!--添加-->
@@ -180,7 +189,7 @@
                     , {field: 'mobile', title: '手机号', align: 'center', width: 150}
                     , {field: 'email', title: '邮箱', align: 'center', width: 200}
                     , {field: 'status', title: '状态', templet: '#statusTpl', sort: true, align: 'center', width: 70}
-                    , {field: 'lockingTime', title: '锁定时间', sort: true, align: 'center', width: 180}
+                    , {field: 'lockingTime', title: '锁定时间', templet: '#lockingTpl' , sort: true, align: 'center', width: 180}
                     , {field: 'createTime', title: '创建时间', sort: true, align: 'center', width: 180}
                     , {field: 'lastLoginTime', title: '最后登录时间', sort: true, align: 'center', width: 180}
                     , {title: '操作', toolbar: '#operationTpl', fixed: "right", width: 180}
@@ -276,7 +285,7 @@
 
                     success: function (layero, index) {
                         form.on('submit(submitSave)', function(data){
-                            $.post("../../user/add1", data.field, function (res) {
+                            $.post("../../user/edit", data.field, function (res) {
 
                                 if (res.msg == 'success') {
                                     layer.msg('添加成功');
@@ -296,7 +305,7 @@
                         });
                     }
                 });
-            }else if (layEvent === 'del') {//删除
+            }else if (layEvent === 'delete') {//删除
                 layer.confirm('确定删除用户？', {
                     btn: ['确认', '关闭'] //按钮
                 }, function () {
