@@ -23,8 +23,6 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private MenuDao menuDao;
     @Autowired
-    private UserDao userDao;
-    @Autowired
     private UserService userService;
 
     @Override
@@ -91,65 +89,9 @@ public class MenuServiceImpl implements MenuService {
         return userMenuList;
     }
 
-
-    @Override
-    public Set<String> getUserPermissions(long userId) {
-        List<String> permsList;
-
-        //系统管理员，拥有最高权限
-        if(userId == 1){
-            List<MenuEntity> menuList = menuDao.queryList(new HashMap<>());
-            permsList = new ArrayList<>(menuList.size());
-            for(MenuEntity menu : menuList){
-                permsList.add(menu.getPerms());
-            }
-        }else{
-            permsList = userDao.queryAllPerms(userId);
-        }
-
-        //用户权限列表
-        Set<String> permsSet = new HashSet<>();
-        for(String perms : permsList){
-            if(StringUtils.isBlank(perms)){
-                continue;
-            }
-            permsSet.addAll(Arrays.asList(perms.trim().split(",")));
-        }
-        return permsSet;
-    }
-
-    @Override
-    public int queryTotal(Map<String, Object> map) {
-        return menuDao.queryTotal(map);
-    }
-
     @Override
     public List<MenuEntity> queryList(Map<String, Object> map) {
         return menuDao.queryList(map);
     }
 
-    @Override
-    public void add(MenuEntity menuEntity) {
-        menuDao.add(menuEntity);
-    }
-
-    @Override
-    public List<MenuEntity> oneMenu() {
-        return menuDao.oneMenu();
-    }
-
-    @Override
-    public List<MenuEntity> twoMenu() {
-        return menuDao.twoMenu();
-    }
-
-    @Override
-    public int delete(long id) {
-        return menuDao.delete(id);
-    }
-
-    @Override
-    public int update(MenuEntity menuEntity) {
-        return menuDao.update(menuEntity);
-    }
 }

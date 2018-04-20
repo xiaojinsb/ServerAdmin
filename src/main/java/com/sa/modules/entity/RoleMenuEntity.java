@@ -1,27 +1,24 @@
 package com.sa.modules.entity;
 
-import java.io.Serializable;
-import java.util.Date;
+
 
 /**
  * @Author: moe
  * @Date: 2018/04/17
  * @Description: 角色模块实体类
  */
-public class RoleMenuEntity implements Serializable {
+public class RoleMenuEntity{
 
-	private Long id;
+	private Long rmId;
 	private Long roleId;
 	private Long menuId;
-	private Long createUserId;
-	private Date createTime;
 
-	public Long getId() {
-		return id;
+	public Long getRmId() {
+		return rmId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setRmId(Long rmId) {
+		this.rmId = rmId;
 	}
 
 	public Long getRoleId() {
@@ -38,21 +35,5 @@ public class RoleMenuEntity implements Serializable {
 
 	public void setMenuId(Long menuId) {
 		this.menuId = menuId;
-	}
-
-	public Long getCreateUserId() {
-		return createUserId;
-	}
-
-	public void setCreateUserId(Long createUserId) {
-		this.createUserId = createUserId;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
 	}
 }

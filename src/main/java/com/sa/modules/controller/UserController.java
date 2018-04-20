@@ -1,26 +1,16 @@
 package com.sa.modules.controller;
 
-import com.google.code.kaptcha.Constants;
-import com.google.code.kaptcha.Producer;
 import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
+import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.UserEntity;
-import com.sa.modules.service.UserRoleService;
 import com.sa.modules.service.UserService;
 import com.sa.modules.shiro.ShiroUtils;
-import org.apache.shiro.authc.*;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.imageio.ImageIO;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -36,13 +26,13 @@ public class UserController extends AbstractController {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserRoleService userRoleService;
+    private UserDao userDao;
 
     /**
      * 列出所有用户
      */
     @RequestMapping("/list")
-//    @RequiresPermissions("user:list")
+    @RequiresPermissions("user:list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
@@ -53,73 +43,49 @@ public class UserController extends AbstractController {
     }
 
     /**
-     * 新增用户
-     */
-    @RequestMapping("/add")
-    @RequiresPermissions("sys:user:add")
-    public R add(UserEntity user) {
-        user.setCreateUserId(getUserId());
-
-        userService.add(user);
-        return R.ok();
-    }
-
-    /**
-     * 更新用户信息
-     */
-    @RequestMapping("/update")
-    @RequiresPermissions("user:update")
-    public R update(UserEntity user, Integer status1) {
-
-        user.setStatus(status1);
-        userService.update(user);
-
-        //获取角色关联权限 用户id
-        List<Long> roleList = user.getRoleIdList();
-        long userId = user.getUserId();
-
-        //先删除
-        userRoleService.delete(userId);
-
-        //再更新
-        userRoleService.saveOrUpdate(userId, roleList);
-
-        return R.ok();
-    }
-
-    /**
-     * 获取登录的用户信息
-     */
-    @RequestMapping("/info")
-    public R info() {
-        return R.ok().put("user", getUser());
-    }
-
-    /**
-     * 列出用户拥有的权限
-     */
-    @RequestMapping("/userRoleList")
-    public R userRoleList1(Integer id) {
-        List<Integer> roleList = userService.userRoleList(id);
-        return R.ok().put("roleList", roleList);
-    }
-
-    /**
-     * 删除用户
-     */
-    @RequestMapping("/delete")
-    @RequiresPermissions("user:delete")
-    public R delete(long id) {
-        userService.delete(id);
-        return R.ok();
-    }
-
-    /**
      * 返回当前登录用户名
      */
     @RequestMapping("/getUserName")
     public R username() {
         return R.ok().put("name", getUserNname());
+    }
+
+    /**
+     * 新增用户
+     */
+    @RequestMapping("/add")
+    @RequiresPermissions("user:add")
+    public R add(UserEntity user) {
+
+        //sha256加密
+        user.setPassword("123456");
+        String salt = RandomStringUtils.randomAlphanumeric(20);
+        user.setSalt(salt);
+        user.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
+        //赋值 创建者 创建时间
+        user.setCreateUserId(getUserId());
+        user.setCreateTime(getTime());
+
+        if (user.getUsername() != "" && user.getPassword() != "" ) {
+        if (userDao.queryByUserName(user.getUsername()) == null){
+            userDao.add(user);
+        }else {
+            return R.error(1,"用户名以及存在");
+        } } else {
+            return R.error(1,"用户名密码不能为空 请刷新浏览器 重试");
+        }
+        return R.ok();
+    }
+
+    /**
+     * 更新用户
+     */
+    @RequestMapping("/update")
+    @RequiresPermissions("user:edit")
+    public R update(UserEntity user, Integer status1) {
+
+
+        return R.ok();
     }
 
 }

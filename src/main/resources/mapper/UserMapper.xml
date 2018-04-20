@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sa.modules.dao.UserDao">
-
     <!--根据名字查用户-->
     <select id="queryByUserName" resultType="com.sa.modules.entity.UserEntity">
         select * from sa_user where username = #{username}
     </select>
 
     <!-- 查询用户的所有权限 -->
-    <select id="queryAllPerms" resultType="string">
-        select m.perms from sa_user_role ur
-        LEFT JOIN sa_role_menu rm on ur.role_id = rm.role_id
-        LEFT JOIN sa_menu m on rm.menu_id = m.menu_id
-        where ur.user_id = #{userId}
+    <select id="queryUserPowers" resultType="string">
+        select sp.power  from sa_power sp, sa_role_power srp, sa_user_role sur where srp.role_id = sur.role_id and sp.power_id = srp.power_id and sur.user_id = #{userId};
     </select>
 
     <!-- 查询用户的所有菜单ID -->
@@ -75,19 +71,4 @@
         )
     </insert>
 
-    <!--更新用户-->
-    <update id="update" parameterType="com.sa.modules.entity.UserEntity">
-        update sa_user set email = #{email}, mobile = #{mobile}, status = #{status} where user_id = #{userId}
-    </update>
-
-    <!--删除用户-->
-    <delete id="delete">
-        delete from sa_user where user_id = #{id}
-    </delete>
-
-    <!--列出用户拥有角色-->
-    <select id="userRoleList" resultType="int">
-      SELECT r.role_id FROM sa_user u,sa_role r,sa_user_role ur
-        WHERE u.user_id = ur.user_id AND ur.role_id = r.role_id AND u.user_id = #{id};
-    </select>
 </mapper>

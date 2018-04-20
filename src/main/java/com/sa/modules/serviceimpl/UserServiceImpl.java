@@ -24,13 +24,13 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public UserEntity queryByUserName(String username) {
-        return userDao.queryByUserName(username);
+    public List<Long> queryAllMenuId(Long userId) {
+        return userDao.queryAllMenuId(userId);
     }
 
     @Override
-    public List<Long> queryAllMenuId(Long userId) {
-        return userDao.queryAllMenuId(userId);
+    public List<Integer> userRoleList(Integer id) {
+        return userDao.userRoleList(id);
     }
 
     @Override
@@ -41,32 +41,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserEntity> queryList(Map<String, Object> map) {
         return userDao.queryList(map);
-    }
-
-    @Override
-    public void add(UserEntity user) {
-
-        user.setCreateTime(new Date());
-        //sha256加密
-        String salt = RandomStringUtils.randomAlphanumeric(20);
-        user.setSalt(salt);
-        user.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
-
-        userDao.add(user);
-    }
-
-    @Override
-    public int update(UserEntity user) {
-        return userDao.update(user);
-    }
-
-    @Override
-    public int delete(long id) {
-        return userDao.delete(id);
-    }
-
-    @Override
-    public List<Integer> userRoleList(Integer id) {
-        return userDao.userRoleList(id);
     }
 }

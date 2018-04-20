@@ -1,6 +1,5 @@
 package com.sa.modules.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -9,14 +8,13 @@ import java.util.List;
  * @Date: 2018/04/17
  * @Description: 模块实体类
  */
-public class MenuEntity implements Serializable {
+public class MenuEntity {
 
 	private Long menuId;
 	private Long parentId;
 	private String parentName;
 	private String menuName;
 	private String url;
-	private String perms;
 	private Integer type;
 	private String icon;
 	private Integer orderNum;
@@ -62,14 +60,6 @@ public class MenuEntity implements Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getPerms() {
-		return perms;
-	}
-
-	public void setPerms(String perms) {
-		this.perms = perms;
 	}
 
 	public Integer getType() {

@@ -1,6 +1,5 @@
 package com.sa.modules.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
  * @Date: 2018/04/17
  * @Description: 角色实体类
  */
-public class RoleEntity implements Serializable {
+public class RoleEntity {
 
 	private Long roleId;
 	private String roleName;

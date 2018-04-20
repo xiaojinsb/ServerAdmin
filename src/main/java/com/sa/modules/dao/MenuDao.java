@@ -14,14 +14,4 @@ public interface MenuDao extends BaseDao<MenuEntity>{
      * 根据父菜单，查询子菜单
      */
     List<MenuEntity> queryListParentId(Long parentId);
-
-    /**
-     *列出所有1级菜单
-     */
-    List<MenuEntity> oneMenu();
-
-    /**
-     *列出所有不是三级菜单的
-     */
-    List<MenuEntity> twoMenu();
 }

@@ -18,7 +18,7 @@ public interface UserDao extends BaseDao<UserEntity>{
     /**
      * 查询用户的所有权限
      */
-    List<String> queryAllPerms(Long userId);
+    List<String> queryUserPowers(Long userId);
 
     /**
      * 查询用户的所有菜单ID

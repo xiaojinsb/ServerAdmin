@@ -109,6 +109,7 @@
     </form>
 </div>
 <script src="statics/plugins/layui/layui.js"></script>
+<script src="statics/plugins/q.js"></script>
 <script>
     layui.config({
         base: 'statics/src/js/',
@@ -148,7 +149,7 @@
             }();
 
         //修改密码
-        $(".edit-pas").click(function(){
+        $(".editPas").click(function(){
             layer.open({
                 title: '修改密码'//窗口名
                 ,type: 1 //打开类型

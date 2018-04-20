@@ -20,7 +20,7 @@ public interface BaseDao<T> {
 	//更新
 	int update(T t);
 
-	int update(Map<String, Object> map);
+	int edit(Map<String, Object> map);
 
 	//删除
 	int delete(long id);

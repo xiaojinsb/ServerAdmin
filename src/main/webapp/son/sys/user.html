@@ -7,24 +7,37 @@
 </head>
 <body>
 
-    <form name="searchform" id="searchform" class="layui-form layui-form-pane" method="post" action="" style="margin: 20px 0px 0px 20px">
+    <form name="searchform" id="searchform" class="layui-form layui-form-pane" method="post" action="" style="margin: 15px 0px 0px 10px">
         <!--搜索组-->
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="margin-bottom: 5px">
             <div class="layui-inline">
-                <label class="layui-form-label">用户名</label>
+                <label class="layui-form-label" style="width: 90px">用户名</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="functionNm" placeholder="请输入" maxlength="50" autocomplete="off" class="layui-input" />
+                    <input type="text" name="username" placeholder="请输入用户名" maxlength="50" autocomplete="off" class="layui-input" />
                 </div>
             </div>
             <!-- 按钮组 -->
-            <button class="layui-btn" id="btnSearch" type="button">立即查询</button>
+            <button class="layui-btn layui-btn-normal" lay-filter="btnSearch" type="button"  lay-submit>搜索</button>
             <button type="reset" id="btnRetSet" type="button" class="layui-btn layui-btn-primary">重置</button>
         </div>
 
     </form>
 
+    <div style="margin-left: 10px">
+        <button class="layui-btn" id="add" type="button">
+            <i class="layui-icon">&#xe654;</i>
+            添加
+        </button>
+    </div>
+
 <table id="usersList" lay-filter="usersList"></table>
 
+    <!--查看信息 绑定在用户名字-->
+    <script type="text/html" id="lookTpl">
+        <a href="javascript:;" class="layui-table-link" lay-event="look">{{ d.username }}</a>
+    </script>
+
+    <!--判断锁定参数-->
     <script type="text/html" id="statusTpl">
         {{#  if(d.status == 0){ }}
         锁定
@@ -32,6 +45,118 @@
         正常
         {{#  } }}
     </script>
+
+    <!--操作工具栏-->
+    <script type="text/html" id="operationTpl">
+        <button class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</button>
+        <button class="layui-btn layui-btn-sm  layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</button>
+    </script>
+
+    <!--添加-->
+    <div id="addTpl" style="display: none">
+        <form class="layui-form" method="post" style="margin-top: 30px">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" lay-verify="username" placeholder="请输入2-8位用户名"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="password" lay-verify="password" id="password" autocomplete="off" class="layui-input" disabled>
+                </div>
+                <div class="layui-form-mid layui-word-aux">默认密码 不可修改</div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="email" lay-verify="email" placeholder="请输入邮箱"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="mobile" lay-verify="mobile" placeholder="请输入手机号"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户状态</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="status" value="1" title="正常" checked>
+                    <input type="radio" name="status" value="0" title="锁定">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="submitSave">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--修改-->
+    <div id="editTpl" style="display: none">
+        <form class="layui-form" method="post" style="margin-top: 30px">
+
+            <div class="layui-form-item" style="display: none">
+                <label class="layui-form-label">用户id</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="userId" lay-verify="userId" id="userId"   autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" lay-verify="username" id="username"   autocomplete="off" class="layui-input" disabled>
+                </div>
+                <div class="layui-form-mid layui-word-aux">用户名 不可修改</div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户密码</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="password" value="1" title="密码不变" checked>
+                    <input type="radio" name="password" value="0" title="重置密码">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="email" lay-verify="email" id="email" placeholder="请输入邮箱"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="mobile" lay-verify="mobile" id="mobile" placeholder="请输入手机号"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户状态</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="status1" value="1" title="正常" checked>
+                    <input type="radio" name="status1" value="0" title="锁定">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="submitSave">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
 <script src="../../statics/plugins/layui/layui.js"></script>
 <script>
@@ -46,22 +171,230 @@
             , elem: '#usersList' //选择表单
             , url: '../../user/list' //json返回地址
             , page: true //分页 开启
-            , height: 'full-135' // 高度 距离底部
+            // , height: 'full-125' // 高度 距离底部
             , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
                 [
                     {type: 'checkbox', fixed: "left"}
-                    , {field: 'userId', title: 'id', width: 60, sort: true}
-                    , {field: 'username', title: '用户名', width: 100, style: 'color: #01AAED;'}
-                    , {field: 'email', title: '邮箱', width: 200}
-                    , {field: 'mobile', title: '手机号', width: 130}
-                    , {field: 'status', title: '状态', width: 70, templet: '#statusTpl'}
-                    , {field: 'lockingTime', title: '锁定时间', width: 150, sort: true}
-                    // , {field: 'createTime', title: '创建时间', width: 150, sort: true}
-                    , {field: 'lastLoginTime', title: '最后登录时间', width: 150, sort: true}
-                    // , {title: '操作', width: 250, toolbar: '#operationTpl', fixed: "right"}
+                    , {field: 'userId', title: 'id', sort: true, align: 'center', width: 60}
+                    , {field: 'username', title: '用户名', align: 'center',  templet:'#lookTpl', width: 100}
+                    , {field: 'mobile', title: '手机号', align: 'center', width: 150}
+                    , {field: 'email', title: '邮箱', align: 'center', width: 200}
+                    , {field: 'status', title: '状态', templet: '#statusTpl', sort: true, align: 'center', width: 70}
+                    , {field: 'lockingTime', title: '锁定时间', sort: true, align: 'center', width: 180}
+                    , {field: 'createTime', title: '创建时间', sort: true, align: 'center', width: 180}
+                    , {field: 'lastLoginTime', title: '最后登录时间', sort: true, align: 'center', width: 180}
+                    , {title: '操作', toolbar: '#operationTpl', fixed: "right", width: 180}
                 ]
             ]
         });
+
+        //查询
+        form.on('submit(btnSearch)', function (data) {
+            table.reload('table', {
+                where: { //设定异步数据接口的额外参数
+                    username: data.field.username
+                }
+                , page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            return false;
+        });
+        //新增
+        $("#add").click(function(){
+
+            $('#password').val('123456');
+
+            layer.open({
+                title: '新增用户'//窗口名
+                ,type: 1 //打开类型
+                ,shade: 0.4//遮罩 浓度0.4
+                ,maxmin: true //最小化开关 开
+                ,content: $('#addTpl') //打开div模版
+                ,offset: ['100px', '150px'] //坐标
+                ,area: ['480px', '430px'],//弹出窗口大小 宽 高
+
+                success: function (layero, index) {
+                    form.on('submit(submitSave)', function(data){
+                        $.post("../../user/add", data.field, function (res) {
+
+                            if (res.msg == 'success') {
+                                layer.msg('添加成功');
+
+                                layer.close(index); //关闭当前窗口
+                                usertable.reload(); //刷新
+                            } else {
+                                if (res.msg != null) {
+                                    layer.msg(res.msg);
+                                } else {
+                                    layer.msg('添加成功失败');
+                                }
+                            }
+
+                        });
+                        return false; //阻止表单跳转
+                    });
+                },
+                end: function () {
+                    $('form.layui-form').find('button[lay-filter=render]').click();
+                    iePlaceholder();
+                }
+            });
+        });
+
+        //监听操作条
+        table.on('tool(usersList)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+            if (layEvent === 'look') {//查看
+
+            } else if (layEvent === 'edit') {//修改
+
+                //赋值
+                $("#userId").val(data.userId);
+                $("#username").val(data.username);
+                $("#email").val(data.email);
+                $("#mobile").val(data.mobile);
+
+                if (data.status == 1) {
+                    $("input[name='status1']").get(0).checked = true;
+                } else {
+                    $("input[name='status1']").get(1).checked = true;
+                }
+                form.render('radio');
+
+                layer.open({
+                    title: '修改用户'//窗口名
+                    ,type: 1 //打开类型
+                    ,shade: 0.4//遮罩 浓度0.4
+                    ,maxmin: true //最小化开关 开
+                    ,content: $('#editTpl') //打开div模版
+                    ,offset: ['100px', '150px'] //坐标
+                    ,area: ['450px', '430px'],//弹出窗口大小 宽 高
+
+                    success: function (layero, index) {
+                        form.on('submit(submitSave)', function(data){
+                            $.post("../../user/add1", data.field, function (res) {
+
+                                if (res.msg == 'success') {
+                                    layer.msg('添加成功');
+
+                                    layer.close(index); //关闭当前窗口
+                                    usertable.reload(); //刷新
+                                } else {
+                                    if (res.msg != null) {
+                                        layer.msg(res.msg);
+                                    } else {
+                                        layer.msg('添加成功失败');
+                                    }
+                                }
+
+                            });
+                            return false; //阻止表单跳转
+                        });
+                    }
+                });
+            }else if (layEvent === 'del') {//删除
+                layer.confirm('确定删除用户？', {
+                    btn: ['确认', '关闭'] //按钮
+                }, function () {
+                    $.post("../../user/delete", {id: data.userId}, function (res) {
+
+                        if (res.msg == 'success') {
+                            layer.msg('删除用户成功');
+
+                            usertable.reload(); //刷新
+                        } else {
+                            if (res.msg != null) {
+                                layer.msg(res.msg);
+                            } else {
+                                layer.msg('删除用户失败');
+                            }
+                        }
+
+                    });
+                });
+            }
+        });
+
+        //表单验证
+        // form.verify({
+        //     username: function(value, item){ //value：表单的值、item：表单的DOM对象
+        //         if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+        //             return '用户名不能有特殊字符';
+        //         }
+        //         if(/(^\_)|(\__)|(\_+$)/.test(value)){
+        //             return '用户名首尾不能出现下划线\'_\'';
+        //         }
+        //         if(/^\d+\d+\d$/.test(value)){
+        //             return '用户名不能全为数字';
+        //         }
+        //     },password: [
+        //         /^[\S]{6,12}$/,'密码必须6到12位，且不能出现空格'
+        //     ]
+        // });
+
+        //单击行勾选checkbox事件
+        // $(document).on("dblclick",".layui-table-body table.layui-table tbody tr", function () {
+        //    alert(1)
+        // });
+
+        //解决ie兼容问题
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            // get缓存问题 关闭ajax 缓存
+            $.ajaxSetup({cache: false})
+            iePlaceholder();
+        }
+
+        //判断浏览器是否支持placeholder属性
+        function iePlaceholder() {
+            supportPlaceholder = 'placeholder' in document.createElement('input'),
+
+                placeholder = function (input) {
+
+                    var text = input.attr('placeholder'),
+                        defaultValue = input.defaultValue;
+
+                    if (!defaultValue) {
+                        input.val(text).addClass("phcolor");
+                    }
+
+                    input.focus(function () {
+
+                        if (input.val() == text) {
+                            $(this).val("");
+                        }
+                    });
+
+                    input.blur(function () {
+
+                        if (input.val() == "") {
+                            $(this).val(text).addClass("phcolor");
+                        }
+                    });
+
+                    //输入的字符不为灰色
+                    input.keydown(function () {
+                        $(this).removeClass("phcolor");
+                    });
+                };
+
+            //当浏览器不支持placeholder属性时，调用placeholder函数
+            if (!supportPlaceholder) {
+
+                $('input').each(function () {
+
+                    text = $(this).attr("placeholder");
+
+                    if ($(this).attr("type") == "text") {
+
+                        placeholder($(this));
+                    }
+                });
+            }
+        }
     });
 </script>
 </body>

@@ -51,6 +51,7 @@ layui.define(['jquery', 'element', 'nprogress', 'utils'], function(exports) {
     Tab.fn.tabAdd = function(params) {
         _tab.tabAdd(params);
     };
+
     /**
      * 关闭一个选项卡
      */
@@ -80,6 +81,8 @@ layui.define(['jquery', 'element', 'nprogress', 'utils'], function(exports) {
         /**
          * 创建选项卡DOM
          */
+
+
         createTabDom: function() {
             var that = this,
                 _config = that._config;
@@ -87,6 +90,7 @@ layui.define(['jquery', 'element', 'nprogress', 'utils'], function(exports) {
             if (that.tabDomExists())
                 return;
             //模板
+
             var tpl = [
                     '<div class="layui-tab layui-tab-card kit-tab" lay-filter="' + that._filter + '">',
                     '<ul class="layui-tab-title">',

@@ -1,27 +1,22 @@
 package com.sa.modules.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-
 /**
  * @Author: moe
  * @Date: 2018/04/17
  * @Description: 用户角色实体类
  */
-public class UserRoleEntity implements Serializable {
+public class UserRoleEntity {
 	
-	private Long id;
+	private Long urId;
 	private Long userId;
 	private Long roleId;
-	private Long createUserId;
-	private Date createTime;
 
-	public Long getId() {
-		return id;
+	public Long getUrId() {
+		return urId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUrId(Long urId) {
+		this.urId = urId;
 	}
 
 	public Long getUserId() {
@@ -38,21 +33,5 @@ public class UserRoleEntity implements Serializable {
 
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
-	}
-
-	public Long getCreateUserId() {
-		return createUserId;
-	}
-
-	public void setCreateUserId(Long createUserId) {
-		this.createUserId = createUserId;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
 	}
 }

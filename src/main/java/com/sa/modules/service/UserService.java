@@ -13,19 +13,15 @@ import java.util.Map;
 public interface UserService {
 
     /**
-     * 根据用户名，查询系统用户
-     */
-    UserEntity queryByUserName(String username);
-
-    /**
      * 查询用户的所有菜单ID
      */
     List<Long> queryAllMenuId(Long userId);
 
     /**
-     * 查询用户列表
+     * 查询用户拥有的角色
      */
-    List<UserEntity> queryList(Map<String, Object> map);
+    List<Integer> userRoleList(Integer id);
+
 
     /**
      * 查询用户列表 数
@@ -34,22 +30,8 @@ public interface UserService {
     int queryTotal(Map<String, Object> map);
 
     /**
-     * 保存用户
+     * 查询用户列表
      */
-    void add(UserEntity user);
+    List<UserEntity> queryList(Map<String, Object> map);
 
-    /**
-     * 更新用户
-     */
-    int update(UserEntity user);
-
-    /**
-     * 删除用户
-     */
-    int delete(long id);
-
-    /**
-     * 查询用户拥有的角色
-     */
-    List<Integer> userRoleList(Integer id);
 }

@@ -1,6 +1,5 @@
 package com.sa.modules.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
  * @Date: 2018/04/17
  * @Description: 用户实体类
  */
-public class UserEntity implements Serializable {
+public class UserEntity{
 
   private long userId;
   private String username;
@@ -118,5 +117,23 @@ public class UserEntity implements Serializable {
 
   public void setLockingTime(Date lockingTime) {
     this.lockingTime = lockingTime;
+  }
+
+  @Override
+  public String toString() {
+    return "UserEntity{" +
+            "userId=" + userId +
+            ", username='" + username + '\'' +
+            ", password='" + password + '\'' +
+            ", salt='" + salt + '\'' +
+            ", email='" + email + '\'' +
+            ", mobile='" + mobile + '\'' +
+            ", status=" + status +
+            ", roleIdList=" + roleIdList +
+            ", createUserId=" + createUserId +
+            ", createTime=" + createTime +
+            ", lastLoginTime=" + lastLoginTime +
+            ", lockingTime=" + lockingTime +
+            '}';
   }
 }

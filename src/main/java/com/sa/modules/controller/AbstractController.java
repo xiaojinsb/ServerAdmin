@@ -3,6 +3,8 @@ package com.sa.modules.controller;
 import com.sa.modules.entity.UserEntity;
 import org.apache.shiro.SecurityUtils;
 
+import java.util.Date;
+
 /**
  * @Author: moe
  * @Date: 2017/12/17 20:36
@@ -29,5 +31,13 @@ public abstract class AbstractController {
 	 */
 	protected String getUserNname(){
 		return getUser().getUsername();
+	}
+
+	/**
+	 * 得到当前时间
+	 */
+	protected Date getTime() {
+		Date date = new Date();
+		return date;
 	}
 }
