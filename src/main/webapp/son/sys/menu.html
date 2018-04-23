@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>模块管理</title>
+    <link rel="stylesheet" href="../../statics/plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../statics/plugins/font-awesome/css/font-awesome.min.css" media="all" />
+</head>
+<body>
+
+<form name="searchform" id="searchform" class="layui-form layui-form-pane" method="post" action="" style="margin: 15px 0px 0px 10px">
+    <!--搜索组-->
+    <div class="layui-form-item" style="margin-bottom: 5px">
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 90px">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" placeholder="请输入用户名" maxlength="50" autocomplete="off" class="layui-input" />
+            </div>
+        </div>
+        <!-- 按钮组 -->
+        <button class="layui-btn layui-btn-normal" lay-filter="btnSearch" type="button"  lay-submit>搜索</button>
+        <button type="reset" id="btnRetSet" type="button" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+
+</form>
+
+<div style="margin-left: 10px">
+    <button class="layui-btn" id="add" type="button">
+        <i class="layui-icon">&#xe654;</i>
+        添加
+    </button>
+</div>
+
+<table class="layui-hidden" id="treeTable" lay-filter="treeTable"></table>
+
+<!--操作工具栏-->
+<script type="text/html" id="operationTpl">
+    <button class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</button>
+    <button class="layui-btn layui-btn-sm  layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</button>
+</script>
+
+<!--判断是哪个父模块-->
+<script type="text/html" id="parenTpl">
+    {{#  if(d.parentId == 0){ }}
+    目录
+    {{#  } else if(d.parentId == 1){ }}
+    系统管理
+    {{#  } else if(d.parentId == 5){ }}
+    基础管理
+    {{#  } }}
+</script>
+
+<!--判断是哪个类型-->
+<script type="text/html" id="typeTpl">
+    {{#  if(d.type == 0){ }}
+    目录
+    {{#  } else if(d.type == 1){ }}
+    模块
+    {{#  } else if(d.type == 5){ }}
+    按钮
+    {{#  } }}
+</script>
+
+<!--展示图标-->
+<script type="text/html" id="iconNameTpl">
+    <i class="{{d.icon}}" aria-hidden="true"></i>
+    {{d.menuName}}
+</script>
+
+<script src="../../statics/plugins/layui/layui.js"></script>
+<script>
+    layui.use(['form','treeGrid'], function () {
+        var treeGrid = layui.treeGrid, //获取表格
+            form = layui.form, //获取from
+            $ = layui.jquery; //获取jq
+
+        var treeTable =treeGrid.render({
+            elem: '#treeTable'
+            ,url:'../../menu/list'
+            ,treeId:'menuId'//树形id字段名称
+            ,treeUpId:'parentId'//树形父id字段名称
+            ,treeShowName:'menuName'//以树形式显示的字段
+            ,cols: [[
+                {type: 'checkbox', fixed: "left"}
+                , {field:'menuId',  title: 'id',  sort: true, align: 'center', width: 70}
+                , {field:'menuName',  title: '菜单名称', toolbar: '#iconNameTpl', width: 250}
+                , {field:'url',  title: '地址',  align: 'center', width: 200}
+                , {field:'type',  title: '类型',  align: 'center', sort: true, toolbar: '#typeTpl', width: 100}
+                , {field:'parentId', title: '父模块', align: 'center', sort: true, toolbar: '#parenTpl', width: 100}
+                , {field:'createTime',  title: '创建时间',  align: 'center', sort: true, width: 200}
+                , {title: '操作', toolbar: '#operationTpl', fixed: "right", width: 200}
+            ]]
+            ,page:false
+        });
+
+        //解决ie兼容问题
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            // get缓存问题 关闭ajax 缓存
+            $.ajaxSetup({cache: false})
+            iePlaceholder();
+        }
+
+        //判断浏览器是否支持placeholder属性
+        function iePlaceholder() {
+            supportPlaceholder = 'placeholder' in document.createElement('input'),
+
+                placeholder = function (input) {
+
+                    var text = input.attr('placeholder'),
+                        defaultValue = input.defaultValue;
+
+                    if (!defaultValue) {
+                        input.val(text).addClass("phcolor");
+                    }
+
+                    input.focus(function () {
+
+                        if (input.val() == text) {
+                            $(this).val("");
+                        }
+                    });
+
+                    input.blur(function () {
+
+                        if (input.val() == "") {
+                            $(this).val(text).addClass("phcolor");
+                        }
+                    });
+
+                    //输入的字符不为灰色
+                    input.keydown(function () {
+                        $(this).removeClass("phcolor");
+                    });
+                };
+
+            //当浏览器不支持placeholder属性时，调用placeholder函数
+            if (!supportPlaceholder) {
+
+                $('input').each(function () {
+
+                    text = $(this).attr("placeholder");
+
+                    if ($(this).attr("type") == "text") {
+
+                        placeholder($(this));
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -5,8 +5,6 @@ import com.sa.modules.dao.MenuDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.MenuEntity;
 import com.sa.modules.service.MenuService;
-import com.sa.modules.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,7 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private MenuDao menuDao;
     @Autowired
-    private UserService userService;
+    private UserDao userDao;
 
     @Override
     public List<MenuEntity> queryUserMenuList(Long userId) {
@@ -33,7 +31,7 @@ public class MenuServiceImpl implements MenuService {
         }
 
         //用户菜单列表
-        List<Long> menuIdList = userService.queryAllMenuId(userId);
+        List<Long> menuIdList = userDao.queryAllMenuId(userId);
         return getAllMenuList(menuIdList);
     }
 
@@ -92,6 +90,11 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<MenuEntity> queryList(Map<String, Object> map) {
         return menuDao.queryList(map);
+    }
+
+    @Override
+    public int queryTotal(Map<String, Object> map) {
+        return menuDao.queryTotal(map);
     }
 
 }

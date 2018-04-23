@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>用户管理</title>
     <link rel="stylesheet" href="../../statics/plugins/layui/css/layui.css" media="all">
 </head>
@@ -184,7 +185,7 @@
             , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
                 [
                     {type: 'checkbox', fixed: "left"}
-                    , {field: 'userId', title: 'id', sort: true, align: 'center', width: 60}
+                    , {field: 'userId', title: 'id', sort: true, align: 'center', width: 70}
                     , {field: 'username', title: '用户名', align: 'center',  templet:'#lookTpl', width: 100}
                     , {field: 'mobile', title: '手机号', align: 'center', width: 150}
                     , {field: 'email', title: '邮箱', align: 'center', width: 200}
@@ -192,7 +193,7 @@
                     , {field: 'lockingTime', title: '锁定时间', templet: '#lockingTpl' , sort: true, align: 'center', width: 180}
                     , {field: 'createTime', title: '创建时间', sort: true, align: 'center', width: 180}
                     , {field: 'lastLoginTime', title: '最后登录时间', sort: true, align: 'center', width: 180}
-                    , {title: '操作', toolbar: '#operationTpl', fixed: "right", width: 180}
+                    , {title: '操作', toolbar: '#operationTpl', fixed: "right", width: 200}
                 ]
             ]
         });

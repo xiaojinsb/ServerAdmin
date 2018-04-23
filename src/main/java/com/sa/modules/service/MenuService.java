@@ -33,5 +33,9 @@ public interface MenuService {
      */
     List<MenuEntity> queryListParentId(Long parentId);
 
+    /**
+     * 查询模块列表 数
+     */
+    int queryTotal(Map<String, Object> map);
 
 }

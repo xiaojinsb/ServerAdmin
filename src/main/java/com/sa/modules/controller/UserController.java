@@ -4,7 +4,6 @@ import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.UserEntity;
-import com.sa.modules.service.UserService;
 import com.sa.modules.shiro.ShiroUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -24,8 +23,6 @@ import java.util.Map;
 public class UserController extends AbstractController {
 
     @Autowired
-    private UserService userService;
-    @Autowired
     private UserDao userDao;
 
     /**
@@ -37,8 +34,8 @@ public class UserController extends AbstractController {
         //查询列表数据
         Query query = new Query(params);
         //条数和数据
-        int total = userService.queryTotal(params);
-        List<UserEntity> userList = userService.queryList(query);
+        int total = userDao.queryTotal(params);
+        List<UserEntity> userList = userDao.queryList(query);
         return R.ok().put("count", total).put("data", userList);
     }
 

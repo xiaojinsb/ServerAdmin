@@ -109,4 +109,21 @@ public class MenuEntity {
 	public void setList(List<?> list) {
 		this.list = list;
 	}
+
+	@Override
+	public String toString() {
+		return "MenuEntity{" +
+				"menuId=" + menuId +
+				", parentId=" + parentId +
+				", parentName='" + parentName + '\'' +
+				", menuName='" + menuName + '\'' +
+				", url='" + url + '\'' +
+				", type=" + type +
+				", icon='" + icon + '\'' +
+				", orderNum=" + orderNum +
+				", createUserID=" + createUserID +
+				", createTime=" + createTime +
+				", list=" + list +
+				'}';
+	}
 }
