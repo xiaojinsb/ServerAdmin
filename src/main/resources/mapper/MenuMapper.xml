@@ -33,10 +33,11 @@
         <if test="type !=null and type!=''">
             AND type = #{type}
         </if>
-        <if test="offset != null and limit != null">
-            limit #{offset}, #{limit}
-        </if>
     </select>
 
+    <!--列出所有权限-->
+    <select id="queryAllPowers" resultType="com.sa.modules.entity.MenuEntity">
+      select url  from sa_menu where type = 2;
+    </select>
 
 </mapper>

@@ -14,4 +14,9 @@ public interface MenuDao extends BaseDao<MenuEntity>{
      * 根据父菜单，查询子菜单
      */
     List<MenuEntity> queryListParentId(Long parentId);
+
+    /**
+     * 列出所有权限 type为2
+     */
+    List<MenuEntity> queryAllPowers();
 }

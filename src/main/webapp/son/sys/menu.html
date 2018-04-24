@@ -46,6 +46,12 @@
     目录
     {{#  } else if(d.parentId == 1){ }}
     系统管理
+    {{#  } else if(d.parentId == 2){ }}
+    用户管理
+    {{#  } else if(d.parentId == 3){ }}
+    角色管理
+    {{#  } else if(d.parentId == 4){ }}
+    模块管理
     {{#  } else if(d.parentId == 5){ }}
     基础管理
     {{#  } }}
@@ -56,15 +62,15 @@
     {{#  if(d.type == 0){ }}
     目录
     {{#  } else if(d.type == 1){ }}
-    模块
-    {{#  } else if(d.type == 5){ }}
-    按钮
+    菜单
+    {{#  } else if(d.type == 2){ }}
+    权限
     {{#  } }}
 </script>
 
 <!--展示图标-->
 <script type="text/html" id="iconNameTpl">
-    <i class="{{d.icon}}" aria-hidden="true"></i>
+    <i class="{{d.icon}}" aria-hidden="true" style="width: 13px"></i>
     {{d.menuName}}
 </script>
 
@@ -91,7 +97,6 @@
                 , {field:'createTime',  title: '创建时间',  align: 'center', sort: true, width: 200}
                 , {title: '操作', toolbar: '#operationTpl', fixed: "right", width: 200}
             ]]
-            ,page:false
         });
 
         //解决ie兼容问题

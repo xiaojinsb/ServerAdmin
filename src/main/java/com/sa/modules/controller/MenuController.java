@@ -40,12 +40,9 @@ public class MenuController extends AbstractController {
 //    @RequiresPermissions("menu:list")
     public R list(@RequestParam Map<String, Object> params) {
 
-        //查询列表数据
-        Query query = new Query(params);
-
         //条数和数据
         int total = menuService.queryTotal(params);
-        List<MenuEntity> userList = menuService.queryList(query);
+        List<MenuEntity> userList = menuService.queryList(params);
 
         return R.ok().put("count", total).put("data", userList);
     }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>角色管理</title>
     <link rel="stylesheet" href="../../statics/plugins/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="../../statics/src/css/ztree/metro/ztree.css" media="all">
+    <link rel="stylesheet" href="../../statics/src/css/ztree/default/ztree.css" media="all">
 </head>
 <body>
 
@@ -33,29 +33,6 @@
 </div>
 
 <table id="tableList" lay-filter="tableList"></table>
-
-<!--查看信息 绑定在用户名字-->
-<script type="text/html" id="lookTpl">
-    <a href="javascript:;" class="layui-table-link" lay-event="look">{{ d.username }}</a>
-</script>
-
-<!--判断锁定参数-->
-<script type="text/html" id="statusTpl">
-    {{#  if(d.status == 0){ }}
-    锁定
-    {{#  } else { }}
-    正常
-    {{#  } }}
-</script>
-
-<!--根据锁定状态判断时间是否显示-->
-<script type="text/html" id="lockingTpl">
-    {{#  if(d.status == 0){ }}
-    {{ d.lockingTime }}
-    {{#  } else { }}
-
-    {{#  } }}
-</script>
 
 <!--操作工具栏-->
 <script type="text/html" id="operationTpl">
@@ -268,7 +245,7 @@
                         }
                     },
                     error: function () {
-                        alert("系统错误");
+                        alert("勾选错误");
                     }
                 });
 

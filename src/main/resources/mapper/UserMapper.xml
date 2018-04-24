@@ -8,7 +8,10 @@
 
     <!-- 查询用户的所有权限 -->
     <select id="queryUserPowers" resultType="string">
-        select sp.power  from sa_power sp, sa_role_power srp, sa_user_role sur where srp.role_id = sur.role_id and sp.power_id = srp.power_id and sur.user_id = #{userId};
+       select m.url from sa_user_role ur
+        LEFT JOIN sa_role_menu rm on ur.role_id = rm.role_id
+        LEFT JOIN sa_menu m on rm.menu_id = m.menu_id
+        where ur.user_id = #{userId}
     </select>
 
     <!-- 查询用户的所有菜单ID -->

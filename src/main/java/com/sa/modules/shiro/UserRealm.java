@@ -1,10 +1,8 @@
 package com.sa.modules.shiro;
 
 import com.sa.modules.dao.MenuDao;
-import com.sa.modules.dao.PowerDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.MenuEntity;
-import com.sa.modules.entity.PowerEntity;
 import com.sa.modules.entity.UserEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
@@ -30,7 +28,7 @@ public class UserRealm extends AuthorizingRealm {
 	@Autowired
 	private UserDao UserDao;
 	@Autowired
-	private PowerDao powerDao;
+	private MenuDao menuDao;
 
 	/**
 	 * 认证(登录时调用)
@@ -66,10 +64,10 @@ public class UserRealm extends AuthorizingRealm {
 
 		//系统管理员，拥有最高权限
 		if(userId == 1){
-			List<PowerEntity> powerList = powerDao.queryAllPowers();
+			List<MenuEntity> powerList = menuDao.queryAllPowers();
 			permsList = new ArrayList<>(powerList.size());
-			for(PowerEntity power : powerList){
-				permsList.add(power.getPower());
+			for(MenuEntity power : powerList){
+				permsList.add(power.getUrl());
 			}
 		}else{
 			permsList = UserDao.queryUserPowers(userId);
