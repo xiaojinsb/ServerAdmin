@@ -38,4 +38,24 @@ public interface MenuService {
      */
     int queryTotal(Map<String, Object> map);
 
+    /**
+     * 列出所有目录
+     */
+    List<MenuEntity> queryAllCatalog(Integer type);
+
+    /**
+     * 新增模块
+     */
+    void add(MenuEntity menuEntity);
+
+    /**
+     * 更新模块
+     */
+    int edit(MenuEntity menuEntity);
+
+    /**
+     * 删除模块
+     */
+    int delete(long id);
+
 }

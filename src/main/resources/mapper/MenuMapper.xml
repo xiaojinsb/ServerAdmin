@@ -4,7 +4,7 @@
 
     <!--根据父菜单，查询子菜单-->
     <select id="queryListParentId" resultType="com.sa.modules.entity.MenuEntity">
-        select * from sa_menu where parent_id = #{parentId} order by order_num asc
+        select * from sa_menu where parent_id = #{parentId}
     </select>
 
     <!--列出所有菜单 数-->
@@ -13,9 +13,17 @@
         <if test="menuName !=null and menuName!=''">
             AND menu_name LIKE "%"#{menuName}"%"
         </if>
-        <if test="type !=null and type!=''">
-            AND type LIKE #{type}
-        </if>
+        <choose>
+            <when test="type == 0">
+                and type = 0
+            </when>
+            <when test="type=='2'">
+                and type = 1
+            </when>
+            <otherwise>
+                and type != 2
+            </otherwise>
+        </choose>
     </select>
 
     <!--列出所有菜单-->
@@ -30,14 +38,44 @@
         <if test="menuName !=null and menuName!=''">
             AND menu_name LIKE "%"#{menuName}"%"
         </if>
-        <if test="type !=null and type!=''">
-            AND type = #{type}
-        </if>
+        <choose>
+            <when test="type == 0">
+                and type = 0
+            </when>
+            <when test="type=='2'">
+                and type = 1
+            </when>
+            <otherwise>
+                and type != 2
+            </otherwise>
+        </choose>
     </select>
 
     <!--列出所有权限-->
     <select id="queryAllPowers" resultType="com.sa.modules.entity.MenuEntity">
       select url  from sa_menu where type = 2;
     </select>
+
+    <!--列出所有目录-->
+    <select id="queryAllCatalog" resultType="com.sa.modules.entity.MenuEntity">
+      select menu_id,menu_name from sa_menu where type = #{type};
+    </select>
+
+    <!--新增菜单-->
+    <insert id="add" parameterType="com.sa.modules.entity.MenuEntity" useGeneratedKeys="true" keyProperty="menuId">
+      INSERT INTO sa_menu(menu_id, parent_id, menu_name, url, type, icon, create_user_id,create_time)
+      VALUES (#{menuId},#{parentId},#{menuName},#{url},#{type},#{icon},#{createUserID},#{createTime});
+    </insert>
+
+    <!--更新模块-->
+    <update id="edit" parameterType="com.sa.modules.entity.MenuEntity">
+        UPDATE sa_menu SET menu_name = #{menuName},parent_id = #{parentId},url = #{url},type = #{type},icon = #{icon}
+        WHERE menu_id = #{menuId};
+    </update>
+
+    <!--删除模块-->
+    <delete id="delete">
+        delete from sa_menu where menu_id = #{id}
+    </delete>
 
 </mapper>

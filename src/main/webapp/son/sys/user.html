@@ -176,7 +176,7 @@
             $ = layui.jquery; //获取jq
 
         //渲染表格
-        usertable = table.render({
+        var tablelist = table.render({
             id: 'table'
             , elem: '#usersList' //选择表单
             , url: '../../user/list' //json返回地址
@@ -210,6 +210,7 @@
             });
             return false;
         });
+
         //新增
         $("#add").click(function(){
 
@@ -232,7 +233,7 @@
                                 layer.msg('添加成功');
 
                                 layer.close(index); //关闭当前窗口
-                                usertable.reload(); //刷新
+                                tablelist.reload(); //刷新
                             } else {
                                 if (res.msg != null) {
                                     layer.msg(res.msg);
@@ -292,7 +293,7 @@
                                     layer.msg('添加成功');
 
                                     layer.close(index); //关闭当前窗口
-                                    usertable.reload(); //刷新
+                                    tablelist.reload(); //刷新
                                 } else {
                                     if (res.msg != null) {
                                         layer.msg(res.msg);
@@ -315,7 +316,7 @@
                         if (res.msg == 'success') {
                             layer.msg('删除用户成功');
 
-                            usertable.reload(); //刷新
+                            tablelist.reload(); //刷新
                         } else {
                             if (res.msg != null) {
                                 layer.msg(res.msg);
@@ -344,11 +345,6 @@
         //     },password: [
         //         /^[\S]{6,12}$/,'密码必须6到12位，且不能出现空格'
         //     ]
-        // });
-
-        //单击行勾选checkbox事件
-        // $(document).on("dblclick",".layui-table-body table.layui-table tbody tr", function () {
-        //    alert(1)
         // });
 
         //解决ie兼容问题

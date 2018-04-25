@@ -97,4 +97,23 @@ public class MenuServiceImpl implements MenuService {
         return menuDao.queryTotal(map);
     }
 
+    @Override
+    public List<MenuEntity> queryAllCatalog(Integer type) {
+        return menuDao.queryAllCatalog(type);
+    }
+
+    @Override
+    public void add(MenuEntity menuEntity) {
+        menuDao.add(menuEntity);
+    }
+
+    @Override
+    public int edit(MenuEntity menuEntity) {
+        return menuDao.edit(menuEntity);
+    }
+
+    @Override
+    public int delete(long id) {
+        return menuDao.delete(id);
+    }
 }

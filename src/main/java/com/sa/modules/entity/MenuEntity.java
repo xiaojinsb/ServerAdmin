@@ -17,7 +17,6 @@ public class MenuEntity {
 	private String url;
 	private Integer type;
 	private String icon;
-	private Integer orderNum;
 	private Long createUserID;
 	private Date createTime;
 	private List<?> list;
@@ -78,14 +77,6 @@ public class MenuEntity {
 		this.icon = icon;
 	}
 
-	public Integer getOrderNum() {
-		return orderNum;
-	}
-
-	public void setOrderNum(Integer orderNum) {
-		this.orderNum = orderNum;
-	}
-
 	public Long getCreateUserID() {
 		return createUserID;
 	}
@@ -120,7 +111,6 @@ public class MenuEntity {
 				", url='" + url + '\'' +
 				", type=" + type +
 				", icon='" + icon + '\'' +
-				", orderNum=" + orderNum +
 				", createUserID=" + createUserID +
 				", createTime=" + createTime +
 				", list=" + list +

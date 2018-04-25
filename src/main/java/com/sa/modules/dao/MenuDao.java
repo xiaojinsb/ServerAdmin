@@ -19,4 +19,9 @@ public interface MenuDao extends BaseDao<MenuEntity>{
      * 列出所有权限 type为2
      */
     List<MenuEntity> queryAllPowers();
+
+    /**
+     * 列出所有目录
+     */
+    List<MenuEntity> queryAllCatalog(Integer type);
 }

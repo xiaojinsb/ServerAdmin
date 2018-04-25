@@ -44,6 +44,16 @@ public class RoleController extends AbstractController{
     }
 
     /**
+     * 列出角色拥有的权限
+     */
+    @RequestMapping("/info")
+//    @RequiresPermissions("role:info")
+    public R info(Integer id) {
+        List<Integer> roleList = roleDao.queryRoleList(id);
+        return R.ok().put("roleList",roleList);
+    }
+
+    /**
      * 新建角色
      */
     @RequestMapping("/add")
@@ -67,6 +77,54 @@ public class RoleController extends AbstractController{
             return R.error("角色已经存在");
         }
 
+        return R.ok();
+    }
+
+    /**
+     * 修改角色
+     */
+    @RequestMapping("/edit")
+//    @RequiresPermissions("role:edit")
+    public R edit(RoleEntity roleEntity) {
+
+        //角色id列表
+        List<Long> menuIdList = roleEntity.getMenuIdList();
+        //根据名字查询信息 看是否存在
+        RoleEntity isRole = roleDao.queryByRoleName(roleEntity.getRoleName());
+
+        if (isRole == null){
+            //先更新角色信息
+            roleDao.edit(roleEntity);
+            //删除之前角色关联
+            roleMenuService.delete(roleEntity.getRoleId());
+            //加入新的关联
+            roleMenuService.saveOrUpdate(roleEntity.getRoleId(),menuIdList);
+        }else {
+            if (isRole.getRoleId() == roleEntity.getRoleId()){
+                //先更新角色信息
+                roleDao.edit(roleEntity);
+                //删除之前角色关联
+                roleMenuService.delete(roleEntity.getRoleId());
+                //加入新的关联
+                roleMenuService.saveOrUpdate(roleEntity.getRoleId(),menuIdList);
+            }else {
+                return R.error("角色已经存在");
+            }
+        }
+
+        return R.ok();
+    }
+
+    /**
+     * 删除角色
+     */
+    @RequestMapping("/delete")
+//    @RequiresPermissions("user:del")
+    public R delete(long id) {
+
+        roleDao.delete(id);
+        //删除角色拥有的权限
+        roleMenuService.delete(id);
         return R.ok();
     }
 }

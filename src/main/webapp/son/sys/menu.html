@@ -41,30 +41,30 @@
 </script>
 
 <!--判断是哪个父模块-->
-<script type="text/html" id="parenTpl">
-    {{#  if(d.parentId == 0){ }}
-    目录
-    {{#  } else if(d.parentId == 1){ }}
-    系统管理
-    {{#  } else if(d.parentId == 2){ }}
-    用户管理
-    {{#  } else if(d.parentId == 3){ }}
-    角色管理
-    {{#  } else if(d.parentId == 4){ }}
-    模块管理
-    {{#  } else if(d.parentId == 5){ }}
-    基础管理
-    {{#  } }}
-</script>
+<!--<script type="text/html" id="parenTpl">-->
+    <!--{{#  if(d.parentId == 0){ }}-->
+    <!--目录-->
+    <!--{{#  } else if(d.parentId == 1){ }}-->
+    <!--系统管理-->
+    <!--{{#  } else if(d.parentId == 2){ }}-->
+    <!--用户管理-->
+    <!--{{#  } else if(d.parentId == 3){ }}-->
+    <!--角色管理-->
+    <!--{{#  } else if(d.parentId == 4){ }}-->
+    <!--模块管理-->
+    <!--{{#  } else if(d.parentId == 5){ }}-->
+    <!--基础管理-->
+    <!--{{#  } }}-->
+<!--</script>-->
 
 <!--判断是哪个类型-->
 <script type="text/html" id="typeTpl">
     {{#  if(d.type == 0){ }}
     目录
     {{#  } else if(d.type == 1){ }}
-    菜单
+    <span style="color: #1E9FFF">菜单</span>
     {{#  } else if(d.type == 2){ }}
-    权限
+    <span style="color: #009688">权限</span>
     {{#  } }}
 </script>
 
@@ -73,6 +73,57 @@
     <i class="{{d.icon}}" aria-hidden="true" style="width: 13px"></i>
     {{d.menuName}}
 </script>
+
+<div id="addTpl" style="display: none">
+    <form class="layui-form" method="post">
+
+        <div class="layui-form-item"style="margin-top: 20px"></div>
+
+        <div class="layui-form-item" id="menutype" style="display: none">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type" lay-filter="type" value="0" title="目录" checked>
+                <input type="radio" name="type" lay-filter="type" value="1" title="菜单">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="display: none">
+            <label class="layui-form-label">上级菜单</label>
+            <div class="layui-input-block" style="padding-right: 100px;">
+                <select name="parentId" id="parentName" >
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">模块名</label>
+            <div class="layui-input-block" style="padding-right: 100px;">
+                <input type="tel" name="menuName" id="menuName" lay-verify="menuName" autocomplete="off"
+                       class="layui-input" placeholder="请输入模块名">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="display: none">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-block" style="padding-right: 100px;">
+                <input type="tel" name="url" id="url" lay-verify="url" autocomplete="off"
+                       class="layui-input" placeholder="请输入菜单地址">
+            </div>
+        </div>
+
+        <div class="layui-form-item" >
+            <label class="layui-form-label">图标</label>
+            <div class="layui-input-block" style="padding-right: 100px;">
+                <input type="tel" name="icon" id="icon" lay-verify="icon" autocomplete="off"
+                       class="layui-input" placeholder="请输入菜单图标">
+            </div>
+        </div>
+
+        <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
+        <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
+    </form>
+</div>
 
 <script src="../../statics/plugins/layui/layui.js"></script>
 <script>
@@ -91,12 +142,203 @@
                 {type: 'checkbox', fixed: "left"}
                 , {field:'menuId',  title: 'id',  sort: true, align: 'center', width: 70}
                 , {field:'menuName',  title: '菜单名称', toolbar: '#iconNameTpl', width: 250}
-                , {field:'url',  title: '地址',  align: 'center', width: 200}
                 , {field:'type',  title: '类型',  align: 'center', sort: true, toolbar: '#typeTpl', width: 100}
-                , {field:'parentId', title: '父模块', align: 'center', sort: true, toolbar: '#parenTpl', width: 100}
+                , {field:'url',  title: '地址',  align: 'center', width: 200}
+                // , {field:'parentId', title: '父模块', align: 'center', sort: true, toolbar: '#parenTpl', width: 100}
                 , {field:'createTime',  title: '创建时间',  align: 'center', sort: true, width: 200}
                 , {title: '操作', toolbar: '#operationTpl', fixed: "right", width: 200}
             ]]
+        });
+
+        //新增
+        $("#add").click(function () {
+
+            $("#menutype").show();
+            $("#parentName").parent().parent().hide();
+            $("#url").parent().parent().hide();
+            layer.open({
+                title: '新增菜单' //窗口名
+                , type: 1 //打开类型
+                , shade: 0.4  //遮罩 浓度0.4
+                , maxmin: true  //最小化开关 开
+                , content: $('#addTpl')  //打开div模版
+                , offset: ['100px', '150px']  //坐标
+                , area: ['500px', '400px']  //弹出窗口大小 宽 高
+                , btn: ['保存', '取消']  // 低部按钮
+                , yes: function (index) { //确定按钮回调
+                    //触发表单的提交事件
+                    $('form.layui-form').find('button[lay-filter=submitSave]').click();
+                },
+                success: function (layero, index) { //层弹出后的成功回调
+                    //弹出窗口成功后渲染表单
+                    form.on('submit(submitSave)', function (data) {
+                        $.post("../../menu/add", data.field, function (res) {
+
+                            if (res.msg == 'success') {
+                                layer.msg('添加菜单成功');
+
+                                layer.close(index); //关闭当前窗口
+                                treeTable.reload(); //刷新
+                            } else {
+                                if (res.msg != null) {
+                                    layer.msg(res.msg);
+                                } else {
+                                    layer.msg('添加菜单失败');
+                                }
+                            }
+
+                        });
+                        return false; //阻止表单跳转
+                    });
+                },
+                end: function () {
+                    $('form.layui-form').find('button[lay-filter=render]').click();
+                }
+            });
+        });
+
+        //监听操作条
+        treeGrid.on('tool(treeTable)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+             if (layEvent === 'edit') {//修改
+
+                 //显示
+                 var type = data.type;
+                 $("#menutype").hide();
+                 $("input[name='type']").get(type).checked = true;
+                 if (type == 0) {
+
+                     $("#menuName").parent().parent().show();
+                     $("#icon").parent().parent().show();
+                     $("#parentName").parent().parent().hide();
+                     $("#url").parent().parent().hide();
+                 }
+                 if (type == 1) {
+
+                     $("#menuName").parent().parent().show();
+                     $("#parentName").parent().parent().show();
+                     $("#url").parent().parent().show();
+                     $("#icon").parent().parent().show();
+                 }
+
+                 //赋值
+                 var menuId = data.menuId;
+                 $("#menuName").val(data.menuName);
+                 $("#parentName").val(data.parentId);
+                 $("#url").val(data.url);
+                 $("#icon").val(data.icon);
+                 form.render('select');
+
+                layer.open({
+                    title: '修改用户'//窗口名
+                    ,type: 1 //打开类型
+                    ,shade: 0.4//遮罩 浓度0.4
+                    ,maxmin: true //最小化开关 开
+                    ,content: $('#addTpl') //打开div模版
+                    ,offset: ['100px', '150px'] //坐标
+                    ,area: ['500px', '370px']//弹出窗口大小 宽 高
+                    , btn: ['保存', '取消']  // 低部按钮
+                    , yes: function (index) { //确定按钮回调
+                        //触发表单的提交事件
+                        $('form.layui-form').find('button[lay-filter=submitSave]').click();
+                    },
+                    success: function (layero, index) {
+                        form.on('submit(submitSave)', function(data){
+                            data.field.menuId = menuId;
+                            $.post("../../menu/edit", data.field, function (res) {
+
+                                if (res.msg == 'success') {
+                                    layer.msg('添加成功');
+
+                                    layer.close(index); //关闭当前窗口
+                                    treeTable.reload(); //刷新
+                                } else {
+                                    if (res.msg != null) {
+                                        layer.msg(res.msg);
+                                    } else {
+                                        layer.msg('添加成功失败');
+                                    }
+                                }
+
+                            });
+                            return false; //阻止表单跳转
+                        });
+                    },
+                    end: function () {
+                        $('form.layui-form').find('button[lay-filter=render]').click();
+                    }
+                });
+            }else if (layEvent === 'delete') {//删除
+                layer.confirm('确定删除模块？', {
+                    btn: ['确认', '关闭'] //按钮
+                }, function () {
+                    $.post("../../menu/delete", {id: data.menuId}, function (res) {
+
+                        if (res.msg == 'success') {
+                            layer.msg('删除模块成功');
+
+                            treeTable.reload(); //刷新
+                        } else {
+                            if (res.msg != null) {
+                                layer.msg(res.msg);
+                            } else {
+                                layer.msg('删除模块失败');
+                            }
+                        }
+
+                    });
+                });
+            }
+        });
+
+        //监听单选
+        form.on('radio(type)', function (data) {
+            if (data.value == 0) {
+
+                $("#menuName").parent().parent().show();
+                $("#icon").parent().parent().show();
+                $("#parentName").parent().parent().hide();
+                $("#url").parent().parent().hide();
+            }
+            if (data.value == 1) {
+
+                $("#menuName").parent().parent().show();
+                $("#parentName").parent().parent().show();
+                $("#url").parent().parent().show();
+                $("#icon").parent().parent().show();
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: '../../menu/catalog?type=0',
+            contentType: "application/json",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                var html = "";
+                for (var i =0; i < data.length;i++){
+                    html += '<option value="'+data[i].menuId+'">'+data[i].menuName+'</option>';
+                }
+                $("#parentName").append(html);
+                form.render('select');
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+
+        //表单验证
+        form.verify({
+            url: function (value, item) {
+                if (1 == 1) {
+
+                }
+            }
         });
 
         //解决ie兼容问题

@@ -46,4 +46,51 @@ public class MenuController extends AbstractController {
 
         return R.ok().put("count", total).put("data", userList);
     }
+
+    /**
+     * 列出所有目录
+     */
+    @RequestMapping("/catalog")
+//    @RequiresPermissions("menu:info")
+    public Object info(Integer type) {
+        List<MenuEntity> menuList = menuService.queryAllCatalog(type);
+        return menuList;
+    }
+
+    /**
+     * 新增模块
+     */
+    @RequestMapping("/add")
+//    @RequiresPermissions("menu:add")
+    public R add(MenuEntity menuEntity) {
+        //赋值创造者 创造世界
+        menuEntity.setCreateUserID(getUserId());
+        menuEntity.setCreateTime(getTime());
+
+        if (menuEntity.getType() == 0){
+            long parentId = 0;
+            menuEntity.setParentId(parentId);
+        }
+        menuService.add(menuEntity);
+        return R.ok();
+    }
+    /**
+     * 更新角色
+     */
+    @RequestMapping("/edit")
+//    @RequiresPermissions("menu:edit")
+    public R edit(MenuEntity menuEntity) {
+        menuService.edit(menuEntity);
+        return R.ok();
+    }
+
+    /**
+     * 删除用户
+     */
+    @RequestMapping("/delete")
+//    @RequiresPermissions("menu:delete")
+    public R delete(long id) {
+        menuService.delete(id);
+        return R.ok();
+    }
 }

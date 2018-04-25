@@ -18,5 +18,5 @@ public interface RoleDao extends BaseDao<RoleEntity> {
     /**
      * 查询角色拥有的权限
      */
-    List<Integer> roleQueryList(Integer id);
+    List<Integer> queryRoleList(Integer id);
 }
