@@ -30,4 +30,9 @@ public interface UserDao extends BaseDao<UserEntity>{
      */
     List<Integer> userRoleList(Integer id);
 
+    /**
+     * 列出所有用户的id和姓名
+     */
+    List<UserEntity> queryAllUser();
+
 }

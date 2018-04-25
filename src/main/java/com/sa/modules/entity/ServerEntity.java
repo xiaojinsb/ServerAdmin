@@ -27,6 +27,8 @@ public class ServerEntity {
   private String shaduSoft;
   private String beginConfig;
   private String serverContent;
+  private String managementPort;
+  private long userId;
   private Date createTime;
   private Date updateTime;
 
@@ -229,5 +231,21 @@ public class ServerEntity {
 
   public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
+  }
+
+  public String getManagementPort() {
+    return managementPort;
+  }
+
+  public void setManagementPort(String managementPort) {
+    this.managementPort = managementPort;
+  }
+
+  public long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(long userId) {
+    this.userId = userId;
   }
 }

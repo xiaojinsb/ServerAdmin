@@ -106,4 +106,14 @@ public class UserController extends AbstractController {
         return R.ok();
     }
 
+    /**
+     * 列出所有用户id和姓名
+     */
+    @RequestMapping("/queryAllUser")
+//    @RequiresPermissions("menu:info")
+    public Object info() {
+        List<UserEntity> list = userDao.queryAllUser();
+        return list;
+    }
+
 }

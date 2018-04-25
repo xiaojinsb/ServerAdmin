@@ -2,6 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sa.modules.dao.ServerDao">
 
+    <!--列出所有 数-->
+    <select id="queryTotal" resultType="int">
+        select count(*) from sa_server where 1=1
+    </select>
 
+    <!--列出所有-->
+    <select id="queryList" resultType="com.sa.modules.entity.ServerEntity">
+        select * from sa_server where 1=1
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--新增-->
+    <insert id="add" parameterType="com.sa.modules.entity.ServerEntity" useGeneratedKeys="true" keyProperty="serverId">
+
+    </insert>
+
+    <!--更新-->
+    <update id="edit" parameterType="com.sa.modules.entity.ServerEntity">
+
+    </update>
+
+    <!--删除-->
+    <delete id="delete">
+      delete from sa_server where server_id = #{id}
+    </delete>
 
 </mapper>
