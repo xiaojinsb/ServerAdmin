@@ -38,6 +38,28 @@ public class MiddlewareController extends AbstractController {
     }
 
     /**
+     * 新增
+     */
+    @RequestMapping("/add")
+//    @RequiresPermissions("midd:add")
+    public R add(MiddlewareEntity midd) {
+
+        middlewareDao.add(midd);
+        return R.ok();
+    }
+
+    /**
+     * 更新
+     */
+    @RequestMapping("/edit")
+//    @RequiresPermissions("midd:edit")
+    public R edit(MiddlewareEntity midd) {
+
+        middlewareDao.edit(midd);
+        return R.ok();
+    }
+
+    /**
      * 删除
      */
     @RequestMapping("/delete")

@@ -38,6 +38,28 @@ public class DataBaseController extends AbstractController {
     }
 
     /**
+     * 新增
+     */
+    @RequestMapping("/add")
+//    @RequiresPermissions("data:add")
+    public R add(DataBaseEntity data) {
+
+        dataBaseDao.add(data);
+        return R.ok();
+    }
+
+    /**
+     * 更新
+     */
+    @RequestMapping("/edit")
+//    @RequiresPermissions("data:edit")
+    public R edit(DataBaseEntity data) {
+
+        dataBaseDao.edit(data);
+        return R.ok();
+    }
+
+    /**
      * 删除
      */
     @RequestMapping("/delete")

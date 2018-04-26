@@ -43,12 +43,13 @@ public class ServerController extends AbstractController {
     }
 
     /**
-     * 新增用户
+     * 新增
      */
     @RequestMapping("/add")
 //    @RequiresPermissions("server:add")
     public R add(ServerEntity server) {
 
+        //赋值运维人员id 创造者 创造时间
         if (server.getUserName() != "")
             server.setUserId(userDao.queryByUserName(server.getUserName()).getUserId());
         server.setCreateUserId(getUserId());
@@ -59,11 +60,17 @@ public class ServerController extends AbstractController {
     }
 
     /**
-     * 更新用户
+     * 更新
      */
     @RequestMapping("/edit")
 //    @RequiresPermissions("server:edit")
     public R edit(ServerEntity server) {
+
+        //赋值运维人员id 更新时间
+        if (server.getUserName() != "")
+            server.setUserId(userDao.queryByUserName(server.getUserName()).getUserId());
+        server.setUpdateTime(getTime());
+        serverDao.edit(server);
 
         return R.ok();
     }

@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>应用系统管理</title>
     <link rel="stylesheet" href="../../statics/plugins/layui/css/layui.css" media="all">
+    <style>
+        .layui-form-label{width: 100px}
+        .layui-input-block{margin-left: 130px}
+    </style>
 </head>
 <body>
 
@@ -40,36 +44,91 @@
 </script>
 
 <!--添加-->
-<div id="addTpl" style="display: none">
-    <form class="layui-form" method="post" style="margin-top: 30px">
+<div id="addTpl" style="display: none;background-color: #F2F2F2;width: 100%;padding-bottom: 20px">
+    <form class="layui-form" method="post" style="padding-top: 20px">
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">角色名 <span class="remind">*</span></label>
-            <div class="layui-input-inline">
-                <input type="text" name="roleName" lay-verify="roleName" id="roleName" placeholder="请输入2-8位角色名"  autocomplete="off" class="layui-input">
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">服务器基本信息</div>
+                        <div class="layui-card-body layui-row layui-col-space10">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">应用名称<span class="remind">*</span>：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="serverName" lay-verify="serverName" placeholder="请输入应用系统名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">部署情况<span class="remind">*</span>：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="serverName" lay-verify="serverName" placeholder="请输入应用系统名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">数据库<span class="remind">*</span>：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="serverName" lay-verify="serverName" placeholder="请输入应用系统名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">中间件<span class="remind">*</span>：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="serverName" lay-verify="serverName" placeholder="请输入应用系统名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">应用管理信息</div>
+                        <div class="layui-card-body layui-row layui-col-space10">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">ip地址<span class="remind">*</span>：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="serverName" lay-verify="serverName" placeholder="请输入服务器名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">访问域名：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="serNet" lay-verify="serNet" placeholder="请输入服务器网络情况" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg12">
+                                <label class="layui-form-label">管理地址：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="depSituation" lay-verify="depSituation" placeholder="请输入服务器部署情况" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">管理账号：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="serNet" lay-verify="serNet" placeholder="请输入服务器网络情况" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">管理密码：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="serNet" lay-verify="serNet" placeholder="请输入服务器网络情况" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-inline">
-                <input type="text" name="remark" lay-verify="remark" id="remark" placeholder="请输入备注"  autocomplete="off" class="layui-input">
-            </div>
-        </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">授权<span class="label_span">:</span></label>
-            <div class="layui-input-inline">
-                <ul id="menuTree" class="ztree"></ul>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="submitSave">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render">重置</button>
-            </div>
-        </div>
+        <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
+        <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
     </form>
 </div>
 
@@ -119,6 +178,48 @@
                 }
             });
             return false;
+        });
+
+        $("#add").click(function () {
+
+            layer.open({
+                title: '新增服务器' //窗口名
+                , type: 1 //打开类型
+                , shade: 0.4  //遮罩 浓度0.4
+                , maxmin: true  //最小化开关 开
+                , content: $('#addTpl')  //打开div模版
+                , area: ['60%', '60%']  //弹出窗口大小 宽 高
+                , btn: ['保存', '取消']  // 低部按钮
+                , yes: function (index) { //确定按钮回调
+                    //触发表单的提交事件
+                    $('form.layui-form').find('button[lay-filter=submitSave]').click();
+                },
+                success: function (layero, index) { //层弹出后的成功回调
+                    //弹出窗口成功后渲染表单
+                    form.on('submit(submitSave)', function (data) {
+                        $.post("../../server/add", data.field, function (res) {
+
+                            if (res.msg == 'success') {
+                                layer.msg('添加服务器成功');
+
+                                layer.close(index); //关闭当前窗口
+                                tablelist.reload(); //刷新
+                            } else {
+                                if (res.msg != null) {
+                                    layer.msg(res.msg);
+                                } else {
+                                    layer.msg('添加服务器失败');
+                                }
+                            }
+
+                        });
+                        return false; //阻止表单跳转
+                    });
+                },
+                end: function () {
+                    $('form.layui-form').find('button[lay-filter=render]').click();
+                }
+            });
         });
 
         //监听操作条

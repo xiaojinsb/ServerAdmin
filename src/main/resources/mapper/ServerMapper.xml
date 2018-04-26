@@ -22,13 +22,19 @@
                       shadu_soft, begin_config, server_content, management_port, user_id, user_name, create_user_id, create_time) VALUES (
                   #{serverId}, #{serverName}, #{serNet}, #{depSituation}, #{type}, #{model}, #{generator}, #{houseHumber}, #{cabinetHumber}, #{cabinet}, #{propertyNumber},
                   #{equipmentBuyTime}, #{equipmentAgeLimit}, #{leader}, #{hardwareConfiguration}, #{os}, #{pcName}, #{serverIp}, #{serverAdmin}, #{serverPas},
-                  #{shaduSoft}, #{beginConfig}, #{serverContent}, #{managementPort}, #{userId}, #{userName}, #{createUserId}, #{createTime}
-)
+                  #{shaduSoft}, #{beginConfig}, #{serverContent}, #{managementPort}, #{userId}, #{userName}, #{createUserId}, #{createTime})
     </insert>
 
     <!--更新-->
     <update id="edit" parameterType="com.sa.modules.entity.ServerEntity">
-
+          update sa_server set
+          server_name = #{serverName}, serNet = #{serNet}, depSituation = #{depSituation}, type = #{type}, model = #{model}, generator = #{generator}, house_humber = #{houseHumber},
+          cabinet_humber = #{cabinetHumber}, cabinet = #{cabinet}, property_number = #{propertyNumber},
+          equipment_buy_time = #{equipmentBuyTime}, equipment_age_limit = #{equipmentAgeLimit}, leader = #{leader},
+          hardware_configuration #{hardwareConfiguration}, os #{os}, pc_name #{pcName}, server_ip #{serverIp}, server_admin #{serverAdmin}, server_pas #{serverPas},
+          shadu_soft #{shaduHoft}, begin_config #{beginConfig}, server_content #{serverContent}, management_port #{managementPort},
+           user_id #{userId}, user_name #{userName},update_time #{updateTime}
+           where server_id = #{serverId}
     </update>
 
     <!--删除-->

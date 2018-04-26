@@ -14,6 +14,7 @@ public class SystemEntity {
   private String systemPas;
   private String systemDeployment;
   private long userId;
+  private String userName;
   private long dbId;
   private long middlewareId;
   private Date createTime;
@@ -89,6 +90,14 @@ public class SystemEntity {
 
   public void setUserId(long userId) {
     this.userId = userId;
+  }
+
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
   }
 
   public long getDbId() {

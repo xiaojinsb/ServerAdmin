@@ -1,0 +1,92 @@
+<div>
+    <blockquote class="layui-elem-quote quoteBox">
+        <span>应用系统</span>
+    </blockquote>
+    <table id="sysList" lay-filter="sysList"></table>
+    <blockquote class="layui-elem-quote quoteBox">
+        <span>数据库</span>
+    </blockquote>
+    <table id="dataList" lay-filter="dataList"></table>
+    <blockquote class="layui-elem-quote quoteBox">
+        <span>中间件</span>
+    </blockquote>
+    <table id="middList" lay-filter="middList"></table>
+</div>
+
+<script>
+    layui.use(['table', 'form', 'laydate'], function () {
+        var table = layui.table;
+
+        table.render({
+            id: 'table'
+            , elem: '#sysList' //选择表单
+            , url: '../../sys/list' //json返回地址
+            , page: true //分页 开启
+            // , height: 'full-125' // 高度 距离底部
+            , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                [
+                    {field: 'systemName', title: '应用系统名称', align: 'center', width: 130, style: 'background-color: #eee;'}
+                    , {field: 'systemIp', title: 'ip地址', align: 'center', width: 100}
+                    , {field: 'systemDomain', title: '访问域名', align: 'center', width: 100}
+                    , {field: 'systemUrl', title: '管理地址', align: 'center', width: 100}
+                    , {field: 'systemAdmin', title: '管理账号', align: 'center', width: 100}
+                    , {field: 'systemPas', title: '管理密码', align: 'center', width: 100}
+                    , {field: 'systemDeployment', title: '部署情况', align: 'center', width: 100}
+                    , {field: 'userId', title: '运维人员', align: 'center', width: 100}
+                    , {field: 'dbId', title: '数据库', align: 'center', width: 100}
+                    , {field: 'middlewareId', title: '中间件', align: 'center', width: 100}
+                    , {field: 'createTime', title: '创建时间', align: 'center', width: 100}
+                    , {field: 'updateTime', title: '更新时间', align: 'center', width: 100}
+                ]
+            ]
+            , page: false
+        });
+
+        table.render({
+            id: 'table'
+            , elem: '#dataList' //选择表单
+            , url: '../../data/list' //json返回地址
+            , page: true //分页 开启
+            // , height: 'full-125' // 高度 距离底部
+            , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                [
+                    {field: 'dbName', title: '数据库名称', align: 'center', width: 130, style: 'background-color: #eee;'}
+                    , {field: 'dbType', title: '类型', align: 'center', width: 100}
+                    , {field: 'dbAdmin', title: '管理员账号', align: 'center', width: 100}
+                    , {field: 'dbPas', title: '管理密码', align: 'center', width: 100}
+                    , {field: 'dbAddress', title: '安装路径', align: 'center', width: 100}
+                    , {field: 'dbTool', title: '连接工具', align: 'center', width: 100}
+                    , {field: 'dbContent', title: '备注', align: 'center', width: 100}
+                    , {field: 'userId', title: '运维运维', align: 'center', width: 100}
+                    , {field: 'createTime', title: '创建时间', align: 'center', width: 100}
+                    , {field: 'updateTime', title: '更新时间', align: 'center', width: 100}
+                ]
+            ]
+            , page: false
+        });
+
+        table.render({
+            id: 'table'
+            , elem: '#middList' //选择表单
+            , url: '../../midd/list' //json返回地址
+            , page: true //分页 开启
+            // , height: 'full-125' // 高度 距离底部
+            , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                [
+                    {field: 'middlewareName', title: '中间件名称', align: 'center', width: 130, style: 'background-color: #eee;'}
+                    , {field: 'middlewareEdition', title: '中间件版本', align: 'center', width: 100}
+                    , {field: 'middlewareUrl', title: '管理地址', align: 'center', width: 100}
+                    , {field: 'middlewareAdmin', title: '管理账号', align: 'center', width: 100}
+                    , {field: 'middlewarePas', title: '管理密码', align: 'center', width: 100}
+                    , {field: 'middlewareMedium', title: '介质位置', align: 'center', width: 100}
+                    , {field: 'middlewareContent', title: '备注信息', align: 'center', width: 100}
+                    , {field: 'userId', title: '运维人员', align: 'center', width: 100}
+                    , {field: 'createTime', title: '创建时间', align: 'center', width: 100}
+                    , {field: 'updateTime', title: '更新时间', align: 'center', width: 100}
+                ]
+            ]
+            , page: false
+        });
+
+    });
+</script>

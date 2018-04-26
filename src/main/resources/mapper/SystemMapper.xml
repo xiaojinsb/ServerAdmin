@@ -17,12 +17,17 @@
 
     <!--新增-->
     <insert id="add" parameterType="com.sa.modules.entity.SystemEntity" useGeneratedKeys="true" keyProperty="systemId">
-
+        INSERT INTO sa_system(
+        system_id, system_name, system_ip, system_domain, system_url, system_admin,
+        system_pas, system_deployment, user_id, user_name, db_id, middleware_id, create_time)
+        VALUES (#{systemId}, #{systemName}, #{systemIp}, #{systemDomain}, #{systemUrl}, #{systemAdmin},
+        #{systemPas}, #{systemDeployment}, #{userId}, #{userName}, #{dbId}, #{middlewareId}, #{createTime})
     </insert>
 
     <!--更新-->
     <update id="edit" parameterType="com.sa.modules.entity.SystemEntity">
-
+        update sa_system set system_id = #{systemId}, system_name = #{systemName}, system_ip = #{systemIp}, system_domain = #{systemDomain}, system_url = #{systemUrl}, system_admin = #{systemAdmin},
+        system_pas #{systemPas}, system_deployment #{systemDeployment}, user_id #{userId}, user_name #{userName}, db_id #{dbId}, update_time #{updateTime} where system_id = #{systemId}
     </update>
 
     <!--删除-->

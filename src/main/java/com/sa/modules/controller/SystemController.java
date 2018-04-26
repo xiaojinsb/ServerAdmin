@@ -39,6 +39,28 @@ public class SystemController extends AbstractController {
     }
 
     /**
+     * 新增
+     */
+    @RequestMapping("/add")
+//    @RequiresPermissions("sys:add")
+    public R add(SystemEntity sys) {
+
+        systemDao.add(sys);
+        return R.ok();
+    }
+
+    /**
+     * 更新
+     */
+    @RequestMapping("/edit")
+//    @RequiresPermissions("sys:edit")
+    public R edit(SystemEntity sys) {
+
+        systemDao.edit(sys);
+        return R.ok();
+    }
+
+    /**
      * 删除
      */
     @RequestMapping("/delete")
