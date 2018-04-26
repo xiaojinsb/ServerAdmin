@@ -47,6 +47,11 @@
     <button class="layui-btn layui-btn-sm  layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</button>
 </script>
 
+<!--查看信息 绑定在用户名字-->
+<script type="text/html" id="lookTpl">
+    <a href="javascript:;" class="layui-table-link" lay-event="look">{{ d.serverName }}</a>
+</script>
+
 <!--添加-->
 <div id="addTpl" style="display: none;background-color: #F2F2F2;width: 100%;height: 100%">
     <form class="layui-form" method="post" style="padding-top: 20px">
@@ -105,7 +110,7 @@
                             <div class="layui-col-lg6">
                                 <label class="layui-form-label">运维人员：</label>
                                 <div class="layui-input-block">
-                                    <select name="userId" lay-verify="userId" id="userId">
+                                    <select name="userName" lay-verify="userName" id="userName">
                                         <option value=""></option>
                                     </select>
                                 </div>
@@ -119,7 +124,7 @@
                             <div class="layui-col-lg6">
                                 <label class="layui-form-label">管理口地址：</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="management_port" lay-verify="management_port" placeholder="请输入管理口(物理机)地址" autocomplete="off" class="layui-input">
+                                    <input type="text" name="managementPort" lay-verify="managementPort" placeholder="请输入管理口(物理机)地址" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-col-lg6">
@@ -245,6 +250,11 @@
         <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
         <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
     </form>
+    <div class="lookOthers">
+        <!--<table id="sysList" lay-filter="sysList"></table>-->
+        <!--<table id="dataList" lay-filter="dataList"></table>-->
+        <!--<table id="middList" lay-filter="middList"></table>-->
+    </div>
 </div>
 
 <script src="../../statics/plugins/layui/layui.js"></script>
@@ -266,10 +276,20 @@
                 [
                     {type: 'checkbox', fixed: "left"}
                     , {field: 'serverId', title: 'id', align: 'center', sort: true, width: 70}
-                    , {field: 'serverName', title: '服务器名称', align: 'center', width: 130, style: 'background-color: #eee;'}
+                    , {field: 'serverName', title: '服务器名称', toolbar: '#lookTpl', align: 'center', width: 130, style: 'background-color: #eee;'}
                     , {field: 'serNet', title: '网络情况', align: 'center', width: '100',}
                     , {field: 'depSituation', title: '部署情况', align: 'center', width: '100',}
                     , {field: 'type', title: '设备类型', align: 'center', width: '100',}
+                    , {field: 'userName', title: '运维人员', align: 'center', width: '100',}
+                    , {field: 'serverIp', title: 'ip地址', align: 'center', width: '100',}
+                    , {field: 'serverAdmin', title: '管理账号', align: 'center', width: '100',}
+                    , {field: 'serverPas', title: '管理密码', align: 'center', width: '100',}
+
+                    , {field: 'os', title: '操作系统', align: 'center', width: '100',}
+                    , {field: 'pcName', title: '计算机名称', align: 'center', width: '100',}
+                    , {field: 'shaduSoft', title: '杀毒软件', align: 'center', width: '100',}
+                    , {field: 'beginConfig', title: '系统初始配置', align: 'center', width: '100',}
+
                     , {field: 'model', title: '设备编号', align: 'center', width: '100',}
                     , {field: 'generator', title: '机房位置', align: 'center', width: '100',}
                     , {field: 'houseHumber', title: '楼层房间号', align: 'center', width: '100',}
@@ -279,15 +299,9 @@
                     , {field: 'equipmentBuyTime', title: '设备购买时间', align: 'center', width: '150',}
                     , {field: 'equipmentAgeLimit', title: '设备年限', align: 'center', width: '100',}
                     , {field: 'leader', title: '设备领料人', align: 'center', width: '100',}
-                    , {field: 'hardwareConfiguration', title: '硬件配置', align: 'center', width: '100',}
-                    , {field: 'os', title: '操作系统', align: 'center', width: '100',}
-                    , {field: 'pcName', title: '计算机名称', align: 'center', width: '100',}
-                    , {field: 'serverIp', title: 'ip地址', align: 'center', width: '100',}
-                    , {field: 'serverAdmin', title: '管理账号', align: 'center', width: '100',}
-                    , {field: 'serverPas', title: '管理密码', align: 'center', width: '100',}
-                    , {field: 'shaduSoft', title: '杀毒软件', align: 'center', width: '100',}
-                    , {field: 'beginConfig', title: '系统初始配置', align: 'center', width: '100',}
+
                     , {field: 'serverContent', title: '备注相关信息', align: 'center', width: '100',}
+                    , {field: 'hardwareConfiguration', title: '硬件配置', align: 'center', width: '100',}
                     , {field: 'createTime', title: '创建时间', align: 'center', width: '150',}
                     , {field: 'updateTime', title: '更新时间', align: 'center', width: '150',}
                     , {title: '操作', toolbar: '#operationTpl', fixed: "right", width: 200}
@@ -310,9 +324,6 @@
 
         $("#add").click(function () {
 
-            $("#menutype").show();
-            $("#parentName").parent().parent().hide();
-            $("#url").parent().parent().hide();
             layer.open({
                 title: '新增服务器' //窗口名
                 , type: 1 //打开类型
@@ -328,13 +339,13 @@
                 success: function (layero, index) { //层弹出后的成功回调
                     //弹出窗口成功后渲染表单
                     form.on('submit(submitSave)', function (data) {
-                        $.post("../../menu/add", data.field, function (res) {
+                        $.post("../../server/add", data.field, function (res) {
 
                             if (res.msg == 'success') {
                                 layer.msg('添加服务器成功');
 
                                 layer.close(index); //关闭当前窗口
-                                treeTable.reload(); //刷新
+                                tablelist.reload(); //刷新
                             } else {
                                 if (res.msg != null) {
                                     layer.msg(res.msg);
@@ -359,7 +370,17 @@
             var layEvent = obj.event; //获得 lay-event 对应的值
             var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-            if (layEvent === 'edit') {//修改
+            if (layEvent === 'look') {//查看
+                //赋值
+                for (var key in data) {
+                    $("[name='"+key+"']").val(data[key]);
+                    $("[name='"+key+"']").attr("disabled",true);
+                }
+                form.render('select');
+                var html = "<table id=\"sysList\" lay-filter=\"sysList\"></table>\n" +
+                    "        <table id=\"dataList\" lay-filter=\"dataList\"></table>\n" +
+                    "        <table id=\"middList\" lay-filter=\"middList\"></table>";
+                $(".lookOthers").html(html);
 
                 layer.open({
                     title: '修改用户'//窗口名
@@ -367,8 +388,29 @@
                     ,shade: 0.4//遮罩 浓度0.4
                     ,maxmin: true //最小化开关 开
                     ,content: $('#addTpl') //打开div模版
-                    ,offset: ['100px', '150px'] //坐标
-                    ,area: ['500px', '370px']//弹出窗口大小 宽 高
+                    , area: ['99%', '99%']  //弹出窗口大小 宽 高
+                    , btn: ['关闭']  // 低部按钮
+                    , end: function () {
+                        $('form.layui-form').find('button[lay-filter=render]').click();
+                        for (var key in data) {
+                            $("[name='"+key+"']").attr("disabled",false);
+                        }
+                    }
+                });
+            } else if (layEvent === 'edit') {//修改
+                //赋值
+                for (var key in data) {
+                    $("[name='"+key+"']").val(data[key]);
+                }
+                form.render('select');
+
+                layer.open({
+                    title: '修改用户'//窗口名
+                    ,type: 1 //打开类型
+                    ,shade: 0.4//遮罩 浓度0.4
+                    ,maxmin: true //最小化开关 开
+                    ,content: $('#addTpl') //打开div模版
+                    , area: ['99%', '99%']  //弹出窗口大小 宽 高
                     , btn: ['保存', '取消']  // 低部按钮
                     , yes: function (index) { //确定按钮回调
                         //触发表单的提交事件
@@ -452,12 +494,11 @@
             async: false,
             dataType: "json",
             success: function (data) {
-                console.log(data);
                 var html = "";
                 for (var i =0; i < data.length;i++){
-                    html += '<option value="'+data[i].userId+'">'+data[i].username+'</option>';
+                    html += '<option value="'+data[i].username+'">'+data[i].username+'</option>';
                 }
-                $("#userId").append(html);
+                $("#userName").append(html);
                 form.render('select');
             },
             error: function () {

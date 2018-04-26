@@ -3,6 +3,7 @@ package com.sa.modules.controller;
 import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
 import com.sa.modules.dao.ServerDao;
+import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.ServerEntity;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class ServerController extends AbstractController {
 
     @Autowired
     private ServerDao serverDao;
+    @Autowired
+    private UserDao userDao;
 
     /**
      * 列出所有用户
@@ -37,6 +40,32 @@ public class ServerController extends AbstractController {
         int total = serverDao.queryTotal(params);
         List<ServerEntity> list = serverDao.queryList(query);
         return R.ok().put("count", total).put("data", list);
+    }
+
+    /**
+     * 新增用户
+     */
+    @RequestMapping("/add")
+//    @RequiresPermissions("server:add")
+    public R add(ServerEntity server) {
+
+        if (server.getUserName() != "")
+            server.setUserId(userDao.queryByUserName(server.getUserName()).getUserId());
+        server.setCreateUserId(getUserId());
+        server.setCreateTime(getTime());
+
+        serverDao.add(server);
+        return R.ok();
+    }
+
+    /**
+     * 更新用户
+     */
+    @RequestMapping("/edit")
+//    @RequiresPermissions("server:edit")
+    public R edit(ServerEntity server) {
+
+        return R.ok();
     }
 
     /**

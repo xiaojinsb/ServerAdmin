@@ -15,7 +15,7 @@ public class ServerEntity {
   private String cabinetHumber;
   private String cabinet;
   private String propertyNumber;
-  private Date equipmentBuyTime;
+  private String equipmentBuyTime;
   private String equipmentAgeLimit;
   private String leader;
   private String hardwareConfiguration;
@@ -29,9 +29,10 @@ public class ServerEntity {
   private String serverContent;
   private String managementPort;
   private long userId;
+  private String userName;
+  private long createUserId;
   private Date createTime;
   private Date updateTime;
-
 
   public long getServerId() {
     return serverId;
@@ -121,11 +122,11 @@ public class ServerEntity {
     this.propertyNumber = propertyNumber;
   }
 
-  public Date getEquipmentBuyTime() {
+  public String getEquipmentBuyTime() {
     return equipmentBuyTime;
   }
 
-  public void setEquipmentBuyTime(Date equipmentBuyTime) {
+  public void setEquipmentBuyTime(String equipmentBuyTime) {
     this.equipmentBuyTime = equipmentBuyTime;
   }
 
@@ -217,22 +218,6 @@ public class ServerEntity {
     this.serverContent = serverContent;
   }
 
-  public Date getCreateTime() {
-    return createTime;
-  }
-
-  public void setCreateTime(Date createTime) {
-    this.createTime = createTime;
-  }
-
-  public Date getUpdateTime() {
-    return updateTime;
-  }
-
-  public void setUpdateTime(Date updateTime) {
-    this.updateTime = updateTime;
-  }
-
   public String getManagementPort() {
     return managementPort;
   }
@@ -247,5 +232,37 @@ public class ServerEntity {
 
   public void setUserId(long userId) {
     this.userId = userId;
+  }
+
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+
+  public long getCreateUserId() {
+    return createUserId;
+  }
+
+  public void setCreateUserId(long createUserId) {
+    this.createUserId = createUserId;
+  }
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
+
+  public Date getUpdateTime() {
+    return updateTime;
+  }
+
+  public void setUpdateTime(Date updateTime) {
+    this.updateTime = updateTime;
   }
 }

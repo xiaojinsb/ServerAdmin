@@ -17,7 +17,13 @@
 
     <!--新增-->
     <insert id="add" parameterType="com.sa.modules.entity.ServerEntity" useGeneratedKeys="true" keyProperty="serverId">
-
+        INSERT INTO sa_server(server_id, server_name, serNet, depSituation, type, model, generator, house_humber, cabinet_humber, cabinet, property_number,
+                      equipment_buy_time, equipment_age_limit, leader, hardware_configuration, os, pc_name, server_ip, server_admin, server_pas,
+                      shadu_soft, begin_config, server_content, management_port, user_id, user_name, create_user_id, create_time) VALUES (
+                  #{serverId}, #{serverName}, #{serNet}, #{depSituation}, #{type}, #{model}, #{generator}, #{houseHumber}, #{cabinetHumber}, #{cabinet}, #{propertyNumber},
+                  #{equipmentBuyTime}, #{equipmentAgeLimit}, #{leader}, #{hardwareConfiguration}, #{os}, #{pcName}, #{serverIp}, #{serverAdmin}, #{serverPas},
+                  #{shaduSoft}, #{beginConfig}, #{serverContent}, #{managementPort}, #{userId}, #{userName}, #{createUserId}, #{createTime}
+)
     </insert>
 
     <!--更新-->
