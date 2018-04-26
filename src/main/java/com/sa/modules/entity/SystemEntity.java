@@ -17,6 +17,7 @@ public class SystemEntity {
   private String userName;
   private long dbId;
   private long middlewareId;
+  private long createUserId;
   private Date createTime;
   private Date updateTime;
 
@@ -114,6 +115,14 @@ public class SystemEntity {
 
   public void setMiddlewareId(long middlewareId) {
     this.middlewareId = middlewareId;
+  }
+
+  public long getCreateUserId() {
+    return createUserId;
+  }
+
+  public void setCreateUserId(long createUserId) {
+    this.createUserId = createUserId;
   }
 
   public Date getCreateTime() {

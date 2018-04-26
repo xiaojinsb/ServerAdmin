@@ -17,6 +17,7 @@ public class DataBaseEntity {
   private String userName;
   private long serverId;
   private Date createTime;
+  private long createUserId;
   private Date updateTime;
 
   public long getDbId() {
@@ -113,6 +114,14 @@ public class DataBaseEntity {
 
   public void setCreateTime(Date createTime) {
     this.createTime = createTime;
+  }
+
+  public long getCreateUserId() {
+    return createUserId;
+  }
+
+  public void setCreateUserId(long createUserId) {
+    this.createUserId = createUserId;
   }
 
   public Date getUpdateTime() {
