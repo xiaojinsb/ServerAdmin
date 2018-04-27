@@ -17,19 +17,28 @@
 
     <!--新增-->
     <insert id="add" parameterType="com.sa.modules.entity.DataBaseEntity" useGeneratedKeys="true" keyProperty="dbId">
-        insert into sa_data_base(db_id, db_name, db_type, db_admin, db_pas, db_address, db_tool, db_content, user_id, user_name, server_id, create_user_id, create_time) VALUES (
-          #{dbId}, #{dbName}, #{dbType}, #{dbAdmin}, #{dbPas}, #{dbAddress}, #{dbTool}, #{dbContent}, #{userId}, #{userName}, #{serverId}, #{createUserId}, #{createTime}
+        insert into sa_data_base(db_id, db_name, db_type, db_ip, db_address, db_tool,
+        db_admin, db_pas, db_content, user_id, user_name, server_id, server_name, create_user_id, create_time)
+        values (
+        #{dbId}, #{dbName}, #{dbType}, #{dbIp}, #{dbAddress}, #{dbTool},
+        #{dbAdmin}, #{dbPas}, #{dbContent}, #{userId}, #{userName}, #{serverId}, #{serverName}, #{createUserId}, #{createTime}
         )
     </insert>
 
     <!--更新-->
     <update id="edit" parameterType="com.sa.modules.entity.DataBaseEntity">
-        update sa_data_base set db_name = #{dbName}, db_type = #{dbNype}, db_admin = #{dbAdmin}, db_pas = #{dbPas}, db_address = #{dbAddress}, db_tool = #{dbTool}, db_content = #{dbContent}, user_id = #{userId}, user_name = #{userName}, update_time = #{updateTime} where db_id = #{dbId}
+        update sa_data_base set db_name = #{dbName}, db_type = #{dbType}, db_ip = #{dbIp}, db_address = #{dbAddress}, db_tool = #{dbTool},
+        db_admin = #{dbAdmin}, db_pas = #{dbPas}, db_content = #{dbContent}, user_id = #{userId}, user_name = #{userName}, server_id = #{serverId}, server_name = #{serverName} , update_time = #{updateTime} where db_id = #{dbId}
     </update>
 
     <!--删除-->
     <delete id="delete">
       delete from sa_data_base where db_id = #{id}
     </delete>
+
+    <!--列出名字和id-->
+    <select id="queryAllData" resultType="com.sa.modules.entity.DataBaseEntity">
+       select db_id, db_name from sa_data_base where db_id = #{id}
+    </select>
 
 </mapper>

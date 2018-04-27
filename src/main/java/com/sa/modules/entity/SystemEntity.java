@@ -15,8 +15,12 @@ public class SystemEntity {
   private String systemDeployment;
   private long userId;
   private String userName;
-  private long dbId;
-  private long middlewareId;
+  private String serverId;
+  private String serverName;
+  private String dbId;
+  private String dbName;
+  private String middlewareId;
+  private String middlewareName;
   private long createUserId;
   private Date createTime;
   private Date updateTime;
@@ -101,20 +105,52 @@ public class SystemEntity {
     this.userName = userName;
   }
 
-  public long getDbId() {
+  public String getServerId() {
+    return serverId;
+  }
+
+  public void setServerId(String serverId) {
+    this.serverId = serverId;
+  }
+
+  public String getServerName() {
+    return serverName;
+  }
+
+  public void setServerName(String serverName) {
+    this.serverName = serverName;
+  }
+
+  public String getDbId() {
     return dbId;
   }
 
-  public void setDbId(long dbId) {
+  public void setDbId(String dbId) {
     this.dbId = dbId;
   }
 
-  public long getMiddlewareId() {
+  public String getDbName() {
+    return dbName;
+  }
+
+  public void setDbName(String dbName) {
+    this.dbName = dbName;
+  }
+
+  public String getMiddlewareId() {
     return middlewareId;
   }
 
-  public void setMiddlewareId(long middlewareId) {
+  public void setMiddlewareId(String middlewareId) {
     this.middlewareId = middlewareId;
+  }
+
+  public String getMiddlewareName() {
+    return middlewareName;
+  }
+
+  public void setMiddlewareName(String middlewareName) {
+    this.middlewareName = middlewareName;
   }
 
   public long getCreateUserId() {

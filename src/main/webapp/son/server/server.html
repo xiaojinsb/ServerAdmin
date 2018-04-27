@@ -297,7 +297,7 @@
                 [
                     {type: 'checkbox', fixed: "left"}
                     , {field: 'serverId', title: 'id', align: 'center', sort: true, width: 70}
-                    , {field: 'serverName', title: '服务器名称', toolbar: '#lookTpl', align: 'center', width: 130, style: 'background-color: #eee;'}
+                    , {field: 'serverName', title: '服务器名称', toolbar: '#lookTpl', align: 'center', width: 130}
                     , {field: 'serNet', title: '网络情况', align: 'center', width: '100',}
                     , {field: 'depSituation', title: '部署情况', align: 'center', width: '100',}
                     , {field: 'type', title: '设备类型', align: 'center', width: '100',}
@@ -427,9 +427,10 @@
                     $("[name='"+key+"']").val(data[key]);
                 }
                 form.render('select');
+                var serverId = data.serverId;
 
                 layer.open({
-                    title: '修改用户'//窗口名
+                    title: '修改服务器'//窗口名
                     ,type: 1 //打开类型
                     ,shade: 0.4//遮罩 浓度0.4
                     ,maxmin: true //最小化开关 开
@@ -442,10 +443,11 @@
                     },
                     success: function (layero, index) {
                         form.on('submit(submitSave)', function(data){
-                            $.post("../../menu/edit", data.field, function (res) {
+                            data.field.serverId = serverId;
+                            $.post("../../server/edit", data.field, function (res) {
 
                                 if (res.msg == 'success') {
-                                    layer.msg('添加成功');
+                                    layer.msg('修改成功');
 
                                     layer.close(index); //关闭当前窗口
                                     tablelist.reload(); //刷新
@@ -453,7 +455,7 @@
                                     if (res.msg != null) {
                                         layer.msg(res.msg);
                                     } else {
-                                        layer.msg('添加成功失败');
+                                        layer.msg('修改失败');
                                     }
                                 }
 
@@ -602,6 +604,7 @@
                 , page: false
             });
         }
+
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

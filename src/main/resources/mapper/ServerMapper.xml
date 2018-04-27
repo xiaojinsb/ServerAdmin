@@ -31,9 +31,9 @@
           server_name = #{serverName}, serNet = #{serNet}, depSituation = #{depSituation}, type = #{type}, model = #{model}, generator = #{generator}, house_humber = #{houseHumber},
           cabinet_humber = #{cabinetHumber}, cabinet = #{cabinet}, property_number = #{propertyNumber},
           equipment_buy_time = #{equipmentBuyTime}, equipment_age_limit = #{equipmentAgeLimit}, leader = #{leader},
-          hardware_configuration #{hardwareConfiguration}, os #{os}, pc_name #{pcName}, server_ip #{serverIp}, server_admin #{serverAdmin}, server_pas #{serverPas},
-          shadu_soft #{shaduHoft}, begin_config #{beginConfig}, server_content #{serverContent}, management_port #{managementPort},
-           user_id #{userId}, user_name #{userName},update_time #{updateTime}
+          hardware_configuration = #{hardwareConfiguration}, os = #{os}, pc_name = #{pcName}, server_ip = #{serverIp}, server_admin = #{serverAdmin}, server_pas = #{serverPas},
+          shadu_soft = #{shaduSoft}, begin_config = #{beginConfig}, server_content = #{serverContent}, management_port = #{managementPort},
+           user_id = #{userId}, user_name = #{userName},update_time = #{updateTime}
            where server_id = #{serverId}
     </update>
 
@@ -41,5 +41,10 @@
     <delete id="delete">
       delete from sa_server where server_id = #{id}
     </delete>
+
+    <!--列出名字和id-->
+    <select id="queryAllServer" resultType="com.sa.modules.entity.ServerEntity">
+        select server_id,server_name from sa_server where server_id = #{id}
+    </select>
 
 </mapper>

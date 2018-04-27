@@ -35,4 +35,9 @@
       delete from sa_middleware where middleware_id = #{id}
     </delete>
 
+    <!--列出名字和id-->
+    <select id="queryAllMidd" resultType="com.sa.modules.entity.MiddlewareEntity">
+        select  middleware_id,middleware_name from sa_middleware where  middleware_id = #{id}
+    </select>
+
 </mapper>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>中间件管理</title>
+    <link rel="stylesheet" href="../../../statics/plugins/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<form name="searchform" id="searchform" class="layui-form layui-form-pane" method="post" action="" style="margin: 15px 0px 0px 10px">
+    <!--搜索组-->
+    <div class="layui-form-item" style="margin-bottom: 5px">
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 90px">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" placeholder="请输入用户名" maxlength="50" autocomplete="off" class="layui-input" />
+            </div>
+        </div>
+        <!-- 按钮组 -->
+        <button class="layui-btn layui-btn-normal" lay-filter="btnSearch" type="button"  lay-submit>搜索</button>
+        <button type="reset" id="btnRetSet" type="button" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+
+</form>
+
+<table id="tableList" lay-filter="tableList"></table>
+
+<div class="layui-inline">
+    <button class="layui-btn" id="getCheckData" style="display:none">获取数据</button>
+</div>
+
+<script src="../../../statics/plugins/layui/layui.js"></script>
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table, //获取表格
+            form = layui.form, //获取from
+            $ = layui.jquery; //获取jq
+
+        //渲染表格
+        var tablelist = table.render({
+            id: 'table'
+            , elem: '#tableList' //选择表单
+            , url: '../../../midd/list' //json返回地址
+            , page: true //分页 开启
+            // , height: 'full-125' // 高度 距离底部
+            , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                [
+                    {type: 'checkbox', fixed: "left"}
+                    , {field: 'middlewareId', title: 'id', align: 'center', sort: true, width: 70}
+                    , {field: 'middlewareName', title: '中间件名称', align: 'center', width: 130}
+                    , {field: 'middlewareEdition', title: '中间件版本', align: 'center', width: 100}
+                    , {field: 'middlewareUrl', title: '管理地址', align: 'center', width: 100}
+                    , {field: 'middlewareAdmin', title: '管理账号', align: 'center', width: 100}
+                    , {field: 'middlewarePas', title: '管理密码', align: 'center', width: 100}
+                    , {field: 'middlewareMedium', title: '介质位置', align: 'center', width: 100}
+                    , {field: 'middlewareContent', title: '备注信息', align: 'center', width: 100}
+                    , {field: 'userId', title: '运维人员', align: 'center', width: 100}
+                    , {field: 'serverId', title: '所在服务器', align: 'center', width: 100}
+                ]
+            ]
+        });
+
+        //查询
+        form.on('submit(btnSearch)', function (data) {
+            table.reload('table', {
+                where: { //设定异步数据接口的额外参数
+                    username: data.field.username
+                }
+                , page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            return false;
+        });
+
+        //获取值 并传给父窗口
+        $("#getCheckData").click(function () {
+            var checkStatus = table.checkStatus('table'),
+                data = checkStatus.data;
+            var id = new Array();
+            var name = new Array();
+
+            for (var i=0; i< data.length;i++){
+                id.push(data[i].middlewareId);
+                name.push(data[i].middlewareName);
+            }
+
+            $("#middlewareId", window.parent.document).val(id);
+            $("#middlewareName", window.parent.document).val(name);
+        });
+
+        //解决ie兼容问题
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            // get缓存问题 关闭ajax 缓存
+            $.ajaxSetup({cache: false})
+            iePlaceholder();
+        }
+
+        //判断浏览器是否支持placeholder属性
+        function iePlaceholder() {
+            supportPlaceholder = 'placeholder' in document.createElement('input'),
+
+                placeholder = function (input) {
+
+                    var text = input.attr('placeholder'),
+                        defaultValue = input.defaultValue;
+
+                    if (!defaultValue) {
+                        input.val(text).addClass("phcolor");
+                    }
+
+                    input.focus(function () {
+
+                        if (input.val() == text) {
+                            $(this).val("");
+                        }
+                    });
+
+                    input.blur(function () {
+
+                        if (input.val() == "") {
+                            $(this).val(text).addClass("phcolor");
+                        }
+                    });
+
+                    //输入的字符不为灰色
+                    input.keydown(function () {
+                        $(this).removeClass("phcolor");
+                    });
+                };
+
+            //当浏览器不支持placeholder属性时，调用placeholder函数
+            if (!supportPlaceholder) {
+
+                $('input').each(function () {
+
+                    text = $(this).attr("placeholder");
+
+                    if ($(this).attr("type") == "text") {
+
+                        placeholder($(this));
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

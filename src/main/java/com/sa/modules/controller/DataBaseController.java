@@ -3,6 +3,7 @@ package com.sa.modules.controller;
 import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
 import com.sa.modules.dao.DataBaseDao;
+import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.DataBaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,8 @@ import java.util.Map;
 public class DataBaseController extends AbstractController {
     @Autowired
     private DataBaseDao dataBaseDao;
+    @Autowired
+    private UserDao userDao;
 
     /**
      * 列出所有用户
@@ -44,6 +47,12 @@ public class DataBaseController extends AbstractController {
 //    @RequiresPermissions("data:add")
     public R add(DataBaseEntity data) {
 
+        //赋值运维人员id 创造者 创造时间
+        if (data.getUserName() != "")
+            data.setUserId(userDao.queryByUserName(data.getUserName()).getUserId());
+        data.setCreateUserId(getUserId());
+        data.setCreateTime(getTime());
+
         dataBaseDao.add(data);
         return R.ok();
     }
@@ -54,6 +63,10 @@ public class DataBaseController extends AbstractController {
     @RequestMapping("/edit")
 //    @RequiresPermissions("data:edit")
     public R edit(DataBaseEntity data) {
+        //赋值运维人员id 更新时间
+        if (data.getUserName() != "")
+            data.setUserId(userDao.queryByUserName(data.getUserName()).getUserId());
+        data.setUpdateTime(getTime());
 
         dataBaseDao.edit(data);
         return R.ok();

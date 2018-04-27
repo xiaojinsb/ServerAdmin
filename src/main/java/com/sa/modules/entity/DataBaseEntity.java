@@ -8,16 +8,18 @@ public class DataBaseEntity {
   private long dbId;
   private String dbName;
   private String dbType;
-  private String dbAdmin;
-  private String dbPas;
+  private String dbIp;
   private String dbAddress;
   private String dbTool;
+  private String dbAdmin;
+  private String dbPas;
   private String dbContent;
   private long userId;
   private String userName;
-  private long serverId;
-  private Date createTime;
+  private String serverId;
+  private String serverName;
   private long createUserId;
+  private Date createTime;
   private Date updateTime;
 
   public long getDbId() {
@@ -44,20 +46,12 @@ public class DataBaseEntity {
     this.dbType = dbType;
   }
 
-  public String getDbAdmin() {
-    return dbAdmin;
+  public String getDbIp() {
+    return dbIp;
   }
 
-  public void setDbAdmin(String dbAdmin) {
-    this.dbAdmin = dbAdmin;
-  }
-
-  public String getDbPas() {
-    return dbPas;
-  }
-
-  public void setDbPas(String dbPas) {
-    this.dbPas = dbPas;
+  public void setDbIp(String dbIp) {
+    this.dbIp = dbIp;
   }
 
   public String getDbAddress() {
@@ -74,6 +68,22 @@ public class DataBaseEntity {
 
   public void setDbTool(String dbTool) {
     this.dbTool = dbTool;
+  }
+
+  public String getDbAdmin() {
+    return dbAdmin;
+  }
+
+  public void setDbAdmin(String dbAdmin) {
+    this.dbAdmin = dbAdmin;
+  }
+
+  public String getDbPas() {
+    return dbPas;
+  }
+
+  public void setDbPas(String dbPas) {
+    this.dbPas = dbPas;
   }
 
   public String getDbContent() {
@@ -100,20 +110,20 @@ public class DataBaseEntity {
     this.userName = userName;
   }
 
-  public long getServerId() {
+  public String getServerId() {
     return serverId;
   }
 
-  public void setServerId(long serverId) {
+  public void setServerId(String serverId) {
     this.serverId = serverId;
   }
 
-  public Date getCreateTime() {
-    return createTime;
+  public String getServerName() {
+    return serverName;
   }
 
-  public void setCreateTime(Date createTime) {
-    this.createTime = createTime;
+  public void setServerName(String serverName) {
+    this.serverName = serverName;
   }
 
   public long getCreateUserId() {
@@ -122,6 +132,14 @@ public class DataBaseEntity {
 
   public void setCreateUserId(long createUserId) {
     this.createUserId = createUserId;
+  }
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
   }
 
   public Date getUpdateTime() {
