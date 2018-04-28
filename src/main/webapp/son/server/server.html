@@ -418,7 +418,6 @@
                             $("[name='"+key+"']").attr("disabled",false);
                         }
                         $(".lookOthers").hide();
-                        tablelist.reload(); //刷新
                     }
                 });
             } else if (layEvent === 'edit') {//修改
@@ -534,7 +533,7 @@
         
         function look() {
             table.render({
-                id: 'table'
+                id: 'table1'
                 , elem: '#sysList' //选择表单
                 , url: '../../sys/list' //json返回地址
                 , page: true //分页 开启
@@ -559,7 +558,7 @@
             });
 
             table.render({
-                id: 'table'
+                id: 'table3'
                 , elem: '#dataList' //选择表单
                 , url: '../../data/list' //json返回地址
                 , page: true //分页 开启
@@ -582,7 +581,7 @@
             });
 
             table.render({
-                id: 'table'
+                id: 'table2'
                 , elem: '#middList' //选择表单
                 , url: '../../midd/list' //json返回地址
                 , page: true //分页 开启

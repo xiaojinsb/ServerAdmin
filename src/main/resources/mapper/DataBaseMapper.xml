@@ -38,7 +38,11 @@
 
     <!--列出名字和id-->
     <select id="queryAllData" resultType="com.sa.modules.entity.DataBaseEntity">
-       select db_id, db_name from sa_data_base where db_id = #{id}
+       select *  from sa_data_base where db_id in
+        <foreach collection="array" item="id" index="index"
+                 open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>

@@ -52,7 +52,7 @@
 
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">服务器基本信息</div>
+                        <div class="layui-card-header">应用系统基本信息</div>
                         <div class="layui-card-body layui-row layui-col-space10">
                             <div class="layui-col-lg6">
                                 <label class="layui-form-label">应用名称<span class="remind">*</span>：</label>
@@ -68,6 +68,20 @@
                                 </div>
                             </div>
 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span style="float: left">服务器选择：</span>
+                            <div class="layui-col-lg1" style="float: left">
+                                <button class="layui-btn layui-btn-sm" id="serverTableOpen">选择服务器</button>
+                            </div>
+                        </div>
+                        <div class="layui-card-body layui-row layui-col-space10">
+
                             <div class="layui-col-lg6" style="display: none;">
                                 <label class="layui-form-label">服务器ip：</label>
                                 <div class="layui-input-block">
@@ -75,39 +89,15 @@
                                 </div>
                             </div>
 
-                            <div class="layui-col-lg6">
+                            <div class="layui-col-lg6" style="display: none;">
                                 <label class="layui-form-label">服务器<span class="remind">*</span>：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="serverName" lay-verify="serverName" id="serverName" placeholder="请选择服务器" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
 
-                            <div class="layui-col-lg6" style="display: none;">
-                                <label class="layui-form-label">数据库ip：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="dbId" lay-verify="dbId" id="dbId"  autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-
-                            <div class="layui-col-lg6">
-                                <label class="layui-form-label">数据库：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="dbName" lay-verify="dbName" id="dbName"  placeholder="请选择数据库" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-
-                            <div class="layui-col-lg6" style="display: none;">
-                                <label class="layui-form-label">中间件ip：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="middlewareId" lay-verify="middlewareId" id="middlewareId" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-
-                            <div class="layui-col-lg6">
-                                <label class="layui-form-label">中间件：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="middlewareName" lay-verify="middlewareName" id="middlewareName" placeholder="请选择中间件" autocomplete="off" class="layui-input">
-                                </div>
+                            <div class="layui-col-lg12">
+                                <table id="serverTable" lay-filter="serverTable"></table>
                             </div>
 
                         </div>
@@ -116,8 +106,74 @@
 
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">应用管理信息</div>
+                        <div class="layui-card-header">
+                            <span style="float: left">数据库选择：</span>
+                            <div class="layui-col-lg1" style="float: left">
+                                <button class="layui-btn layui-btn-sm" id="dbTableOpen">选择数据库</button>
+                            </div>
+                        </div>
+
                         <div class="layui-card-body layui-row layui-col-space10">
+
+                            <div class="layui-col-lg6" style="display: none;">
+                                <label class="layui-form-label">数据库ip：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="dbId" lay-verify="dbId" id="dbId"  autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg6" style="display: none;">
+                                <label class="layui-form-label">数据库：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="dbName" lay-verify="dbName" id="dbName"  placeholder="请选择数据库" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg12">
+                                <table id="dbTable" lay-filter="dbTable"></table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span style="float: left">中间件选择：</span>
+                            <div class="layui-col-lg1" style="float: left">
+                                <button class="layui-btn layui-btn-sm" id="middTableOpen">选择中间件</button>
+                            </div>
+                        </div>
+                        <div class="layui-card-body layui-row layui-col-space10">
+
+                            <div class="layui-col-lg6" style="display: none;">
+                                <label class="layui-form-label">中间件ip：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="middlewareId" lay-verify="middlewareId" id="middlewareId" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg6" style="display: none;">
+                                <label class="layui-form-label">中间件：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="middlewareName" lay-verify="middlewareName" id="middlewareName" placeholder="请选择中间件" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg12">
+                                <table id="middTable" lay-filter="middTable"></table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">应用系统管理信息</div>
+                        <div class="layui-card-body layui-row layui-col-space10">
+
                             <div class="layui-col-lg6">
                                 <label class="layui-form-label">ip地址<span class="remind">*</span>：</label>
                                 <div class="layui-input-block">
@@ -156,6 +212,7 @@
                                     <input type="text" name="systemPas" lay-verify="systemPas" placeholder="请输入服务器网络情况" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -368,12 +425,14 @@
                 form.render('select');
             },
             error: function () {
-                alert("系统错误");
+                layer.msg('系统错误');
             }
         });
 
+
         //选择服务器
-        $("#serverName").click(function () {
+        $("#serverTableOpen").click(function () {
+
             layer.open({
                 title: '请选择服务器', //窗口名
                 type: 2, //打开类型
@@ -387,12 +446,59 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('#getCheckData').click();
                     layer.close(index); //关闭当前窗口
+                    serverTable();
                 }
             });
-        });
+            return false;//禁止跳转
+        })
+
+        //根据得到的值查询 服务器详细信息
+        function serverTable(){
+
+            var serverId = $("#serverId").val();
+            table.render({
+                id: 'table1'
+                , elem: '#serverTable' //选择表单
+                , url: '../../../server/queryAllServer?id='+serverId //json返回地址
+                , page: false //分页 关闭
+                // , height: 'full-125' // 高度 距离底部
+                , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                    [
+                        {field: 'serverName', title: '服务器名称',  align: 'center', width: 130}
+                        , {field: 'serNet', title: '网络情况', align: 'center', width: '100'}
+                        , {field: 'depSituation', title: '部署情况', align: 'center', width: '100'}
+                        , {field: 'type', title: '设备类型', align: 'center', width: '100'}
+                        , {field: 'userName', title: '运维人员', align: 'center', width: '100'}
+                        , {field: 'serverIp', title: 'ip地址', align: 'center', width: '100'}
+                        , {field: 'serverAdmin', title: '管理账号', align: 'center', width: '100'}
+                        , {field: 'serverPas', title: '管理密码', align: 'center', width: '100'}
+
+                        , {field: 'os', title: '操作系统', align: 'center', width: '100'}
+                        , {field: 'pcName', title: '计算机名称', align: 'center', width: '100'}
+                        , {field: 'shaduSoft', title: '杀毒软件', align: 'center', width: '100'}
+                        , {field: 'beginConfig', title: '系统初始配置', align: 'center', width: '100'}
+
+                        , {field: 'model', title: '设备编号', align: 'center', width: '100'}
+                        , {field: 'generator', title: '机房位置', align: 'center', width: '100',}
+                        , {field: 'houseHumber', title: '楼层房间号', align: 'center', width: '100'}
+                        , {field: 'cabinetHumber', title: '机柜位置编号', align: 'center', width: '100'}
+                        , {field: 'cabinet', title: '机柜', align: 'center', width: '100'}
+                        , {field: 'propertyNumber', title: '设备资产编号', align: 'center', width: '100'}
+                        , {field: 'equipmentBuyTime', title: '设备购买时间', align: 'center', width: '150'}
+                        , {field: 'equipmentAgeLimit', title: '设备年限', align: 'center', width: '100'}
+                        , {field: 'leader', title: '设备领料人', align: 'center', width: '100'}
+
+                        , {field: 'serverContent', title: '备注相关信息', align: 'center', width: '100'}
+                        , {field: 'hardwareConfiguration', title: '硬件配置', align: 'center', width: '100'}
+
+                    ]
+                ]
+            });
+        }
 
         //选择数据库
-        $("#dbName").click(function () {
+        $("#dbTableOpen").click(function () {
+
             layer.open({
                 title: '请选择数据库', //窗口名
                 type: 2, //打开类型
@@ -406,12 +512,41 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('#getCheckData').click();
                     layer.close(index); //关闭当前窗口
+                    dbTable();
                 }
             });
-        });
+            return false;//禁止跳转
+        })
+
+        //根据得到的值查询 服务器详细信息
+        function dbTable(){
+            var dbid = $("#dbId").val();
+
+            table.render({
+                id: 'table2'
+                , elem: '#dbTable' //选择表单
+                , url: '../../../data/queryAllData?id='+dbid //json返回地址
+                , page: false //分页 关闭
+                , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                    [
+                        {field: 'dbName', title: '数据库名称', align: 'center', width: 130}
+                        , {field: 'dbType', title: '类型', align: 'center', width: 100}
+                        , {field: 'dbAdmin', title: '管理员账号', align: 'center', width: 100}
+                        , {field: 'dbPas', title: '管理密码', align: 'center', width: 100}
+                        , {field: 'dbAddress', title: '安装路径', align: 'center', width: 100}
+                        , {field: 'dbTool', title: '连接工具', align: 'center', width: 100}
+                        , {field: 'dbContent', title: '备注', align: 'center', width: 100}
+                        , {field: 'userId', title: '运维运维', align: 'center', width: 100}
+                        , {field: 'serverId', title: '所在服务器', align: 'center', width: 100}
+                    ]
+                ]
+            });
+
+        }
 
         //选择中间件
-        $("#middlewareName").click(function () {
+        $("#middTableOpen").click(function () {
+
             layer.open({
                 title: '请选择中间件', //窗口名
                 type: 2, //打开类型
@@ -425,9 +560,37 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('#getCheckData').click();
                     layer.close(index); //关闭当前窗口
+                    middTable();
                 }
             });
-        });
+            return false;//禁止跳转
+        })
+
+        //根据得到的值查询 服务器详细信息
+        function middTable(){
+
+            var middid = $("#middlewareId").val();
+            table.render({
+                id: 'table3'
+                , elem: '#middTable' //选择表单
+                , url: '../../../midd/queryAllMidd?id='+middid //json返回地址
+                , page: false //分页 关闭
+                , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                    [
+                         {field: 'middlewareName', title: '中间件名称', align: 'center', width: 130}
+                        , {field: 'middlewareEdition', title: '中间件版本', align: 'center', width: 100}
+                        , {field: 'middlewareUrl', title: '管理地址', align: 'center', width: 100}
+                        , {field: 'middlewareAdmin', title: '管理账号', align: 'center', width: 100}
+                        , {field: 'middlewarePas', title: '管理密码', align: 'center', width: 100}
+                        , {field: 'middlewareMedium', title: '介质位置', align: 'center', width: 100}
+                        , {field: 'middlewareContent', title: '备注信息', align: 'center', width: 100}
+                        , {field: 'userId', title: '运维人员', align: 'center', width: 100}
+                        , {field: 'serverId', title: '所在服务器', align: 'center', width: 100}
+                    ]
+                ]
+            });
+
+        }
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

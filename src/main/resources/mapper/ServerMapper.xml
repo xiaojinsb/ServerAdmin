@@ -44,7 +44,11 @@
 
     <!--列出名字和id-->
     <select id="queryAllServer" resultType="com.sa.modules.entity.ServerEntity">
-        select server_id,server_name from sa_server where server_id = #{id}
+        select * from sa_server where server_id in
+        <foreach collection="array" item="id" index="index"
+                 open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>

@@ -81,4 +81,13 @@ public class DataBaseController extends AbstractController {
         dataBaseDao.delete(id);
         return R.ok();
     }
+
+    /**
+     * 列出所有查询到的服务器
+     */
+    @RequestMapping("/queryAllData")
+    public Object info(long[] id) {
+        List<DataBaseEntity> list = dataBaseDao.queryAllData(id);
+        return R.ok().put("data", list);
+    }
 }

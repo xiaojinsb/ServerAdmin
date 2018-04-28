@@ -105,13 +105,14 @@
             var id = new Array();
             var name = new Array();
 
-            // for (var i=0; i< data.length;i++){
-            //     id.push(data[i].serverId);
-                // name.push(data[i].serverName);
-            // }
+            for (var i=0; i< data.length;i++){
+                id.push(data[i].serverId);
+                name.push(data[i].serverName);
+            }
 
-            $("#serverId", window.parent.document).val(data[0].serverId);
-            $("#serverName", window.parent.document).val(data[0].serverName);
+            $("#serverId", window.parent.document).val(id);
+            $("#serverName", window.parent.document).val(name);
+
         });
 
         //解决ie兼容问题

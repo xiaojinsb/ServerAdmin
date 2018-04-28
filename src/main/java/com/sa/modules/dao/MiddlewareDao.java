@@ -14,5 +14,5 @@ public interface MiddlewareDao extends BaseDao<MiddlewareEntity> {
     /**
      * 列出中间件的id和名字
      */
-    List<MiddlewareEntity> queryAllMidd(long id);
+    List<MiddlewareEntity> queryAllMidd(long[] id);
 }

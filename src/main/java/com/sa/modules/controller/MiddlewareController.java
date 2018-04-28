@@ -68,4 +68,13 @@ public class MiddlewareController extends AbstractController {
         middlewareDao.delete(id);
         return R.ok();
     }
+
+    /**
+     * 列出所有查询到的服务器
+     */
+    @RequestMapping("/queryAllMidd")
+    public Object info(long[] id) {
+        List<MiddlewareEntity> list = middlewareDao.queryAllMidd(id);
+        return R.ok().put("data", list);
+    }
 }

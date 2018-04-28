@@ -84,4 +84,13 @@ public class ServerController extends AbstractController {
         serverDao.delete(id);
         return R.ok();
     }
+
+    /**
+     * 列出所有查询到的服务器
+     */
+    @RequestMapping("/queryAllServer")
+    public Object info(long[] id) {
+        List<ServerEntity> list = serverDao.queryAllServer(id);
+        return R.ok().put("data", list);
+    }
 }

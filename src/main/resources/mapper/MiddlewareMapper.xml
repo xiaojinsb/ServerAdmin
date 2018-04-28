@@ -37,7 +37,11 @@
 
     <!--列出名字和id-->
     <select id="queryAllMidd" resultType="com.sa.modules.entity.MiddlewareEntity">
-        select  middleware_id,middleware_name from sa_middleware where  middleware_id = #{id}
+        select  * from sa_middleware where  middleware_id in
+        <foreach collection="array" item="id" index="index"
+                 open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>
