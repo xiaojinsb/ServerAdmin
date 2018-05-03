@@ -6,7 +6,7 @@
 	<groupId>com</groupId>
 	<artifactId>ServerAdmin</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>ServerAdmin</name>
 	<description>server admin</description>
@@ -130,6 +130,7 @@
 			<artifactId>httpcore</artifactId>
 			<version>4.4.9</version>
 		</dependency>
+
 
 	</dependencies>
 

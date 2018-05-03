@@ -100,7 +100,7 @@
             <label class="layui-form-label">模块名</label>
             <div class="layui-input-block" style="padding-right: 100px;">
                 <input type="tel" name="menuName" id="menuName" lay-verify="menuName" autocomplete="off"
-                       class="layui-input" placeholder="请输入模块名">
+                       class="layui-input" placeholder="请输入2-10位模块名">
             </div>
         </div>
 
@@ -162,7 +162,6 @@
                 , shade: 0.4  //遮罩 浓度0.4
                 , maxmin: true  //最小化开关 开
                 , content: $('#addTpl')  //打开div模版
-                , offset: ['100px', '150px']  //坐标
                 , area: ['500px', '400px']  //弹出窗口大小 宽 高
                 , btn: ['保存', '取消']  // 低部按钮
                 , yes: function (index) { //确定按钮回调
@@ -238,7 +237,6 @@
                     ,shade: 0.4//遮罩 浓度0.4
                     ,maxmin: true //最小化开关 开
                     ,content: $('#addTpl') //打开div模版
-                    ,offset: ['100px', '150px'] //坐标
                     ,area: ['500px', '370px']//弹出窗口大小 宽 高
                     , btn: ['保存', '取消']  // 低部按钮
                     , yes: function (index) { //确定按钮回调
@@ -251,7 +249,7 @@
                             $.post("../../menu/edit", data.field, function (res) {
 
                                 if (res.msg == 'success') {
-                                    layer.msg('添加成功');
+                                    layer.msg('修改模块成功');
 
                                     layer.close(index); //关闭当前窗口
                                     treeTable.reload(); //刷新
@@ -259,7 +257,7 @@
                                     if (res.msg != null) {
                                         layer.msg(res.msg);
                                     } else {
-                                        layer.msg('添加成功失败');
+                                        layer.msg('修改模块失败');
                                     }
                                 }
 
@@ -334,10 +332,13 @@
 
         //表单验证
         form.verify({
-            url: function (value, item) {
-                if (1 == 1) {
-
+            menuName: function (value, item) {
+                if(!new RegExp("[0-9a-zA-Z\u4e00-\u9fa5]{2,10}$").test(value)){
+                    return '模块名必须为2-10位 不能有特殊字符';
                 }
+            },
+            url: function (value, item) {
+
             }
         });
 

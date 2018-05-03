@@ -116,4 +116,9 @@ public class MenuServiceImpl implements MenuService {
     public int delete(long id) {
         return menuDao.delete(id);
     }
+
+    @Override
+    public MenuEntity queryByMenuName(String menuNmae) {
+        return menuDao.queryByMenuName(menuNmae);
+    }
 }

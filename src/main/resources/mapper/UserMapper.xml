@@ -89,4 +89,9 @@
         select user_id,username from sa_user WHERE user_id != 1
     </select>
 
+    <!--更新密码-->
+    <update id="editUserPas" parameterType="String">
+        update sa_user set password = #{arg0}, salt = #{arg1}  where username = #{arg2}
+    </update>
+
 </mapper>

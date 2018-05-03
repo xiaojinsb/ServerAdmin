@@ -6,7 +6,9 @@ import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.UserEntity;
 import com.sa.modules.shiro.ShiroUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +60,7 @@ public class UserController extends AbstractController {
         user.setPassword("123456");
         String salt = RandomStringUtils.randomAlphanumeric(20);
         user.setSalt(salt);
-        user.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
+        user.setPassword(ShiroUtils.sha256(user.getPassword(), salt));
         //赋值 创建者 创建时间
         user.setCreateUserId(getUserId());
         user.setCreateTime(getTime());
@@ -100,7 +102,7 @@ public class UserController extends AbstractController {
      * 删除用户
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("user:delete")
+    @RequiresPermissions("user:del")
     public R delete(long id) {
         userDao.delete(id);
         return R.ok();
@@ -114,6 +116,35 @@ public class UserController extends AbstractController {
     public Object info() {
         List<UserEntity> list = userDao.queryAllUser();
         return list;
+    }
+
+    /**
+     * 修改密码
+     */
+    @PostMapping("/editUserPas")
+    public R editUserPas(String username,String pas, String newpas, String isnewpas) {
+        UserEntity user = userDao.queryByUserName(username);
+
+        try {
+            Subject subject = ShiroUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(username, pas);
+            subject.login(token);
+
+            if (newpas.equals(isnewpas)){
+                //sha256加密
+                String salt = RandomStringUtils.randomAlphanumeric(20);
+                System.out.println(ShiroUtils.sha256(newpas, salt));
+                System.out.println(salt);
+                userDao.editUserPas(ShiroUtils.sha256(newpas, salt),salt,username);
+            }
+        } catch (UnknownAccountException e) {
+            return R.error(e.getMessage());
+        } catch (IncorrectCredentialsException e) {
+            return R.error("原密码不正确");
+        }
+
+
+        return R.ok();
     }
 
 }

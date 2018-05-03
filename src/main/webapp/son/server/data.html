@@ -91,6 +91,20 @@
                                 </div>
                             </div>
 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span style="float: left">服务器选择：</span>
+                            <div class="layui-col-lg1" style="float: left">
+                                <button class="layui-btn layui-btn-sm" id="serverTableOpen">选择服务器</button>
+                            </div>
+                        </div>
+                        <div class="layui-card-body layui-row layui-col-space10">
+
                             <div class="layui-col-lg6" style="display: none;">
                                 <label class="layui-form-label">服务器ip：</label>
                                 <div class="layui-input-block">
@@ -98,11 +112,15 @@
                                 </div>
                             </div>
 
-                            <div class="layui-col-lg6">
+                            <div class="layui-col-lg6" style="display: none;">
                                 <label class="layui-form-label">服务器<span class="remind">*</span>：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="serverName" lay-verify="serverName" id="serverName" placeholder="请选择服务器" autocomplete="off" class="layui-input">
                                 </div>
+                            </div>
+
+                            <div class="layui-col-lg12">
+                                <table id="serverTable" lay-filter="serverTable"></table>
                             </div>
 
                         </div>
@@ -270,6 +288,10 @@
                 form.render('select');
                 var dbId = data.dbId;
 
+                //列出服务器
+                var serverId = $("#serverId").val();
+                serverTable(serverId);
+
                 layer.open({
                     title: '修改数据库'//窗口名
                     ,type: 1 //打开类型
@@ -368,8 +390,10 @@
             }
         });
 
+
         //选择服务器
-        $("#serverName").click(function () {
+        $("#serverTableOpen").click(function () {
+
             layer.open({
                 title: '请选择服务器', //窗口名
                 type: 2, //打开类型
@@ -383,9 +407,55 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('#getCheckData').click();
                     layer.close(index); //关闭当前窗口
+                    var serverId = $("#serverId").val();
+                    serverTable(serverId);
                 }
             });
-        });
+            return false;//禁止跳转
+        })
+
+        //根据得到的值查询 服务器详细信息
+        function serverTable(serverId){
+
+            table.render({
+                id: 'table1'
+                , elem: '#serverTable' //选择表单
+                , url: '../../../server/queryAllServer?id='+serverId //json返回地址
+                , page: false //分页 关闭
+                // , height: 'full-125' // 高度 距离底部
+                , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                    [
+                        {field: 'serverName', title: '服务器名称',  align: 'center', width: 130}
+                        , {field: 'serNet', title: '网络情况', align: 'center', width: '100'}
+                        , {field: 'depSituation', title: '部署情况', align: 'center', width: '100'}
+                        , {field: 'type', title: '设备类型', align: 'center', width: '100'}
+                        , {field: 'userName', title: '运维人员', align: 'center', width: '100'}
+                        , {field: 'serverIp', title: 'ip地址', align: 'center', width: '100'}
+                        , {field: 'serverAdmin', title: '管理账号', align: 'center', width: '100'}
+                        , {field: 'serverPas', title: '管理密码', align: 'center', width: '100'}
+
+                        , {field: 'os', title: '操作系统', align: 'center', width: '100'}
+                        , {field: 'pcName', title: '计算机名称', align: 'center', width: '100'}
+                        , {field: 'shaduSoft', title: '杀毒软件', align: 'center', width: '100'}
+                        , {field: 'beginConfig', title: '系统初始配置', align: 'center', width: '100'}
+
+                        , {field: 'model', title: '设备编号', align: 'center', width: '100'}
+                        , {field: 'generator', title: '机房位置', align: 'center', width: '100',}
+                        , {field: 'houseHumber', title: '楼层房间号', align: 'center', width: '100'}
+                        , {field: 'cabinetHumber', title: '机柜位置编号', align: 'center', width: '100'}
+                        , {field: 'cabinet', title: '机柜', align: 'center', width: '100'}
+                        , {field: 'propertyNumber', title: '设备资产编号', align: 'center', width: '100'}
+                        , {field: 'equipmentBuyTime', title: '设备购买时间', align: 'center', width: '150'}
+                        , {field: 'equipmentAgeLimit', title: '设备年限', align: 'center', width: '100'}
+                        , {field: 'leader', title: '设备领料人', align: 'center', width: '100'}
+
+                        , {field: 'serverContent', title: '备注相关信息', align: 'center', width: '100'}
+                        , {field: 'hardwareConfiguration', title: '硬件配置', align: 'center', width: '100'}
+
+                    ]
+                ]
+            });
+        }
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

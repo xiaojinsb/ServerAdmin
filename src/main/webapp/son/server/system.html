@@ -331,6 +331,17 @@
                 form.render('select');
                 var systemId = data.systemId;
 
+                //列出服务器
+                var serverId = $("#serverId").val();
+                serverTable(serverId);
+                //列出数据库
+                var dbid = $("#dbId").val();
+                dbTable(dbid);
+                //列出中间件
+                var middid = $("#middlewareId").val();
+                    middTable(middid);
+
+
                 layer.open({
                     title: '修改应用系统'//窗口名
                     ,type: 1 //打开类型
@@ -446,16 +457,16 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('#getCheckData').click();
                     layer.close(index); //关闭当前窗口
-                    serverTable();
+                    var serverId = $("#serverId").val();
+                    serverTable(serverId);
                 }
             });
             return false;//禁止跳转
         })
 
         //根据得到的值查询 服务器详细信息
-        function serverTable(){
+        function serverTable(serverId){
 
-            var serverId = $("#serverId").val();
             table.render({
                 id: 'table1'
                 , elem: '#serverTable' //选择表单
@@ -512,16 +523,15 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('#getCheckData').click();
                     layer.close(index); //关闭当前窗口
-                    dbTable();
+                    var dbid = $("#dbId").val();
+                    dbTable(dbid);
                 }
             });
             return false;//禁止跳转
         })
 
         //根据得到的值查询 服务器详细信息
-        function dbTable(){
-            var dbid = $("#dbId").val();
-
+        function dbTable(dbid){
             table.render({
                 id: 'table2'
                 , elem: '#dbTable' //选择表单
@@ -560,16 +570,16 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('#getCheckData').click();
                     layer.close(index); //关闭当前窗口
-                    middTable();
+                    var middid = $("#middlewareId").val();
+                    middTable(middid);
                 }
             });
             return false;//禁止跳转
         })
 
         //根据得到的值查询 服务器详细信息
-        function middTable(){
-
-            var middid = $("#middlewareId").val();
+        function middTable(middid){
+            
             table.render({
                 id: 'table3'
                 , elem: '#middTable' //选择表单

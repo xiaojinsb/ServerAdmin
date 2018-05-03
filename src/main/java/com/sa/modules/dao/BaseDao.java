@@ -11,11 +11,11 @@ import java.util.Map;
 public interface BaseDao<T> {
 
 	//新增
-	void add(T t);
+	int add(T t);
 	
-	void add(Map<String, Object> map);
+	int add(Map<String, Object> map);
 	
-	void addBatch(List<T> list);
+	int addBatch(List<T> list);
 
 	//更新
 	int edit(T t);

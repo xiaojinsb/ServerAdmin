@@ -74,7 +74,7 @@
         <div class="layui-form-item" style="margin-top: 30px">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-inline">
-                <input type="text" name="userName" lay-verify="userName" id="userName1"  autocomplete="off" class="layui-input" disabled>
+                <input type="text" name="username" lay-verify="username" id="userName1"  autocomplete="off" class="layui-input" disabled>
             </div>
             <div class="layui-form-mid layui-word-aux">不可修改</div>
         </div>
@@ -82,30 +82,26 @@
         <div class="layui-form-item">
             <label class="layui-form-label">当前密码</label>
             <div class="layui-input-inline">
-                <input type="password" name="password" lay-verify="required" placeholder="请输入当前密码" autocomplete="off" class="layui-input">
+                <input type="password" name="pas" lay-verify="pas" placeholder="请输入当前密码" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">新密码</label>
             <div class="layui-input-inline">
-                <input type="password" name="password"  lay-verify="required" placeholder="请输入新密码" autocomplete="off" class="layui-input">
+                <input type="password" name="newpas" id="newpas" lay-verify="newpas" placeholder="请输入新密码" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">确认新密码</label>
             <div class="layui-input-inline">
-                <input type="password" name="password" lay-verify="required" placeholder="请再次输入新密码" autocomplete="off" class="layui-input">
+                <input type="password" name="isnewpas" lay-verify="isnewpas" placeholder="请再次输入新密码" autocomplete="off" class="layui-input">
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
-        </div>
+        <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
+        <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
     </form>
 </div>
 <script src="statics/plugins/layui/layui.js"></script>
@@ -113,9 +109,13 @@
     layui.config({
         base: 'statics/src/js/',
         version: '1.0.1'
-    }).use(['app'], function() {
+    }).use(['app','form'], function() {
         var app = layui.app,
+            form = layui.form, //获取from
             $ = layui.jquery;
+
+        //设置一个用户命名全局变量
+        var username = "moe";
 
         //主入口
         app.set({
@@ -149,17 +149,66 @@
 
         //修改密码
         $(".editPas").click(function(){
+
+            $("#userName1").val(username);
             layer.open({
                 title: '修改密码'//窗口名
                 ,type: 1 //打开类型
                 ,shade: 0.4//遮罩 浓度0.4
                 ,maxmin: true //最小化开关 开
                 ,content: $('#editPas') //打开div模版
-                ,offset: 'auto' //坐标
-                ,area: ['450px', '350px']//弹出窗口大小 宽 高
-                //,btn: ['保存', '取消'] // 顶部按钮
+                ,area: ['450px', '380px']//弹出窗口大小 宽 高
+                , btn: ['保存', '取消']  // 低部按钮
+                , yes: function (index) { //确定按钮回调
+                    //触发表单的提交事件
+                    $('form.layui-form').find('button[lay-filter=submitSave]').click();
+                },
+                success: function (layero, index) {
+                    form.on('submit(submitSave)', function(data){
+
+                        $.post("user/editUserPas", data.field, function (res) {
+
+                            if (res.msg == 'success') {
+                                layer.msg('修改成功');
+
+                                layer.close(index); //关闭当前窗口
+                            } else {
+                                if (res.msg != null) {
+                                    layer.msg(res.msg);
+                                } else {
+                                    layer.msg('修改失败');
+                                }
+                            }
+
+                        });
+                        return false; //阻止表单跳转
+                    });
+                },
+                end: function () {
+                    $('form.layui-form').find('button[lay-filter=render]').click();
+                }
             });
-            $(".editpas").removeClass("layui-this");
+        });
+
+        //表单验证
+        form.verify({
+            pas: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(!new RegExp("^[A-Za-z0-9]{5,12}$").test(value)){
+                    return '密码必须为5-12位英文数字';
+                }
+            },newpas: function(value, item){
+                if(!new RegExp("^[A-Za-z0-9]{5,12}$").test(value)){
+                    return '密码必须为5-12位英文数字';
+                }
+            },isnewpas: function(value, item){
+                if(!new RegExp("^[A-Za-z0-9]{5,12}$").test(value)){
+                    return '密码必须为5-12位英文数字';
+                }
+                var newpas = $("#newpas").val()
+                if (newpas != value){
+                    return '两次密码不一致'
+                }
+            }
         });
 
         //获取用户名
@@ -170,8 +219,8 @@
             async: false,
             dataType: "json",
             success: function (data) {
+                username = data.name;
                 $("#userName").text(data.name);
-                $("#userName1").val(data.name);
             },
             error: function () {
                 window.location.href="/login.html";

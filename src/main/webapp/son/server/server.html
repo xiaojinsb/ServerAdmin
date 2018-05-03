@@ -168,6 +168,7 @@
 
 
                 </div>
+
                 <div class="layui-col-md6">
 
                     <div class="layui-card">
@@ -239,6 +240,36 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="layui-col-md12">
+
+                    <div class="layui-card">
+                        <div class="layui-card-header">文件上传  <span style="font-size: 12px;color: #757575;">单个文件大小不能超过100MB 总文件大小不能超过1G</span></div>
+                        <div class="layui-card-body layui-row layui-col-space10">
+
+                            <div class="layui-upload">
+                                <button type="button" class="layui-btn layui-btn-normal" id="filesList">选择多文件</button>
+                                <div class="layui-upload-list">
+                                    <table class="layui-table">
+                                        <thead>
+                                        <tr>
+                                            <th>文件名</th>
+                                            <th>大小</th>
+                                            <th>状态</th>
+                                            <th>进度</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="uploadingFiles"></tbody>
+                                    </table>
+                                </div>
+                                <button type="button" class="layui-btn" id="testListAction" style="display: block">开始上传</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -280,11 +311,12 @@
 
 <script src="../../statics/plugins/layui/layui.js"></script>
 <script>
-    layui.use(['table', 'form', 'laydate'], function () {
+    layui.use(['table', 'form', 'laydate','upload'], function () {
         var table = layui.table, //获取表格
             form = layui.form, //获取from
             $ = layui.jquery, //获取jq
-            laydate = layui.laydate; //获取时间插件
+            laydate = layui.laydate, //获取时间插件
+            upload = layui.upload;
 
         //渲染表格
         var tablelist = table.render({
@@ -344,7 +376,7 @@
         });
 
         $("#add").click(function () {
-
+            var isfiles = 0;
             layer.open({
                 title: '新增服务器' //窗口名
                 , type: 1 //打开类型
@@ -364,7 +396,7 @@
 
                             if (res.msg == 'success') {
                                 layer.msg('添加服务器成功');
-
+                                alert(res.id)
                                 layer.close(index); //关闭当前窗口
                                 tablelist.reload(); //刷新
                             } else {
@@ -379,8 +411,17 @@
                         return false; //阻止表单跳转
                     });
                 },
+                cancel: function(index, layero){
+                    if (isfiles != 0){
+                        if(confirm('数据还未上传完毕，确定关闭')){ //只有当点击confirm框的确定时，该层才会关闭
+                            layer.close(index)
+                        }
+                        return false;
+                    }
+                },
                 end: function () {
                     $('form.layui-form').find('button[lay-filter=render]').click();
+                    $("#uploadingFiles").html("");
                 }
             });
         });
@@ -603,6 +644,63 @@
                 , page: false
             });
         }
+
+        //文件上传
+        var demoListView = $('#uploadingFiles') ,uploadListIns = upload.render({
+            elem: '#filesList'
+            ,url: '../../../parses/uploadFile'
+            ,accept: 'file'
+            ,multiple: false
+            ,auto: false
+            ,size: 102400
+            ,bindAction: '#testListAction'
+            ,choose: function(obj){
+                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                //读取本地文件
+                obj.preview(function(index, file, result){
+                    var tr = $(['<tr id="upload-'+ index +'">'
+                        ,'<td>'+ file.name +'</td>'
+                        ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                        ,'<td>等待上传</td>'
+                        ,'<td>0%</td>'
+                        ,'<td>'
+                        ,'<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
+                        ,'<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
+                        ,'</td>'
+                        ,'</tr>'].join(''));
+
+                    //单个重传
+                    tr.find('.demo-reload').on('click', function(){
+                        obj.upload(index, file);
+                    });
+
+                    //删除
+                    tr.find('.demo-delete').on('click', function(){
+                        delete files[index]; //删除对应的文件
+                        tr.remove();
+                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    });
+
+                    demoListView.append(tr);
+                });
+            }
+            ,done: function(res, index, upload){
+                if(res.code == 0){ //上传成功
+                    var tr = demoListView.find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                    tds.eq(3).html(''); //清空操作
+                    return delete this.files[index]; //删除文件队列已经上传成功的文件
+                }
+                this.error(index, upload);
+            }
+            ,error: function(index, upload){
+                var tr = demoListView.find('tr#upload-'+ index)
+                    ,tds = tr.children();
+                tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+            }
+        });
 
 
         //解决ie兼容问题

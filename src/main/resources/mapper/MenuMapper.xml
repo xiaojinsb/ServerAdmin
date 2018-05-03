@@ -78,4 +78,9 @@
         delete from sa_menu where menu_id = #{id}
     </delete>
 
+    <!--根据名字查模块-->
+    <select id="queryByMenuName" resultType="com.sa.modules.entity.MenuEntity">
+        select * from sa_menu where menu_name = #{MenuName}
+    </select>
+
 </mapper>

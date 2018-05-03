@@ -9,13 +9,15 @@ public class MiddlewareEntity {
   private String middlewareName;
   private String middlewareEdition;
   private String middlewareUrl;
+  private String middlewareInstallUrl;
   private String middlewareAdmin;
   private String middlewarePas;
   private String middlewareMedium;
   private String middlewareContent;
   private long userId;
   private String userName;
-  private long serverId;
+  private String serverId;
+  private String serverName;
   private long createUserId;
   private Date createTime;
   private Date updateTime;
@@ -50,6 +52,14 @@ public class MiddlewareEntity {
 
   public void setMiddlewareUrl(String middlewareUrl) {
     this.middlewareUrl = middlewareUrl;
+  }
+
+  public String getMiddlewareInstallUrl() {
+    return middlewareInstallUrl;
+  }
+
+  public void setMiddlewareInstallUrl(String middlewareInstallUrl) {
+    this.middlewareInstallUrl = middlewareInstallUrl;
   }
 
   public String getMiddlewareAdmin() {
@@ -100,12 +110,20 @@ public class MiddlewareEntity {
     this.userName = userName;
   }
 
-  public long getServerId() {
+  public String getServerId() {
     return serverId;
   }
 
-  public void setServerId(long serverId) {
+  public void setServerId(String serverId) {
     this.serverId = serverId;
+  }
+
+  public String getServerName() {
+    return serverName;
+  }
+
+  public void setServerName(String serverName) {
+    this.serverName = serverName;
   }
 
   public long getCreateUserId() {

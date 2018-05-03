@@ -3,6 +3,7 @@ package com.sa.modules.controller;
 import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
 import com.sa.modules.dao.MiddlewareDao;
+import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.MiddlewareEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,8 @@ import java.util.Map;
 public class MiddlewareController extends AbstractController {
     @Autowired
     private MiddlewareDao middlewareDao;
+    @Autowired
+    private UserDao userDao;
 
     /**
      * 列出所有用户
@@ -43,6 +46,12 @@ public class MiddlewareController extends AbstractController {
     @RequestMapping("/add")
 //    @RequiresPermissions("midd:add")
     public R add(MiddlewareEntity midd) {
+
+        //赋值运维人员id 创造者 创造时间
+        if (midd.getUserName() != "")
+            midd.setUserId(userDao.queryByUserName(midd.getUserName()).getUserId());
+        midd.setCreateUserId(getUserId());
+        midd.setCreateTime(getTime());
 
         middlewareDao.add(midd);
         return R.ok();

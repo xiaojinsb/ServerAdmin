@@ -55,8 +55,8 @@ public class ServerController extends AbstractController {
         server.setCreateUserId(getUserId());
         server.setCreateTime(getTime());
 
-        serverDao.add(server);
-        return R.ok();
+        int count = serverDao.add(server);
+        return R.ok().put("id",server.getServerId());
     }
 
     /**

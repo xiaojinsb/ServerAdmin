@@ -24,4 +24,9 @@ public interface MenuDao extends BaseDao<MenuEntity>{
      * 列出所有目录
      */
     List<MenuEntity> queryAllCatalog(Integer type);
+
+    /**
+     * 根据名字查询角色
+     */
+    MenuEntity queryByMenuName(String menuNmae);
 }

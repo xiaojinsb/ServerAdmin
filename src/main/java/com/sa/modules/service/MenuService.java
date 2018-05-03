@@ -58,4 +58,9 @@ public interface MenuService {
      */
     int delete(long id);
 
+    /**
+     * 根据名字查询角色
+     */
+    MenuEntity queryByMenuName(String menuNmae);
+
 }

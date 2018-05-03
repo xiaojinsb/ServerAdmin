@@ -35,4 +35,9 @@ public interface UserDao extends BaseDao<UserEntity>{
      */
     List<UserEntity> queryAllUser();
 
+    /**
+     * 修改用户密码
+     */
+    int editUserPas(String pas, String salt, String name);
+
 }

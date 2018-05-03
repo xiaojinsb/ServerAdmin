@@ -45,32 +45,28 @@
     <form class="layui-form" method="post" style="margin-top: 30px">
 
         <div class="layui-form-item">
-            <label class="layui-form-label">角色名 <span class="remind">*</span></label>
+            <label class="layui-form-label">角色名 <span class="remind">*</span>：</label>
             <div class="layui-input-inline">
-                <input type="text" name="roleName" lay-verify="roleName" id="roleName" placeholder="请输入2-8位角色名"  autocomplete="off" class="layui-input">
+                <input type="text" name="roleName" lay-verify="roleName" id="roleName" placeholder="请输入2-10位角色名"  autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">备注</label>
+            <label class="layui-form-label">备注：</label>
             <div class="layui-input-inline">
                 <input type="text" name="remark" lay-verify="remark" id="remark" placeholder="请输入备注"  autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">授权<span class="label_span">:</span></label>
+            <label class="layui-form-label">授权：</label>
             <div class="layui-input-inline">
                 <ul id="menuTree" class="ztree"></ul>
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="submitSave">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render">重置</button>
-            </div>
-        </div>
+        <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
+        <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
     </form>
 </div>
 
@@ -166,9 +162,13 @@
                 ,shade: 0.4//遮罩 浓度0.4
                 ,maxmin: true //最小化开关 开
                 ,content: $('#addTpl') //打开div模版
-                ,offset: ['100px', '150px'] //坐标
-                ,area: ['480px', '490px'],//弹出窗口大小 宽 高
-
+                , offset: ['100px', '150px']  //坐标
+                ,area: ['480px', '490px']//弹出窗口大小 宽 高
+                , btn: ['保存', '取消']  // 低部按钮
+                , yes: function (index) { //确定按钮回调
+                //触发表单的提交事件
+                    $('form.layui-form').find('button[lay-filter=submitSave]').click();
+                },
                 success: function (layero, index) {
                     form.on('submit(submitSave)', function(data){
 
@@ -255,9 +255,13 @@
                     ,shade: 0.4//遮罩 浓度0.4
                     ,maxmin: true //最小化开关 开
                     ,content: $('#addTpl') //打开div模版
-                    ,offset: ['100px', '150px'] //坐标
-                    ,area: ['450px', '490px'],//弹出窗口大小 宽 高
-
+                    , offset: ['100px', '150px']  //坐标
+                    ,area: ['480px', '490px']//弹出窗口大小 宽 高
+                    , btn: ['保存', '取消']  // 低部按钮
+                    , yes: function (index) { //确定按钮回调
+                        //触发表单的提交事件
+                        $('form.layui-form').find('button[lay-filter=submitSave]').click();
+                    },
                     success: function (layero, index) {
                         // 角色id
                         var roleId = data.roleId;
@@ -293,6 +297,11 @@
                             return false; //阻止表单跳转
                         });
                     }
+                    ,
+                    end: function () {
+                        $('form.layui-form').find('button[lay-filter=render]').click();
+                        iePlaceholder();
+                    }
                 });
             }else if (layEvent === 'delete') {//删除
                 layer.confirm('确定删除角色？', {
@@ -318,21 +327,13 @@
         });
 
         //表单验证
-        // form.verify({
-        //     username: function(value, item){ //value：表单的值、item：表单的DOM对象
-        //         if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-        //             return '用户名不能有特殊字符';
-        //         }
-        //         if(/(^\_)|(\__)|(\_+$)/.test(value)){
-        //             return '用户名首尾不能出现下划线\'_\'';
-        //         }
-        //         if(/^\d+\d+\d$/.test(value)){
-        //             return '用户名不能全为数字';
-        //         }
-        //     },password: [
-        //         /^[\S]{6,12}$/,'密码必须6到12位，且不能出现空格'
-        //     ]
-        // });
+        form.verify({
+            roleName: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(!new RegExp("[0-9a-zA-Z\u4e00-\u9fa5]{2,10}$").test(value)){
+                    return '角色名必须为2-10位 不能有特殊字符';
+                }
+            }
+        });
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

@@ -17,17 +17,17 @@
 
     <!--新增-->
     <insert id="add" parameterType="com.sa.modules.entity.MiddlewareEntity" useGeneratedKeys="true" keyProperty="middlewareId">
-        insert into sa_middleware(middleware_id, middleware_name, middleware_edition, middleware_url, middleware_admin,
-        middleware_pas, middleware_medium, middleware_content, user_id, user_name, server_id, create_user_id, create_time) VALUES(
-          #{middlewareId}, #{middlewareName}, #{middlewareEdition}, #{middlewareUrl}, #{middlewareAdmin},
-        #{middlewarePas}, #{middlewareMedium}, #{middlewareContent}, #{userId}, #{userName}, #{serverId}, #{createUserId}, #{createTime}
+        insert into sa_middleware(middleware_id, middleware_name, middleware_edition, middleware_url, middleware_install_url,middleware_admin,
+        middleware_pas, middleware_medium, middleware_content, user_id, user_name, server_id, server_name, create_user_id, create_time) VALUES(
+          #{middlewareId}, #{middlewareName}, #{middlewareEdition}, #{middlewareUrl}, #{middlewareInstallUrl}, #{middlewareAdmin},
+        #{middlewarePas}, #{middlewareMedium}, #{middlewareContent}, #{userId}, #{userName}, #{serverId}, #{serverName}, #{createUserId}, #{createTime}
         )
     </insert>
 
     <!--更新-->
     <update id="edit" parameterType="com.sa.modules.entity.MiddlewareEntity">
-      update sa_user set middleware_name = #{middlewareName}, middlewareEdition = #{middlewareEdition}, middleware_url = #{middlewareUrl}, middlewareAdmin = #{middlewareAdmin},
-        middleware_pas = #{middlewarePas}, middleware_medium = #{middlewareMedium}, middleware_content = #{middlewareContent}, user_id = #{userId}, user_name = #{userName}, server_id = #{serverId}, update_time = #{updateTime} where user_id = #{userId}
+      update sa_middleware set middleware_name = #{middlewareName}, middleware_edition = #{middlewareEdition}, middleware_url = #{middlewareUrl}, middleware_install_url = #{middlewareInstallUrl}, middleware_admin = #{middlewareAdmin},
+        middleware_pas = #{middlewarePas}, middleware_medium = #{middlewareMedium}, middleware_content = #{middlewareContent}, user_id = #{userId}, user_name = #{userName}, server_id = #{serverId}, server_name = #{serverName}, update_time = #{updateTime} where middleware_id = #{middlewareId}
     </update>
 
     <!--删除-->

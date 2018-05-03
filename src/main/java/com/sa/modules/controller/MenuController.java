@@ -63,7 +63,7 @@ public class MenuController extends AbstractController {
     @RequestMapping("/add")
 //    @RequiresPermissions("menu:add")
     public R add(MenuEntity menuEntity) {
-        //赋值创造者 创造世界
+        //赋值创造者 创造时间
         menuEntity.setCreateUserID(getUserId());
         menuEntity.setCreateTime(getTime());
 
@@ -71,7 +71,15 @@ public class MenuController extends AbstractController {
             long parentId = 0;
             menuEntity.setParentId(parentId);
         }
-        menuService.add(menuEntity);
+
+        //根据名字查询信息 看是否存在
+        MenuEntity ismenu = menuService.queryByMenuName(menuEntity.getMenuName());
+
+        if (ismenu == null){
+            menuService.add(menuEntity);
+        }else {
+            return R.error("模块已经存在");
+        }
         return R.ok();
     }
     /**
@@ -80,7 +88,25 @@ public class MenuController extends AbstractController {
     @RequestMapping("/edit")
 //    @RequiresPermissions("menu:edit")
     public R edit(MenuEntity menuEntity) {
-        menuService.edit(menuEntity);
+
+        //根据名字查询信息 看是否存在
+        MenuEntity ismenu = menuService.queryByMenuName(menuEntity.getMenuName());
+
+        //如果为空 那就是目录
+        if (menuEntity.getParentId() == null){
+            long id = 0;
+            menuEntity.setParentId(id);
+        }
+
+        if (ismenu == null){
+            menuService.edit(menuEntity);
+        }else {
+            if (ismenu.getMenuId() == menuEntity.getMenuId()){
+                menuService.edit(menuEntity);
+            }else {
+                return R.error("模块已经存在");
+            }
+        }
         return R.ok();
     }
 
