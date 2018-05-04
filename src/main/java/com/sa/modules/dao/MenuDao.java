@@ -29,4 +29,9 @@ public interface MenuDao extends BaseDao<MenuEntity>{
      * 根据名字查询角色
      */
     MenuEntity queryByMenuName(String menuNmae);
+
+    /**
+     * 列出模块 无权限
+     */
+    List<MenuEntity> menuAllList();
 }

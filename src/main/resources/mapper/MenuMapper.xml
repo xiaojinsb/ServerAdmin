@@ -13,20 +13,37 @@
         <if test="menuName !=null and menuName!=''">
             AND menu_name LIKE "%"#{menuName}"%"
         </if>
+        <choose>
+            <when test="type == 0">
+                and type = 0
+            </when>
+            <when test="type=='2'">
+                and type = 1
+            </when>
+            <otherwise>
+                and type != 2
+            </otherwise>
+        </choose>
     </select>
 
     <!--列出所有菜单-->
     <select id="queryList" resultType="com.sa.modules.entity.MenuEntity">
         select m.*,(select p.menu_name from sa_menu p where p.menu_id = m.parent_id) as parentName
         from sa_menu m WHERE 1=1
-        <choose>
-            <when test="sidx != null and sidx.trim() != ''">
-                order by m.${sidx} ${order}
-            </when>
-        </choose>
         <if test="menuName !=null and menuName!=''">
             AND menu_name LIKE "%"#{menuName}"%"
         </if>
+        <choose>
+            <when test="type == 0">
+                and type = 0
+            </when>
+            <when test="type=='2'">
+                and type = 1
+            </when>
+            <otherwise>
+                and type != 2
+            </otherwise>
+        </choose>
     </select>
 
     <!--列出所有权限-->
@@ -61,4 +78,8 @@
         select * from sa_menu where menu_name = #{MenuName}
     </select>
 
+    <!--列出所有模块 无权限-->
+    <select id="menuAllList" resultType="com.sa.modules.entity.MenuEntity">
+        select menu_id,menu_name,parent_id from sa_menu
+    </select>
 </mapper>

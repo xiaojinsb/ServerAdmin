@@ -42,9 +42,9 @@ public class MenuController extends AbstractController {
 
         //条数和数据
         int total = menuService.queryTotal(params);
-        List<MenuEntity> userList = menuService.queryList(params);
+        List<MenuEntity> list = menuService.queryList(params);
 
-        return R.ok().put("count", total).put("data", userList);
+        return R.ok().put("count", total).put("data", list);
     }
 
     /**
@@ -118,5 +118,16 @@ public class MenuController extends AbstractController {
     public Object info(Integer type) {
         List<MenuEntity> menuList = menuService.queryAllCatalog(type);
         return menuList;
+    }
+
+    /**
+     * 列出所有模块 无权限
+     */
+    @RequestMapping("/menuAllList")
+    public R menuAllList() {
+
+        List<MenuEntity> list = menuService.menuAllList();
+
+        return R.ok().put("data", list);
     }
 }

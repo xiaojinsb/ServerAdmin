@@ -63,4 +63,8 @@ public interface MenuService {
      */
     MenuEntity queryByMenuName(String menuNmae);
 
+    /**
+     * 列出模块 无权限
+     */
+    List<MenuEntity> menuAllList();
 }

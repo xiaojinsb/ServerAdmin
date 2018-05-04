@@ -10,6 +10,11 @@ import java.util.List;
  * @Description: 用户Dao
  */
 public interface RoleDao extends BaseDao<RoleEntity> {
+
+    /**
+     * 列出角色 无权限
+     */
+    List<RoleEntity> roleAllList();
     /**
      * 根据名字查询角色
      */

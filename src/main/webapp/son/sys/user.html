@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>用户管理</title>
     <link rel="stylesheet" href="../../statics/plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../statics/src/css/ztree/default/ztree.css" media="all">
 </head>
 <body>
 
@@ -39,6 +40,7 @@
                     </select>
                 </div>
             </div>
+
             <!-- 按钮组 -->
             <button class="layui-btn layui-btn-normal" lay-filter="btnSearch" type="button"  lay-submit>搜索</button>
             <button type="reset" id="btnRetSet" type="button" class="layui-btn layui-btn-primary">重置</button>
@@ -88,6 +90,13 @@
     <div id="addTpl" style="display: none">
         <form class="layui-form" method="post" style="margin-top: 30px">
 
+            <div class="layui-form-item" style="display: none">
+                <label class="layui-form-label">用户id</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="userId" lay-verify="userId" id="userId" autocomplete="off" class="layui-input" placeholder="请输入邮箱">
+                </div>
+            </div>
+
             <div class="layui-form-item">
                 <label class="layui-form-label">用户名<span class="remind">*</span>：</label>
                 <div class="layui-input-inline">
@@ -133,6 +142,13 @@
                 </div>
             </div>
 
+            <div class="layui-form-item" >
+                <label class="layui-form-label">角色<span class="label_span">:</span></label>
+                <div class="layui-input-inline" >
+                    <ul id="menuTree" class="ztree" ></ul>
+                </div>
+            </div>
+
             <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
             <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
         </form>
@@ -140,6 +156,7 @@
 
 
 <script src="../../statics/plugins/layui/layui.js"></script>
+<script src="../../statics/src/js/ztree.js"></script>
 <script>
     layui.use(['table', 'form'], function () {
         var table = layui.table, //获取表格
@@ -198,7 +215,7 @@
                 ,shade: 0.4//遮罩 浓度0.4
                 ,maxmin: true //最小化开关 开
                 ,content: $('#addTpl') //打开div模版
-                ,area: ['480px', '400px']//弹出窗口大小 宽 高
+                ,area: ['480px', '500px']//弹出窗口大小 宽 高
                 , btn: ['保存', '取消']  // 低部按钮
                 , yes: function (index) { //确定按钮回调
                 //触发表单的提交事件
@@ -206,6 +223,17 @@
                  },
                 success: function (layero, index) {
                     form.on('submit(submitSave)', function(data){
+
+                        //获取选择的菜单
+                        var nodes = ztree.getCheckedNodes(true);
+                        var roleIdList = new Array();
+                        for (var i = 0; i < nodes.length; i++) {
+                            roleIdList.push(nodes[i].roleId);
+                        }
+                        var roleIdListJoin = roleIdList.join(",");
+                        //向form表单中添加选中的角色
+                        data.field.roleIdList = roleIdListJoin;
+
                         $.post("../../user/add", data.field, function (res) {
 
                             if (res.msg == 'success') {
@@ -247,6 +275,7 @@
                 $('#pas1').show();
 
                 //赋值
+                $("#userId").val(data.userId);
                 $("#username").val(data.username);
                 $("#email").val(data.email);
                 $("#mobile").val(data.mobile);
@@ -259,13 +288,41 @@
                 form.render('radio');
                 $("input[name='password']").get(1).checked = true;
 
+                // 勾选已选中的菜单
+                $.ajax({
+                    type: "GET",
+                    url: '../../user/userRoleList?id='+data.userId,
+                    contentType: "application/json",
+                    async: false,
+                    dataType: "json",
+                    success: function (R) {
+                        ztree.checkAllNodes(false); //清空选择
+                        if (R.code === 0) {
+                            //勾选角色所拥有的菜单
+                            var roleIds = R.roleList;
+                            for (var i = 0; i < roleIds.length; i++) {
+                                var node = ztree.getNodeByParam("roleId", roleIds[i]);
+                                if (node != null) {
+                                    ztree.checkNode(node, true, false);
+                                }
+
+                            }
+                        } else {
+                            alert(R.msg);
+                        }
+                    },
+                    error: function () {
+                        alert("系统错误");
+                    }
+                });
+
                 layer.open({
                     title: '修改用户'//窗口名
                     ,type: 1 //打开类型
                     ,shade: 0.4//遮罩 浓度0.4
                     ,maxmin: true //最小化开关 开
                     ,content: $('#addTpl') //打开div模版
-                    ,area: ['450px', '400px']//弹出窗口大小 宽 高
+                    ,area: ['450px', '500px']//弹出窗口大小 宽 高
                     , btn: ['保存', '取消']  // 低部按钮
                     , yes: function (index) { //确定按钮回调
                         //触发表单的提交事件
@@ -273,6 +330,17 @@
                     },
                     success: function (layero, index) {
                         form.on('submit(submitSave)', function(data){
+
+                            //获取选择的菜单
+                            var nodes = ztree.getCheckedNodes(true);
+                            var roleIdList = new Array();
+                            for (var i = 0; i < nodes.length; i++) {
+                                roleIdList.push(nodes[i].roleId);
+                            }
+                            var roleIdListJoin = roleIdList.join(",");
+                            //向form表单中添加选中的角色
+                            data.field.roleIdList = roleIdListJoin;
+
                             $.post("../../user/edit", data.field, function (res) {
 
                                 if (res.msg == 'success') {
@@ -317,6 +385,48 @@
 
                     });
                 });
+            }
+        });
+
+        /*下拉树*/
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "roleId",
+                    pIdKey: "parentId",
+                    rootPId: -1
+                },
+                key: {
+                    name: "roleName",
+                    url: "nourl"
+                }
+            },
+            check: {
+                enable: true,
+                nocheckInherit: true
+            }
+        };
+        var ztree;
+
+        //加载树
+        $.ajax({
+            type: "GET",
+            url: '../../role/roleAllList',
+            contentType: "application/json",
+            async: false,
+            dataType: "json",
+            success: function (R) {
+                if (R.code === 0) {
+                    ztree = $.fn.zTree.init($("#menuTree"), setting, R.data);
+                    //展开所有节点
+                    ztree.expandAll(true);
+                } else {
+                    alert(R.msg);
+                }
+            },
+            error: function () {
+                alert("系统错误");
             }
         });
 

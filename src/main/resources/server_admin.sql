@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-05-04 17:20:43
+Date: 2018-05-04 18:22:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,7 +58,7 @@ CREATE TABLE `sa_menu` (
   `create_user_id` bigint(20) DEFAULT NULL COMMENT '创建者ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`menu_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='模块管理';
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='模块管理';
 
 -- ----------------------------
 -- Records of sa_menu
@@ -76,10 +76,14 @@ INSERT INTO `sa_menu` VALUES ('10', '2', '查看', 'user:list', '2', 'fa fa-lapt
 INSERT INTO `sa_menu` VALUES ('11', '2', '新增', 'user:add', '2', 'fa fa-plus-square-o', '1', '2018-04-24 11:04:55');
 INSERT INTO `sa_menu` VALUES ('12', '2', '修改', 'user:edit', '2', 'fa fa-edit', '1', '2018-04-24 11:04:57');
 INSERT INTO `sa_menu` VALUES ('13', '2', '删除', 'user:del', '2', 'fa fa-trash-o', '1', '2018-04-24 11:05:00');
-INSERT INTO `sa_menu` VALUES ('22', '3', '查看', null, '2', null, '1', '2018-05-04 17:20:16');
-INSERT INTO `sa_menu` VALUES ('23', '3', '新增', null, '2', null, '1', '2018-05-04 17:20:19');
-INSERT INTO `sa_menu` VALUES ('24', '3', '修改', null, '2', null, '1', '2018-05-04 17:20:21');
-INSERT INTO `sa_menu` VALUES ('25', '3', '删除', null, '2', null, '1', '2018-05-04 17:20:23');
+INSERT INTO `sa_menu` VALUES ('22', '3', '查看', 'role:list', '2', 'fa fa-laptop', '1', '2018-05-04 17:20:16');
+INSERT INTO `sa_menu` VALUES ('23', '3', '新增', 'role:add', '2', 'fa fa-plus-square-o', '1', '2018-05-04 17:20:19');
+INSERT INTO `sa_menu` VALUES ('24', '3', '修改', 'role:edit', '2', 'fa fa-edit', '1', '2018-05-04 17:20:21');
+INSERT INTO `sa_menu` VALUES ('25', '3', '删除', 'role:del', '2', 'fa fa-trash-o', '1', '2018-05-04 17:20:23');
+INSERT INTO `sa_menu` VALUES ('26', '4', '查看', 'menu:list', '2', 'fa fa-laptop', '1', '2018-04-24 11:03:04');
+INSERT INTO `sa_menu` VALUES ('27', '4', '新增', 'menu:add', '2', 'fa fa-plus-square-o', '1', '2018-04-24 11:04:55');
+INSERT INTO `sa_menu` VALUES ('28', '4', '修改', 'menu:edit', '2', 'fa fa-edit', '1', '2018-04-24 11:04:57');
+INSERT INTO `sa_menu` VALUES ('29', '4', '删除', 'menu:del', '2', 'fa fa-trash-o', '1', '2018-04-24 11:05:00');
 
 -- ----------------------------
 -- Table structure for sa_middleware
@@ -142,13 +146,13 @@ CREATE TABLE `sa_role` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `role_name` (`role_name`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='用户角色';
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of sa_role
 -- ----------------------------
 INSERT INTO `sa_role` VALUES ('1', '运维工程师', '运维', '1', '2018-04-19 17:20:48');
-INSERT INTO `sa_role` VALUES ('5', '哈哈', '', '1', '2018-05-03 10:24:50');
+INSERT INTO `sa_role` VALUES ('6', 'two', '', '2', '2018-05-04 09:56:30');
 
 -- ----------------------------
 -- Table structure for sa_role_menu
@@ -159,15 +163,27 @@ CREATE TABLE `sa_role_menu` (
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint(20) DEFAULT NULL COMMENT '模块ID',
   PRIMARY KEY (`rm_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='角色模块关联表';
+) ENGINE=MyISAM AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 COMMENT='角色模块关联表';
 
 -- ----------------------------
 -- Records of sa_role_menu
 -- ----------------------------
-INSERT INTO `sa_role_menu` VALUES ('79', '1', '4');
-INSERT INTO `sa_role_menu` VALUES ('78', '1', '3');
-INSERT INTO `sa_role_menu` VALUES ('77', '1', '2');
-INSERT INTO `sa_role_menu` VALUES ('76', '1', '1');
+INSERT INTO `sa_role_menu` VALUES ('93', '1', '27');
+INSERT INTO `sa_role_menu` VALUES ('92', '1', '26');
+INSERT INTO `sa_role_menu` VALUES ('91', '1', '4');
+INSERT INTO `sa_role_menu` VALUES ('90', '1', '25');
+INSERT INTO `sa_role_menu` VALUES ('89', '1', '24');
+INSERT INTO `sa_role_menu` VALUES ('88', '1', '23');
+INSERT INTO `sa_role_menu` VALUES ('87', '1', '22');
+INSERT INTO `sa_role_menu` VALUES ('86', '1', '3');
+INSERT INTO `sa_role_menu` VALUES ('85', '1', '13');
+INSERT INTO `sa_role_menu` VALUES ('84', '1', '12');
+INSERT INTO `sa_role_menu` VALUES ('83', '1', '11');
+INSERT INTO `sa_role_menu` VALUES ('82', '1', '10');
+INSERT INTO `sa_role_menu` VALUES ('81', '1', '2');
+INSERT INTO `sa_role_menu` VALUES ('80', '1', '1');
+INSERT INTO `sa_role_menu` VALUES ('94', '1', '28');
+INSERT INTO `sa_role_menu` VALUES ('95', '1', '29');
 
 -- ----------------------------
 -- Table structure for sa_server
@@ -261,15 +277,17 @@ CREATE TABLE `sa_user` (
   `locking_time` datetime DEFAULT NULL COMMENT '锁定时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='系统用户';
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='系统用户';
 
 -- ----------------------------
 -- Records of sa_user
 -- ----------------------------
-INSERT INTO `sa_user` VALUES ('1', 'admin', 'ecc5046b4c3a730123976074282daac1afdb0038f438b8060760d596bc822c3e', 'WwVLEYv780Lor1mQUBu1', null, null, '1', '1', null, null, null);
-INSERT INTO `sa_user` VALUES ('2', 'one', 'b76d23ddb541810556ace9341d31a7df82b52a6b4c64554f2e6053837916e93b', '0zlCaRVi2CwB1WpkME9M', 'xiaojinsb@outlook.com', '13271550278', '1', '1', '2000-01-01 00:00:00', '2018-04-18 11:12:41', '2018-05-04 02:47:08');
+INSERT INTO `sa_user` VALUES ('1', 'admin', 'c1c4cca01334113c2c7df5a04ec2769104291a85a2f2cf6bce59c74eaaac3c42', '7XTLwljtQ9DzlNPryT5c', null, null, '1', '1', null, null, null);
+INSERT INTO `sa_user` VALUES ('2', 'one', '6a61d94b9231554f0694cc9a33d4528efb1b76e9dca07463ff65eb839ba79085', '0RfAGJJDqHHpDjMzj8KV', 'xiaojinsb@outlook.com', '13271550278', '1', '1', '2000-01-01 00:00:00', '2018-04-18 11:12:41', '2018-05-04 09:45:43');
 INSERT INTO `sa_user` VALUES ('15', '123', 'a8ea38c8587faa58cc75a75452efa75f3863d4e9e5aece534d3f990eebb8b5d0', 'lKBa18yx2YbCOhxFQv10', '123@qq.com', '123123123', '1', '1', '2018-04-23 08:41:24', null, null);
 INSERT INTO `sa_user` VALUES ('27', '2342', '1f982800c1c3ab9a520e6c39df1e86511a373b8d720d332737b7fad903fc7d9a', '5TeyMIJJhbXPNQ0AcWdO', '', '', '0', '1', '2018-05-04 02:06:02', null, '2018-05-04 02:47:54');
+INSERT INTO `sa_user` VALUES ('28', 'two', 'bc4a0082ffa1c96dc268385c4a62ec4b3e3112de23053b7714026e64857ec2fc', 'R7lm16UTfcr9cxIzUbY3', '', '', '1', '1', '2018-05-04 09:41:28', null, '2018-05-04 09:42:39');
+INSERT INTO `sa_user` VALUES ('29', '1234', '05e81987d52ca49ba44f434e16d19a1666c0f45fd85d627c157c91777c3dd3a6', '3fY8ljEVU8inE9KsjR5p', '', '', '1', '2', '2018-05-04 09:59:18', null, '2018-05-04 10:13:59');
 
 -- ----------------------------
 -- Table structure for sa_user_role
@@ -280,9 +298,11 @@ CREATE TABLE `sa_user_role` (
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`ur_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='用户角色关联表';
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='用户角色关联表';
 
 -- ----------------------------
 -- Records of sa_user_role
 -- ----------------------------
 INSERT INTO `sa_user_role` VALUES ('4', '2', '1');
+INSERT INTO `sa_user_role` VALUES ('7', '29', '1');
+INSERT INTO `sa_user_role` VALUES ('8', '29', '6');

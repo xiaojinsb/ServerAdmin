@@ -111,47 +111,6 @@
             return false;
         });
 
-        /*下拉树*/
-        var setting = {
-            data: {
-                simpleData: {
-                    enable: true,
-                    idKey: "menuId",
-                    pIdKey: "parentId",
-                    rootPId: -1
-                },
-                key: {
-                    name: "menuName",
-                    url: "nourl"
-                }
-            },
-            check: {
-                enable: true,
-                nocheckInherit: true
-            }
-        };
-        var ztree;
-        //加载树
-        $.ajax({
-            type: "GET",
-            url: '../../menu/list?page=1&limit=200',
-            contentType: "application/json",
-            async: false,
-            dataType: "json",
-            success: function (R) {
-                if (R.code === 0) {
-                    ztree = $.fn.zTree.init($("#menuTree"), setting, R.data);
-                    //展开所有节点
-                    ztree.expandAll(true);
-                } else {
-                    alert(R.msg);
-                }
-            },
-            error: function () {
-                alert("系统错误");
-            }
-        });
-
         //新增
         $("#add").click(function(){
 
@@ -323,6 +282,47 @@
 
                     });
                 });
+            }
+        });
+
+        /*下拉树*/
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "menuId",
+                    pIdKey: "parentId",
+                    rootPId: -1
+                },
+                key: {
+                    name: "menuName",
+                    url: "nourl"
+                }
+            },
+            check: {
+                enable: true,
+                nocheckInherit: true
+            }
+        };
+        var ztree;
+        //加载树
+        $.ajax({
+            type: "GET",
+            url: '../../menu/menuAllList',
+            contentType: "application/json",
+            async: false,
+            dataType: "json",
+            success: function (R) {
+                if (R.code === 0) {
+                    ztree = $.fn.zTree.init($("#menuTree"), setting, R.data);
+                    //展开所有节点
+                    ztree.expandAll(true);
+                } else {
+                    alert(R.msg);
+                }
+            },
+            error: function () {
+                alert("系统错误");
             }
         });
 

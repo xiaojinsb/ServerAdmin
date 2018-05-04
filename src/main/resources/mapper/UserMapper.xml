@@ -101,9 +101,15 @@
         select user_id,username from sa_user WHERE user_id != 1
     </select>
 
+    <!--列出用户拥有角色-->
+    <select id="userRoleList" resultType="int">
+      SELECT r.role_id FROM sa_user u,sa_role r,sa_user_role ur
+        WHERE u.user_id = ur.user_id AND ur.role_id = r.role_id AND u.user_id = #{id};
+    </select>
+
     <!--更新密码-->
     <update id="editUserPas" parameterType="String">
-        update sa_user set password = #{arg0}, salt = #{arg1}  where username = #{arg2}
+        update sa_user set password = #{pas}, salt = #{salt}  where username = #{name}
     </update>
 
 </mapper>

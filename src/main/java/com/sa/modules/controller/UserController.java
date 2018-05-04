@@ -3,7 +3,9 @@ package com.sa.modules.controller;
 import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
 import com.sa.modules.dao.UserDao;
+import com.sa.modules.dao.UserRoleDao;
 import com.sa.modules.entity.UserEntity;
+import com.sa.modules.service.UserRoleService;
 import com.sa.modules.shiro.ShiroUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.authc.*;
@@ -26,6 +28,8 @@ public class UserController extends AbstractController {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * 列出所有用户
@@ -94,10 +98,16 @@ public class UserController extends AbstractController {
             //密码重置
             String pas = "123456";
             String salt = RandomStringUtils.randomAlphanumeric(20);
-            System.out.println(ShiroUtils.sha256(pas, salt));
-            System.out.println(salt);
             userDao.editUserPas(ShiroUtils.sha256(pas, salt),salt,user.getUsername());
         }
+
+        //获取角色关联权限 用户id
+        List<Long> roleList = user.getRoleIdList();
+        long userId = user.getUserId();
+        //先删除
+        userRoleService.delete(userId);
+        //再更新
+        userRoleService.saveOrUpdate(userId, roleList);
 
         return R.ok();
     }
@@ -123,6 +133,15 @@ public class UserController extends AbstractController {
     }
 
     /**
+     * 列出用户拥有的权限
+     */
+    @RequestMapping("/userRoleList")
+    public R userRoleList1(Integer id) {
+        List<Integer> roleList = userDao.userRoleList(id);
+        return R.ok().put("roleList", roleList);
+    }
+
+    /**
      * 修改密码
      */
     @PostMapping("/editUserPas")
@@ -137,8 +156,6 @@ public class UserController extends AbstractController {
             if (newpas.equals(isnewpas)){
                 //sha256加密
                 String salt = RandomStringUtils.randomAlphanumeric(20);
-                System.out.println(ShiroUtils.sha256(newpas, salt));
-                System.out.println(salt);
                 userDao.editUserPas(ShiroUtils.sha256(newpas, salt),salt,username);
             }
         } catch (UnknownAccountException e) {

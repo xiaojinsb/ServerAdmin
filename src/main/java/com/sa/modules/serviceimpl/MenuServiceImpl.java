@@ -121,4 +121,9 @@ public class MenuServiceImpl implements MenuService {
     public MenuEntity queryByMenuName(String menuNmae) {
         return menuDao.queryByMenuName(menuNmae);
     }
+
+    @Override
+    public List<MenuEntity> menuAllList() {
+        return menuDao.menuAllList();
+    }
 }

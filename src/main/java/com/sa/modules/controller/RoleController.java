@@ -38,9 +38,9 @@ public class RoleController extends AbstractController{
 
         //条数和数据
         int total = roleDao.queryTotal(params);
-        List<RoleEntity> userList = roleDao.queryList(query);
+        List<RoleEntity> list = roleDao.queryList(query);
 
-        return R.ok().put("count",total).put("data", userList);
+        return R.ok().put("count",total).put("data", list);
     }
 
     /**
@@ -126,5 +126,16 @@ public class RoleController extends AbstractController{
         //删除角色拥有的权限
         roleMenuService.delete(id);
         return R.ok();
+    }
+
+    /**
+     * 列出所有角色 无权限
+     */
+    @RequestMapping("/roleAllList")
+    public R roleAllList() {
+
+        List<RoleEntity> list = roleDao.roleAllList();
+
+        return R.ok().put("data", list);
     }
 }

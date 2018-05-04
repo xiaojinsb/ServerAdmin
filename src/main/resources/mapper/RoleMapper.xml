@@ -48,4 +48,9 @@
         delete from sa_role where role_id = #{id}
     </delete>
 
+    <!--列出所有角色 无权限-->
+    <select id="roleAllList" resultType="com.sa.modules.entity.RoleEntity">
+        select role_id,role_name from sa_role
+    </select>
+
 </mapper>
