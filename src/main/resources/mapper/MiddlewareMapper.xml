@@ -5,11 +5,23 @@
     <!--列出所有 数-->
     <select id="queryTotal" resultType="int">
         select count(*) from sa_middleware where 1=1
+        <if test="middlewareName !=null and middlewareName!=''">
+            AND middleware_name LIKE "%"#{middlewareName}"%"
+        </if>
+        <if test="userName !=null and userName!=''">
+            AND user_name = #{userName}
+        </if>
     </select>
 
     <!--列出所有-->
     <select id="queryList" resultType="com.sa.modules.entity.MiddlewareEntity">
         select * from sa_middleware where 1=1
+        <if test="middlewareName !=null and middlewareName!=''">
+            AND middleware_name LIKE "%"#{middlewareName}"%"
+        </if>
+        <if test="userName !=null and userName!=''">
+            AND user_name = #{userName}
+        </if>
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
@@ -42,6 +54,11 @@
                  open="(" close=")" separator=",">
             #{id}
         </foreach>
+    </select>
+
+    <!--根据所在服务器查询-->
+    <select id="queryByServerAll" resultType="com.sa.modules.entity.MiddlewareEntity">
+        select *  from sa_middleware where find_in_set(#{id},server_id)
     </select>
 
 </mapper>

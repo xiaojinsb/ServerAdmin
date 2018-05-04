@@ -16,14 +16,23 @@
     <!--搜索组-->
     <div class="layui-form-item" style="margin-bottom: 5px">
         <div class="layui-inline">
-            <label class="layui-form-label" style="width: 90px">用户名</label>
+            <label class="layui-form-label" style="width: 90px">中间件名</label>
             <div class="layui-input-inline">
-                <input type="text" name="username" placeholder="请输入用户名" maxlength="50" autocomplete="off" class="layui-input" />
+                <input type="text" name="middlewareName" placeholder="支持模糊查询" maxlength="50" autocomplete="off" class="layui-input" />
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 90px">运维人员</label>
+            <div class="layui-input-inline">
+                <select name="userName" id="userName1">
+                    <option value="">全部</option>
+                </select>
             </div>
         </div>
         <!-- 按钮组 -->
         <button class="layui-btn layui-btn-normal" lay-filter="btnSearch" type="button"  lay-submit>搜索</button>
-        <button type="reset" id="btnRetSet" type="button" class="layui-btn layui-btn-primary">重置</button>
+        <button type="reset" lay-filter="render" type="button" class="layui-btn layui-btn-primary">重置</button>
     </div>
 
 </form>
@@ -63,21 +72,21 @@
                             </div>
 
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">中间件版本<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">中间件版本：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="middlewareEdition" lay-verify="middlewareEdition" placeholder="请输入数据库名称" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
 
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">安装路径<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">安装路径：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="middlewareInstallUrl" lay-verify="middlewareInstallUrl" placeholder="请输入数据库名称" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
 
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">介质位置<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">介质位置：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="middlewareMedium" lay-verify="middlewareMedium" placeholder="请输入数据库名称" autocomplete="off" class="layui-input">
                                 </div>
@@ -105,7 +114,7 @@
                             </div>
 
                             <div class="layui-col-lg6" style="display: none;">
-                                <label class="layui-form-label">服务器<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">服务器：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="serverName" lay-verify="serverName" id="serverName" placeholder="请选择服务器" autocomplete="off" class="layui-input">
                                 </div>
@@ -125,14 +134,14 @@
                         <div class="layui-card-body layui-row layui-col-space10">
 
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">管理地址<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">管理地址：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="middlewareUrl" lay-verify="middlewareUrl" placeholder="请输入数据库名称" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
 
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">运维人员<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">运维人员：</label>
                                 <div class="layui-input-block">
                                     <select name="userName" lay-verify="userName" id="userName">
                                         <option value=""></option>
@@ -141,14 +150,14 @@
                             </div>
 
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">管理账号<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">管理账号：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="middlewareAdmin" lay-verify="middlewareAdmin" placeholder="请输入数据库名称" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
 
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">管理密码<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">管理密码：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="middlewarePas" lay-verify="middlewarePas" placeholder="请输入数据库名称" autocomplete="off" class="layui-input">
                                 </div>
@@ -218,7 +227,8 @@
         form.on('submit(btnSearch)', function (data) {
             table.reload('table', {
                 where: { //设定异步数据接口的额外参数
-                    username: data.field.username
+                    middlewareName: data.field.middlewareName,
+                    userName: data.field.userName
                 }
                 , page: {
                     curr: 1 //重新从第 1 页开始
@@ -350,21 +360,16 @@
         });
 
         //表单验证
-        // form.verify({
-        //     username: function(value, item){ //value：表单的值、item：表单的DOM对象
-        //         if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-        //             return '用户名不能有特殊字符';
-        //         }
-        //         if(/(^\_)|(\__)|(\_+$)/.test(value)){
-        //             return '用户名首尾不能出现下划线\'_\'';
-        //         }
-        //         if(/^\d+\d+\d$/.test(value)){
-        //             return '用户名不能全为数字';
-        //         }
-        //     },password: [
-        //         /^[\S]{6,12}$/,'密码必须6到12位，且不能出现空格'
-        //     ]
-        // });
+        form.verify({
+            middlewareName: function(value, item){ //value：表单的值、item：表单的DOM对象‘
+                if (value == ""){
+                    return '应用名名不能为空'
+                }
+                if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+                    return '应用名不能有特殊字符';
+                }
+            }
+        });
 
         //请求获取用户列表
         $.ajax({
@@ -379,6 +384,7 @@
                     html += '<option value="'+data[i].username+'">'+data[i].username+'</option>';
                 }
                 $("#userName").append(html);
+                $("#userName1").append(html);
                 form.render('select');
             },
             error: function () {

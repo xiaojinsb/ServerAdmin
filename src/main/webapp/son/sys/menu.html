@@ -13,9 +13,20 @@
     <!--搜索组-->
     <div class="layui-form-item" style="margin-bottom: 5px">
         <div class="layui-inline">
-            <label class="layui-form-label" style="width: 90px">用户名</label>
+            <label class="layui-form-label" style="width: 90px">模块名</label>
             <div class="layui-input-inline">
-                <input type="text" name="username" placeholder="请输入用户名" maxlength="50" autocomplete="off" class="layui-input" />
+                <input type="text" name="menuName" placeholder="支持模糊查询" maxlength="50" autocomplete="off" class="layui-input" />
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 70px">类型</label>
+            <div class="layui-input-inline">
+                <select name="type">
+                    <option value=""></option>
+                    <option value="0">目录</option>
+                    <option value="1">菜单</option>
+                </select>
             </div>
         </div>
         <!-- 按钮组 -->
@@ -39,23 +50,6 @@
     <button class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</button>
     <button class="layui-btn layui-btn-sm  layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</button>
 </script>
-
-<!--判断是哪个父模块-->
-<!--<script type="text/html" id="parenTpl">-->
-    <!--{{#  if(d.parentId == 0){ }}-->
-    <!--目录-->
-    <!--{{#  } else if(d.parentId == 1){ }}-->
-    <!--系统管理-->
-    <!--{{#  } else if(d.parentId == 2){ }}-->
-    <!--用户管理-->
-    <!--{{#  } else if(d.parentId == 3){ }}-->
-    <!--角色管理-->
-    <!--{{#  } else if(d.parentId == 4){ }}-->
-    <!--模块管理-->
-    <!--{{#  } else if(d.parentId == 5){ }}-->
-    <!--基础管理-->
-    <!--{{#  } }}-->
-<!--</script>-->
 
 <!--判断是哪个类型-->
 <script type="text/html" id="typeTpl">
@@ -133,7 +127,8 @@
             $ = layui.jquery; //获取jq
 
         var treeTable =treeGrid.render({
-            elem: '#treeTable'
+            id: 'table'
+            ,elem: '#treeTable'
             ,url:'../../menu/list'
             ,treeId:'menuId'//树形id字段名称
             ,treeUpId:'parentId'//树形父id字段名称
@@ -148,6 +143,20 @@
                 , {field:'createTime',  title: '创建时间',  align: 'center', sort: true, width: 200}
                 , {title: '操作', toolbar: '#operationTpl', fixed: "right", width: 200}
             ]]
+        });
+
+        //查询
+        form.on('submit(btnSearch)', function (data) {
+            treeGrid.reload('table', {
+                where: { //设定异步数据接口的额外参数
+                    menuName: data.field.menuName
+                    , type: data.field.type
+                }
+                , page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            return false;
         });
 
         //新增
@@ -317,7 +326,6 @@
             async: false,
             dataType: "json",
             success: function (data) {
-                console.log(data);
                 var html = "";
                 for (var i =0; i < data.length;i++){
                     html += '<option value="'+data[i].menuId+'">'+data[i].menuName+'</option>';

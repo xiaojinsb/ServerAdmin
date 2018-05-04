@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-04-28 18:03:38
+Date: 2018-05-04 17:20:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,15 +37,12 @@ CREATE TABLE `sa_data_base` (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '数据库创建时间',
   `update_time` timestamp NULL DEFAULT NULL COMMENT '数据库修改时间',
   PRIMARY KEY (`db_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='数据库管理';
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='数据库管理';
 
 -- ----------------------------
 -- Records of sa_data_base
 -- ----------------------------
-INSERT INTO `sa_data_base` VALUES ('8', '132', '', '', '123', '', '', '', '', '0', '', '', '', '1', '2018-04-27 10:00:29', null);
-INSERT INTO `sa_data_base` VALUES ('6', '1', 'Oracle', '3', null, '4', '5', '6', '7', '2', 'one', null, '2', '1', '2018-04-27 09:49:16', null);
-INSERT INTO `sa_data_base` VALUES ('7', '123', '', '', '', '', '', '', '', '0', '', '19', '213', '1', '2018-04-27 10:00:10', null);
-INSERT INTO `sa_data_base` VALUES ('9', '213', 'Oracle', '123', '123', '132', '123', '123', '123', '2', 'one', '19', '213', '1', '2018-04-27 10:06:32', '2018-04-27 10:09:16');
+INSERT INTO `sa_data_base` VALUES ('10', '12', 'DB2', '1231', '1231', '1231', '1231', '1231', '1231', '2', 'one', '39', '123', '1', '2018-05-02 01:50:29', '2018-05-04 08:58:59');
 
 -- ----------------------------
 -- Table structure for sa_menu
@@ -60,9 +57,8 @@ CREATE TABLE `sa_menu` (
   `icon` varchar(50) DEFAULT NULL COMMENT '模块图标',
   `create_user_id` bigint(20) DEFAULT NULL COMMENT '创建者ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`menu_id`),
-  UNIQUE KEY `menu_name` (`menu_name`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='模块管理';
+  PRIMARY KEY (`menu_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='模块管理';
 
 -- ----------------------------
 -- Records of sa_menu
@@ -80,6 +76,10 @@ INSERT INTO `sa_menu` VALUES ('10', '2', '查看', 'user:list', '2', 'fa fa-lapt
 INSERT INTO `sa_menu` VALUES ('11', '2', '新增', 'user:add', '2', 'fa fa-plus-square-o', '1', '2018-04-24 11:04:55');
 INSERT INTO `sa_menu` VALUES ('12', '2', '修改', 'user:edit', '2', 'fa fa-edit', '1', '2018-04-24 11:04:57');
 INSERT INTO `sa_menu` VALUES ('13', '2', '删除', 'user:del', '2', 'fa fa-trash-o', '1', '2018-04-24 11:05:00');
+INSERT INTO `sa_menu` VALUES ('22', '3', '查看', null, '2', null, '1', '2018-05-04 17:20:16');
+INSERT INTO `sa_menu` VALUES ('23', '3', '新增', null, '2', null, '1', '2018-05-04 17:20:19');
+INSERT INTO `sa_menu` VALUES ('24', '3', '修改', null, '2', null, '1', '2018-05-04 17:20:21');
+INSERT INTO `sa_menu` VALUES ('25', '3', '删除', null, '2', null, '1', '2018-05-04 17:20:23');
 
 -- ----------------------------
 -- Table structure for sa_middleware
@@ -87,27 +87,48 @@ INSERT INTO `sa_menu` VALUES ('13', '2', '删除', 'user:del', '2', 'fa fa-trash
 DROP TABLE IF EXISTS `sa_middleware`;
 CREATE TABLE `sa_middleware` (
   `middleware_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `middleware_name` varchar(50) DEFAULT NULL COMMENT '中间名',
-  `middleware_edition` varchar(50) DEFAULT NULL COMMENT '中间名版本',
-  `middleware_url` varchar(50) DEFAULT NULL COMMENT '中间名管理地址',
-  `middleware_admin` varchar(50) DEFAULT NULL COMMENT '中间名管理账号',
-  `middleware_pas` varchar(50) DEFAULT NULL COMMENT '中间名管理密码',
-  `middleware_medium` varchar(50) DEFAULT NULL COMMENT '中间名介质位置',
-  `middleware_content` varchar(50) DEFAULT NULL COMMENT '中间名备注',
+  `middleware_name` varchar(50) DEFAULT NULL COMMENT '中间件名称',
+  `middleware_edition` varchar(50) DEFAULT NULL COMMENT '中间件版本',
+  `middleware_url` varchar(50) DEFAULT NULL COMMENT '中间件管理地址',
+  `middleware_install_url` varchar(255) DEFAULT NULL,
+  `middleware_admin` varchar(50) DEFAULT NULL COMMENT '中间件管理账号',
+  `middleware_pas` varchar(50) DEFAULT NULL COMMENT '中间件管理密码',
+  `middleware_medium` varchar(50) DEFAULT NULL COMMENT '中间件介质位置',
+  `middleware_content` varchar(50) DEFAULT NULL COMMENT '中间件备注',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
-  `user_name` varchar(50) DEFAULT NULL,
-  `server_id` bigint(20) DEFAULT NULL COMMENT '服务器id',
-  `create_user_id` bigint(20) DEFAULT NULL,
+  `user_name` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `server_id` varchar(50) DEFAULT NULL COMMENT '服务器id',
+  `server_name` varchar(255) DEFAULT NULL,
+  `create_user_id` bigint(20) DEFAULT NULL COMMENT '创造者id',
   `create_time` timestamp NULL DEFAULT NULL COMMENT '数据库创建时间',
   `update_time` timestamp NULL DEFAULT NULL COMMENT '数据库修改时间',
   PRIMARY KEY (`middleware_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='中间件管理';
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='中间件管理';
 
 -- ----------------------------
 -- Records of sa_middleware
 -- ----------------------------
-INSERT INTO `sa_middleware` VALUES ('2', '1', null, null, null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `sa_middleware` VALUES ('3', '2', null, null, null, null, null, null, null, null, null, null, null, null);
+INSERT INTO `sa_middleware` VALUES ('5', '11', '21', '51', '31', '61', '71', '41', '81', '0', '123', '39', '123', '1', '2018-05-02 03:23:03', null);
+
+-- ----------------------------
+-- Table structure for sa_parses
+-- ----------------------------
+DROP TABLE IF EXISTS `sa_parses`;
+CREATE TABLE `sa_parses` (
+  `par_id` varchar(50) NOT NULL,
+  `file_id` varchar(50) DEFAULT NULL COMMENT '数据的id',
+  `file_classify` varchar(50) DEFAULT NULL COMMENT '来自哪里',
+  `file_name` varchar(100) DEFAULT NULL COMMENT '文件名称',
+  `url_site` varchar(500) DEFAULT NULL COMMENT '文件存储路径',
+  `create_user_id` bigint(20) DEFAULT NULL COMMENT '创建者id',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL COMMENT '更改时间',
+  PRIMARY KEY (`par_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文件管理';
+
+-- ----------------------------
+-- Records of sa_parses
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sa_role
@@ -121,12 +142,13 @@ CREATE TABLE `sa_role` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `role_name` (`role_name`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='用户角色';
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of sa_role
 -- ----------------------------
 INSERT INTO `sa_role` VALUES ('1', '运维工程师', '运维', '1', '2018-04-19 17:20:48');
+INSERT INTO `sa_role` VALUES ('5', '哈哈', '', '1', '2018-05-03 10:24:50');
 
 -- ----------------------------
 -- Table structure for sa_role_menu
@@ -137,19 +159,15 @@ CREATE TABLE `sa_role_menu` (
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint(20) DEFAULT NULL COMMENT '模块ID',
   PRIMARY KEY (`rm_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COMMENT='角色模块关联表';
+) ENGINE=MyISAM AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='角色模块关联表';
 
 -- ----------------------------
 -- Records of sa_role_menu
 -- ----------------------------
-INSERT INTO `sa_role_menu` VALUES ('64', '1', '1');
-INSERT INTO `sa_role_menu` VALUES ('65', '1', '2');
-INSERT INTO `sa_role_menu` VALUES ('66', '1', '10');
-INSERT INTO `sa_role_menu` VALUES ('67', '1', '11');
-INSERT INTO `sa_role_menu` VALUES ('68', '1', '12');
-INSERT INTO `sa_role_menu` VALUES ('69', '1', '13');
-INSERT INTO `sa_role_menu` VALUES ('70', '1', '3');
-INSERT INTO `sa_role_menu` VALUES ('71', '1', '4');
+INSERT INTO `sa_role_menu` VALUES ('79', '1', '4');
+INSERT INTO `sa_role_menu` VALUES ('78', '1', '3');
+INSERT INTO `sa_role_menu` VALUES ('77', '1', '2');
+INSERT INTO `sa_role_menu` VALUES ('76', '1', '1');
 
 -- ----------------------------
 -- Table structure for sa_server
@@ -186,13 +204,12 @@ CREATE TABLE `sa_server` (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '应用系统创建时间',
   `update_time` timestamp NULL DEFAULT NULL COMMENT '应用系统修改时间',
   PRIMARY KEY (`server_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='服务器管理';
+) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COMMENT='服务器管理';
 
 -- ----------------------------
 -- Records of sa_server
 -- ----------------------------
-INSERT INTO `sa_server` VALUES ('19', '213', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2', 'one', '1', '2018-04-27 09:51:57', null);
-INSERT INTO `sa_server` VALUES ('20', '123', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', '', '1', '2018-04-28 03:16:12', null);
+INSERT INTO `sa_server` VALUES ('39', '123', '', '', '物理机', '', '', '', '', '', '', '', '', '', '', 'x', '', '', '', '', '', '', '', '', '2', 'one', '1', '2018-05-04 06:55:24', null);
 
 -- ----------------------------
 -- Table structure for sa_system
@@ -219,13 +236,12 @@ CREATE TABLE `sa_system` (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '应用系统创建时间',
   `update_time` timestamp NULL DEFAULT NULL COMMENT '应用系统修改时间',
   PRIMARY KEY (`system_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='应用系统管理';
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='应用系统管理';
 
 -- ----------------------------
 -- Records of sa_system
 -- ----------------------------
-INSERT INTO `sa_system` VALUES ('10', '123', '123', '123', '123', '123', '13', '123', '2', 'one', '19,20', '213,123', '8,6,7,9', '132,1,123,213', '2,3', '1,2', '1', '2018-04-28 10:01:43', null);
-INSERT INTO `sa_system` VALUES ('9', '213123', '123', '123', '123', '123', '123', '123', '2', 'one', '15,16', '11,123', '2', '1', '2,3', '1,2', '1', '2018-04-27 08:41:12', '2018-04-27 08:54:42');
+INSERT INTO `sa_system` VALUES ('12', '123', '123', '123', '123', '123', '123', '123', '15', '123', '39', '123', '10', '12', '5', '11', '1', '2018-05-02 01:34:28', '2018-05-04 09:07:24');
 
 -- ----------------------------
 -- Table structure for sa_user
@@ -245,14 +261,15 @@ CREATE TABLE `sa_user` (
   `locking_time` datetime DEFAULT NULL COMMENT '锁定时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='系统用户';
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='系统用户';
 
 -- ----------------------------
 -- Records of sa_user
 -- ----------------------------
-INSERT INTO `sa_user` VALUES ('1', 'admin', 'e1153123d7d180ceeb820d577ff119876678732a68eef4e6ffc0b1f06a01f91b', 'YzcmCZNvbXocrsz9dm8e', null, null, '1', '1', null, null, null);
-INSERT INTO `sa_user` VALUES ('2', 'one', 'e1153123d7d180ceeb820d577ff119876678732a68eef4e6ffc0b1f06a01f91b', 'YzcmCZNvbXocrsz9dm8e', 'xiaojinsb@outlook.com', '13271550279', '1', '1', '2000-01-01 00:00:00', '2018-04-18 11:12:41', '2018-04-23 06:01:02');
+INSERT INTO `sa_user` VALUES ('1', 'admin', 'ecc5046b4c3a730123976074282daac1afdb0038f438b8060760d596bc822c3e', 'WwVLEYv780Lor1mQUBu1', null, null, '1', '1', null, null, null);
+INSERT INTO `sa_user` VALUES ('2', 'one', 'b76d23ddb541810556ace9341d31a7df82b52a6b4c64554f2e6053837916e93b', '0zlCaRVi2CwB1WpkME9M', 'xiaojinsb@outlook.com', '13271550278', '1', '1', '2000-01-01 00:00:00', '2018-04-18 11:12:41', '2018-05-04 02:47:08');
 INSERT INTO `sa_user` VALUES ('15', '123', 'a8ea38c8587faa58cc75a75452efa75f3863d4e9e5aece534d3f990eebb8b5d0', 'lKBa18yx2YbCOhxFQv10', '123@qq.com', '123123123', '1', '1', '2018-04-23 08:41:24', null, null);
+INSERT INTO `sa_user` VALUES ('27', '2342', '1f982800c1c3ab9a520e6c39df1e86511a373b8d720d332737b7fad903fc7d9a', '5TeyMIJJhbXPNQ0AcWdO', '', '', '0', '1', '2018-05-04 02:06:02', null, '2018-05-04 02:47:54');
 
 -- ----------------------------
 -- Table structure for sa_user_role

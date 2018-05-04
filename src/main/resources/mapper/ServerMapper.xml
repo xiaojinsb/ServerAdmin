@@ -5,11 +5,35 @@
     <!--列出所有 数-->
     <select id="queryTotal" resultType="int">
         select count(*) from sa_server where 1=1
+        <if test="serverName !=null and serverName!=''">
+            AND server_name LIKE "%"#{serverName}"%"
+        </if>
+        <if test="type !=null and type!=''">
+            AND type = #{type}
+        </if>
+        <if test="os !=null and os!=''">
+            AND os LIKE "%"#{os}"%"
+        </if>
+        <if test="userName !=null and userName!=''">
+            AND user_name = #{userName}
+        </if>
     </select>
 
     <!--列出所有-->
     <select id="queryList" resultType="com.sa.modules.entity.ServerEntity">
         select * from sa_server where 1=1
+        <if test="serverName !=null and serverName!=''">
+            AND server_name LIKE "%"#{serverName}"%"
+        </if>
+        <if test="type !=null and type!=''">
+            AND type = #{type}
+        </if>
+        <if test="os !=null and os!=''">
+            AND os LIKE "%"#{os}"%"
+        </if>
+        <if test="userName !=null and userName!=''">
+            AND user_name = #{userName}
+        </if>
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>

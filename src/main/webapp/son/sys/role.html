@@ -13,9 +13,9 @@
     <!--搜索组-->
     <div class="layui-form-item" style="margin-bottom: 5px">
         <div class="layui-inline">
-            <label class="layui-form-label" style="width: 90px">用户名</label>
+            <label class="layui-form-label" style="width: 80px">角色名</label>
             <div class="layui-input-inline">
-                <input type="text" name="username" placeholder="请输入用户名" maxlength="50" autocomplete="off" class="layui-input" />
+                <input type="text" name="roleName" placeholder="支持模糊查询" maxlength="50" autocomplete="off" class="layui-input" />
             </div>
         </div>
         <!-- 按钮组 -->
@@ -102,7 +102,7 @@
         form.on('submit(btnSearch)', function (data) {
             table.reload('table', {
                 where: { //设定异步数据接口的额外参数
-                    username: data.field.username
+                    roleName: data.field.roleName
                 }
                 , page: {
                     curr: 1 //重新从第 1 页开始

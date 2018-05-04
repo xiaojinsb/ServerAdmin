@@ -14,4 +14,9 @@ public interface SystemDao extends BaseDao<SystemEntity> {
      * 列出应用的id和名字
      */
     List<SystemEntity> queryAllsys(long id);
+
+    /**
+     * 根据所在服务器查询
+     */
+    List<SystemEntity> queryByServerAll(long id);
 }

@@ -81,10 +81,9 @@ public class UserController extends AbstractController {
      */
     @RequestMapping("/edit")
     @RequiresPermissions("user:edit")
-    public R edit(UserEntity user, Integer status1) {
+    public R edit(UserEntity user) {
 
         //赋值
-        user.setStatus(status1);
         user.setLockingTime(getTime());
 
         //判断是否要重置密码
@@ -93,6 +92,11 @@ public class UserController extends AbstractController {
         }else {
             userDao.edit(user);
             //密码重置
+            String pas = "123456";
+            String salt = RandomStringUtils.randomAlphanumeric(20);
+            System.out.println(ShiroUtils.sha256(pas, salt));
+            System.out.println(salt);
+            userDao.editUserPas(ShiroUtils.sha256(pas, salt),salt,user.getUsername());
         }
 
         return R.ok();

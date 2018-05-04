@@ -16,14 +16,23 @@
     <!--搜索组-->
     <div class="layui-form-item" style="margin-bottom: 5px">
         <div class="layui-inline">
-            <label class="layui-form-label" style="width: 90px">用户名</label>
+            <label class="layui-form-label" style="width: 80px">应用名</label>
             <div class="layui-input-inline">
-                <input type="text" name="username" placeholder="请输入用户名" maxlength="50" autocomplete="off" class="layui-input" />
+                <input type="text" name="systemName" placeholder="支持模糊查询" maxlength="50" autocomplete="off" class="layui-input" />
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 90px">运维人员</label>
+            <div class="layui-input-inline">
+                <select name="userName" id="userName1">
+                    <option value="">全部</option>
+                </select>
             </div>
         </div>
         <!-- 按钮组 -->
         <button class="layui-btn layui-btn-normal" lay-filter="btnSearch" type="button"  lay-submit>搜索</button>
-        <button type="reset" id="btnRetSet" type="button" class="layui-btn layui-btn-primary">重置</button>
+        <button type="reset"  lay-filter="render" type="button" class="layui-btn layui-btn-primary">重置</button>
     </div>
 
 </form>
@@ -36,6 +45,11 @@
 </div>
 
 <table id="tableList" lay-filter="tableList"></table>
+
+<!--查看信息 绑定在名称上-->
+<script type="text/html" id="lookTpl">
+    <a href="javascript:;" class="layui-table-link" lay-event="look">{{ d.systemName }}</a>
+</script>
 
 <!--操作工具栏-->
 <script type="text/html" id="operationTpl">
@@ -54,6 +68,7 @@
                     <div class="layui-card">
                         <div class="layui-card-header">应用系统基本信息</div>
                         <div class="layui-card-body layui-row layui-col-space10">
+
                             <div class="layui-col-lg6">
                                 <label class="layui-form-label">应用名称<span class="remind">*</span>：</label>
                                 <div class="layui-input-block">
@@ -62,7 +77,7 @@
                             </div>
 
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">部署情况<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">部署情况：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="systemDeployment" lay-verify="systemDeployment" placeholder="请输入部署情况" autocomplete="off" class="layui-input">
                                 </div>
@@ -74,12 +89,17 @@
 
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">
+                        <div class="layui-card-header" id="serverLook1">
                             <span style="float: left">服务器选择：</span>
                             <div class="layui-col-lg1" style="float: left">
                                 <button class="layui-btn layui-btn-sm" id="serverTableOpen">选择服务器</button>
                             </div>
                         </div>
+
+                        <div class="layui-card-header" id="serverLook2">
+                            <span style="float: left">服务器：</span>
+                        </div>
+
                         <div class="layui-card-body layui-row layui-col-space10">
 
                             <div class="layui-col-lg6" style="display: none;">
@@ -90,7 +110,7 @@
                             </div>
 
                             <div class="layui-col-lg6" style="display: none;">
-                                <label class="layui-form-label">服务器<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">服务器：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="serverName" lay-verify="serverName" id="serverName" placeholder="请选择服务器" autocomplete="off" class="layui-input">
                                 </div>
@@ -106,11 +126,14 @@
 
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">
+                        <div class="layui-card-header" id="dataLook1">
                             <span style="float: left">数据库选择：</span>
                             <div class="layui-col-lg1" style="float: left">
                                 <button class="layui-btn layui-btn-sm" id="dbTableOpen">选择数据库</button>
                             </div>
+                        </div>
+                        <div class="layui-card-header" id="dataLook2">
+                            <span style="float: left">数据库：</span>
                         </div>
 
                         <div class="layui-card-body layui-row layui-col-space10">
@@ -139,11 +162,14 @@
 
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">
+                        <div class="layui-card-header" id="middLook1">
                             <span style="float: left">中间件选择：</span>
                             <div class="layui-col-lg1" style="float: left">
                                 <button class="layui-btn layui-btn-sm" id="middTableOpen">选择中间件</button>
                             </div>
+                        </div>
+                        <div class="layui-card-header" id="middLook2">
+                            <span style="float: left">中间件：</span>
                         </div>
                         <div class="layui-card-body layui-row layui-col-space10">
 
@@ -175,7 +201,7 @@
                         <div class="layui-card-body layui-row layui-col-space10">
 
                             <div class="layui-col-lg6">
-                                <label class="layui-form-label">ip地址<span class="remind">*</span>：</label>
+                                <label class="layui-form-label">ip地址：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="systemIp" lay-verify="systemIp" placeholder="请输入服务器名称" autocomplete="off" class="layui-input">
                                 </div>
@@ -244,7 +270,7 @@
                 [
                     {type: 'checkbox', fixed: "left"}
                     , {field: 'systemId', title: 'id', align: 'center', sort: true, width: 70}
-                    , {field: 'systemName', title: '应用系统名称', align: 'center', width: 130, style: 'background-color: #eee;'}
+                    , {field: 'systemName', title: '应用系统名称', toolbar: '#lookTpl', align: 'center', width: 130, style: 'background-color: #eee;'}
                     , {field: 'systemIp', title: 'ip地址', align: 'center', width: 100}
                     , {field: 'systemDomain', title: '访问域名', align: 'center', width: 100}
                     , {field: 'systemUrl', title: '管理地址', align: 'center', width: 100}
@@ -265,7 +291,8 @@
         form.on('submit(btnSearch)', function (data) {
             table.reload('table', {
                 where: { //设定异步数据接口的额外参数
-                    username: data.field.username
+                    systemName: data.field.systemName,
+                    userName: data.field.userName
                 }
                 , page: {
                     curr: 1 //重新从第 1 页开始
@@ -275,6 +302,14 @@
         });
 
         $("#add").click(function () {
+
+            //隐藏多余的div
+            $("#serverLook1").show()
+            $("#serverLook2").hide()
+            $("#dataLook1").show()
+            $("#dataLook2").hide()
+            $("#middLook1").show()
+            $("#middLook2").hide()
 
             layer.open({
                 title: '新增应用系统' //窗口名
@@ -322,7 +357,61 @@
             var layEvent = obj.event; //获得 lay-event 对应的值
             var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-            if (layEvent === 'edit') {//修改
+            if (layEvent === 'look') {//查看
+
+                //隐藏多余的div
+                $("#serverLook1").hide()
+                $("#serverLook2").show()
+                $("#dataLook1").hide()
+                $("#dataLook2").show()
+                $("#middLook1").hide()
+                $("#middLook2").show()
+
+                //赋值
+                for (var key in data) {
+                    $("[name='"+key+"']").val(data[key]);
+                    $("[name='"+key+"']").attr("disabled",true);
+                }
+                form.render('select');
+
+                //列出服务器
+                var serverId = $("#serverId").val();
+                serverTable(serverId);
+                //列出数据库
+                var dbid = $("#dbId").val();
+                dbTable(dbid);
+                //列出中间件
+                var middid = $("#middlewareId").val();
+                middTable(middid);
+
+                layer.open({
+                    title: '查看服务器信息'//窗口名
+                    ,type: 1 //打开类型
+                    ,shade: 0.4//遮罩 浓度0.4
+                    ,maxmin: true //最小化开关 开
+                    ,content: $('#addTpl') //打开div模版
+                    , area: ['99%', '99%']  //弹出窗口大小 宽 高
+                    , btn: ['关闭']  // 低部按钮
+                    , end: function () {
+                        $('form.layui-form').find('button[lay-filter=render]').click();
+                        for (var key in data) {
+                            $("[name='"+key+"']").attr("disabled",false);
+                        }
+                        //隐藏表格
+                        $("#serverTable").parent().hide()
+                        $("#dbTable").parent().hide()
+                        $("#middTable").parent().hide()
+                    }
+                });
+            } else if (layEvent === 'edit') {//修改
+
+                //隐藏多余的div
+                $("#serverLook1").show()
+                $("#serverLook2").hide()
+                $("#dataLook1").show()
+                $("#dataLook2").hide()
+                $("#middLook1").show()
+                $("#middLook2").hide()
 
                 //赋值
                 for (var key in data) {
@@ -339,7 +428,7 @@
                 dbTable(dbid);
                 //列出中间件
                 var middid = $("#middlewareId").val();
-                    middTable(middid);
+                middTable(middid);
 
 
                 layer.open({
@@ -378,6 +467,10 @@
                     },
                     end: function () {
                         $('form.layui-form').find('button[lay-filter=render]').click();
+                        //隐藏表格
+                        $("#serverTable").parent().hide()
+                        $("#dbTable").parent().hide()
+                        $("#middTable").parent().hide()
                     }
                 });
             }else if (layEvent === 'delete') {//删除
@@ -404,21 +497,16 @@
         });
 
         //表单验证
-        // form.verify({
-        //     username: function(value, item){ //value：表单的值、item：表单的DOM对象
-        //         if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
-        //             return '用户名不能有特殊字符';
-        //         }
-        //         if(/(^\_)|(\__)|(\_+$)/.test(value)){
-        //             return '用户名首尾不能出现下划线\'_\'';
-        //         }
-        //         if(/^\d+\d+\d$/.test(value)){
-        //             return '用户名不能全为数字';
-        //         }
-        //     },password: [
-        //         /^[\S]{6,12}$/,'密码必须6到12位，且不能出现空格'
-        //     ]
-        // });
+        form.verify({
+            systemName: function(value, item){ //value：表单的值、item：表单的DOM对象‘
+                if (value == ""){
+                    return '应用名名不能为空'
+                }
+                if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+                    return '应用名不能有特殊字符';
+                }
+            }
+        });
 
         //请求获取用户列表
         $.ajax({
@@ -433,13 +521,13 @@
                     html += '<option value="'+data[i].username+'">'+data[i].username+'</option>';
                 }
                 $("#userName").append(html);
+                $("#userName1").append(html);
                 form.render('select');
             },
             error: function () {
                 layer.msg('系统错误');
             }
         });
-
 
         //选择服务器
         $("#serverTableOpen").click(function () {
@@ -464,9 +552,12 @@
             return false;//禁止跳转
         })
 
-        //根据得到的值查询 服务器详细信息
+        //根据得到的值查询
         function serverTable(serverId){
 
+            if (serverId == ""){
+                serverId = 0;
+            }
             table.render({
                 id: 'table1'
                 , elem: '#serverTable' //选择表单
@@ -505,6 +596,8 @@
                     ]
                 ]
             });
+
+            $("#serverTable").parent().show()
         }
 
         //选择数据库
@@ -530,8 +623,12 @@
             return false;//禁止跳转
         })
 
-        //根据得到的值查询 服务器详细信息
+        //根据得到的值查询
         function dbTable(dbid){
+
+            if (dbid == ""){
+                dbid = 0;
+            }
             table.render({
                 id: 'table2'
                 , elem: '#dbTable' //选择表单
@@ -551,6 +648,8 @@
                     ]
                 ]
             });
+
+            $("#dbTable").parent().show()
 
         }
 
@@ -577,9 +676,12 @@
             return false;//禁止跳转
         })
 
-        //根据得到的值查询 服务器详细信息
+        //根据得到的值查询
         function middTable(middid){
-            
+
+            if (middid == ""){
+                middid = 0;
+            }
             table.render({
                 id: 'table3'
                 , elem: '#middTable' //选择表单
@@ -599,6 +701,8 @@
                     ]
                 ]
             });
+
+            $("#middTable").parent().show()
 
         }
 

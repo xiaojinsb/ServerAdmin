@@ -31,7 +31,7 @@ public class RoleController extends AbstractController{
      * 列出所有角色
      */
     @RequestMapping("/list")
-//    @RequiresPermissions("role:list")
+    @RequiresPermissions("role:list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
@@ -57,7 +57,7 @@ public class RoleController extends AbstractController{
      * 新建角色
      */
     @RequestMapping("/add")
-//    @RequiresPermissions("role:add")
+    @RequiresPermissions("role:add")
     public R add(RoleEntity roleEntity) {
 
         //获取时间，角色关联，角色名，创建人id
@@ -84,7 +84,7 @@ public class RoleController extends AbstractController{
      * 修改角色
      */
     @RequestMapping("/edit")
-//    @RequiresPermissions("role:edit")
+    @RequiresPermissions("role:edit")
     public R edit(RoleEntity roleEntity) {
 
         //角色id列表
@@ -100,7 +100,7 @@ public class RoleController extends AbstractController{
             //加入新的关联
             roleMenuService.saveOrUpdate(roleEntity.getRoleId(),menuIdList);
         }else {
-            if (isRole.getRoleId() == roleEntity.getRoleId()){
+            if (isRole.getRoleId().equals(roleEntity.getRoleId())){
                 //先更新角色信息
                 roleDao.edit(roleEntity);
                 //删除之前角色关联
@@ -119,7 +119,7 @@ public class RoleController extends AbstractController{
      * 删除角色
      */
     @RequestMapping("/delete")
-//    @RequiresPermissions("user:del")
+    @RequiresPermissions("user:del")
     public R delete(long id) {
 
         roleDao.delete(id);

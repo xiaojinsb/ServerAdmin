@@ -86,8 +86,17 @@ public class DataBaseController extends AbstractController {
      * 列出所有查询到的服务器
      */
     @RequestMapping("/queryAllData")
-    public Object info(long[] id) {
+    public Object queryAllData(long[] id) {
         List<DataBaseEntity> list = dataBaseDao.queryAllData(id);
+        return R.ok().put("data", list);
+    }
+
+    /**
+     * 根据所在服务器查询
+     */
+    @RequestMapping("/queryByServerAll")
+    public Object queryByServerAll(long id) {
+        List<DataBaseEntity> list = dataBaseDao.queryByServerAll(id);
         return R.ok().put("data", list);
     }
 }

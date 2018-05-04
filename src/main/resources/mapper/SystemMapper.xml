@@ -5,11 +5,23 @@
     <!--列出所有 数-->
     <select id="queryTotal" resultType="int">
         select count(*) from sa_system where 1=1
+        <if test="systemName !=null and systemName!=''">
+            AND system_name LIKE "%"#{systemName}"%"
+        </if>
+        <if test="userName !=null and userName!=''">
+            AND user_name = #{userName}
+        </if>
     </select>
 
     <!--列出所有-->
     <select id="queryList" resultType="com.sa.modules.entity.SystemEntity">
         select * from sa_system where 1=1
+        <if test="systemName !=null and systemName!=''">
+            AND system_name LIKE "%"#{systemName}"%"
+        </if>
+        <if test="userName !=null and userName!=''">
+            AND user_name = #{userName}
+        </if>
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
@@ -38,6 +50,11 @@
     <!--列出名字和id-->
     <select id="queryAllsys" resultType="com.sa.modules.entity.SystemEntity">
        select system_id,system_name from sa_system where system_id = #{id}
+    </select>
+
+    <!--根据所在服务器查询-->
+    <select id="queryByServerAll" resultType="com.sa.modules.entity.SystemEntity">
+        select *  from sa_system where find_in_set(#{id},server_id)
     </select>
 
 </mapper>

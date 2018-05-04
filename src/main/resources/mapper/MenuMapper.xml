@@ -13,17 +13,6 @@
         <if test="menuName !=null and menuName!=''">
             AND menu_name LIKE "%"#{menuName}"%"
         </if>
-        <choose>
-            <when test="type == 0">
-                and type = 0
-            </when>
-            <when test="type=='2'">
-                and type = 1
-            </when>
-            <otherwise>
-                and type != 2
-            </otherwise>
-        </choose>
     </select>
 
     <!--列出所有菜单-->
@@ -38,17 +27,6 @@
         <if test="menuName !=null and menuName!=''">
             AND menu_name LIKE "%"#{menuName}"%"
         </if>
-        <choose>
-            <when test="type == 0">
-                and type = 0
-            </when>
-            <when test="type=='2'">
-                and type = 1
-            </when>
-            <otherwise>
-                and type != 2
-            </otherwise>
-        </choose>
     </select>
 
     <!--列出所有权限-->

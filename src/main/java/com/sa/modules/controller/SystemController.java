@@ -25,12 +25,6 @@ public class SystemController extends AbstractController {
     private SystemDao systemDao;
     @Autowired
     private UserDao userDao;
-//    @Autowired
-//    private ServerDao serverDao;
-//    @Autowired
-//    private DataBaseDao dataBaseDao;
-//    @Autowired
-//    private MiddlewareDao middlewareDao;
 
     /**
      * 列出所有用户
@@ -44,20 +38,6 @@ public class SystemController extends AbstractController {
         //条数和数据
         int total = systemDao.queryTotal(params);
         List<SystemEntity> list = systemDao.queryList(query);
-
-        //根据服务器id 数据库id 中间件id 得到名字
-//        for (int i = 0; i < list.size(); i++) {
-//            String sid = list.get(i).getServerId();
-//            String did =  list.get(i).getDbId();
-//            String mid = list.get(i).getMiddlewareId();
-//            String[] sids = sid.split(",");
-//            String[] dids = did.split(",");
-//            String[] mids = mid.split(",");
-//
-////            list.get(i).setServerName();
-//            System.out.println(serverDao.queryAllServer(sids[i]));
-//            System.out.println(sids[i]);
-//        }
 
         return R.ok().put("count", total).put("data", list);
     }
@@ -87,8 +67,9 @@ public class SystemController extends AbstractController {
     public R edit(SystemEntity sys) {
 
         //赋值运维人员id 创造者 创造时间
-        if (sys.getUserName() != "")
+        if (sys.getUserName() != "") {
             sys.setUserId(userDao.queryByUserName(sys.getUserName()).getUserId());
+        }
         sys.setUpdateTime(getTime());
 
         systemDao.edit(sys);
@@ -103,5 +84,14 @@ public class SystemController extends AbstractController {
     public R delete(long id) {
         systemDao.delete(id);
         return R.ok();
+    }
+
+    /**
+     * 根据所在服务器查询
+     */
+    @RequestMapping("/queryByServerAll")
+    public Object queryByServerAll(long id) {
+        List<SystemEntity> list = systemDao.queryByServerAll(id);
+        return R.ok().put("data", list);
     }
 }

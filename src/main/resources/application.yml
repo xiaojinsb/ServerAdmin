@@ -4,6 +4,7 @@ server:
   tomcat:
     uri-encoding: UTF-8
 
+#开启GZIP
   compression:
     enabled: true
     mime-types: application/json,application/javascript,text/html,text/plain,text/css
@@ -11,12 +12,12 @@ server:
 
 spring:
   datasource:
-#    url: jdbc:mysql://localhost:3306/server_admin?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
     url: jdbc:mysql://localhost:3306/server_admin?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+#格式化日期
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm

@@ -86,4 +86,13 @@ public class MiddlewareController extends AbstractController {
         List<MiddlewareEntity> list = middlewareDao.queryAllMidd(id);
         return R.ok().put("data", list);
     }
+
+    /**
+     * 根据所在服务器查询
+     */
+    @RequestMapping("/queryByServerAll")
+    public Object queryByServerAll(long id) {
+        List<MiddlewareEntity> list = middlewareDao.queryByServerAll(id);
+        return R.ok().put("data", list);
+    }
 }

@@ -27,6 +27,12 @@
         <if test="username !=null and username!=''">
             AND username LIKE "%"#{username}"%"
         </if>
+        <if test="mobile !=null and mobile!=''">
+            AND mobile LIKE "%"#{mobile}"%"
+        </if>
+        <if test="email !=null and email!=''">
+            AND email LIKE "%"#{email}"%"
+        </if>
         <if test="status !=null and status!=''">
             AND status = #{status}
         </if>
@@ -37,6 +43,12 @@
         select * from sa_user WHERE user_id != 1
         <if test="username !=null and username!=''">
             AND username LIKE "%"#{username}"%"
+        </if>
+        <if test="mobile !=null and mobile!=''">
+            AND mobile LIKE "%"#{mobile}"%"
+        </if>
+        <if test="email !=null and email!=''">
+            AND email LIKE "%"#{email}"%"
         </if>
         <if test="status !=null and status!=''">
             AND status = #{status}
@@ -76,7 +88,7 @@
 
     <!--更新用户-->
     <update id="edit" parameterType="com.sa.modules.entity.UserEntity">
-        update sa_user set email = #{email}, mobile = #{mobile}, status = #{status}, locking_time = #{lockingTime} where user_id = #{userId}
+        update sa_user set email = #{email}, mobile = #{mobile}, status = #{status}, locking_time = #{lockingTime} where username = #{username}
     </update>
 
     <!--删除用户-->

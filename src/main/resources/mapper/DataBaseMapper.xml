@@ -5,11 +5,29 @@
     <!--列出所有 数-->
     <select id="queryTotal" resultType="int">
         select count(*) from sa_data_base where 1=1
+        <if test="dbName !=null and dbName!=''">
+            AND db_name LIKE "%"#{dbName}"%"
+        </if>
+        <if test="dbType !=null and dbType!=''">
+            AND db_type = #{dbType}
+        </if>
+        <if test="userName !=null and userName!=''">
+            AND user_name = #{userName}
+        </if>
     </select>
 
     <!--列出所有-->
     <select id="queryList" resultType="com.sa.modules.entity.DataBaseEntity">
         select * from sa_data_base where 1=1
+        <if test="dbName !=null and dbName!=''">
+            AND db_name LIKE "%"#{dbName}"%"
+        </if>
+        <if test="dbType !=null and dbType!=''">
+            AND db_type = #{dbType}
+        </if>
+        <if test="userName !=null and userName!=''">
+            AND user_name = #{userName}
+        </if>
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
@@ -43,6 +61,11 @@
                  open="(" close=")" separator=",">
             #{id}
         </foreach>
+    </select>
+
+    <!--根据所在服务器查询-->
+    <select id="queryByServerAll" resultType="com.sa.modules.entity.DataBaseEntity">
+        select *  from sa_data_base where find_in_set(#{id},server_id)
     </select>
 
 </mapper>

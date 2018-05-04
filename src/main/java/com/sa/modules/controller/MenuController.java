@@ -37,7 +37,7 @@ public class MenuController extends AbstractController {
      * 列出所有模块
      */
     @RequestMapping("/list")
-//    @RequiresPermissions("menu:list")
+    @RequiresPermissions("menu:list")
     public R list(@RequestParam Map<String, Object> params) {
 
         //条数和数据
@@ -48,20 +48,10 @@ public class MenuController extends AbstractController {
     }
 
     /**
-     * 列出所有目录
-     */
-    @RequestMapping("/catalog")
-//    @RequiresPermissions("menu:info")
-    public Object info(Integer type) {
-        List<MenuEntity> menuList = menuService.queryAllCatalog(type);
-        return menuList;
-    }
-
-    /**
      * 新增模块
      */
     @RequestMapping("/add")
-//    @RequiresPermissions("menu:add")
+    @RequiresPermissions("menu:add")
     public R add(MenuEntity menuEntity) {
         //赋值创造者 创造时间
         menuEntity.setCreateUserID(getUserId());
@@ -86,7 +76,7 @@ public class MenuController extends AbstractController {
      * 更新角色
      */
     @RequestMapping("/edit")
-//    @RequiresPermissions("menu:edit")
+    @RequiresPermissions("menu:edit")
     public R edit(MenuEntity menuEntity) {
 
         //根据名字查询信息 看是否存在
@@ -101,7 +91,7 @@ public class MenuController extends AbstractController {
         if (ismenu == null){
             menuService.edit(menuEntity);
         }else {
-            if (ismenu.getMenuId() == menuEntity.getMenuId()){
+            if (ismenu.getMenuId().equals(menuEntity.getMenuId()) ){
                 menuService.edit(menuEntity);
             }else {
                 return R.error("模块已经存在");
@@ -114,9 +104,19 @@ public class MenuController extends AbstractController {
      * 删除用户
      */
     @RequestMapping("/delete")
-//    @RequiresPermissions("menu:delete")
+    @RequiresPermissions("menu:del")
     public R delete(long id) {
         menuService.delete(id);
         return R.ok();
+    }
+
+    /**
+     * 列出指定类型目录
+     */
+    @RequestMapping("/catalog")
+//    @RequiresPermissions("menu:info")
+    public Object info(Integer type) {
+        List<MenuEntity> menuList = menuService.queryAllCatalog(type);
+        return menuList;
     }
 }

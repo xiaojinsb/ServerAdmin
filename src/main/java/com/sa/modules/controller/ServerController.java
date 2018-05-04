@@ -39,6 +39,7 @@ public class ServerController extends AbstractController {
         //条数和数据
         int total = serverDao.queryTotal(params);
         List<ServerEntity> list = serverDao.queryList(query);
+        System.out.println("请求ing");
         return R.ok().put("count", total).put("data", list);
     }
 
@@ -50,8 +51,9 @@ public class ServerController extends AbstractController {
     public R add(ServerEntity server) {
 
         //赋值运维人员id 创造者 创造时间
-        if (server.getUserName() != "")
+        if (server.getUserName() != "") {
             server.setUserId(userDao.queryByUserName(server.getUserName()).getUserId());
+        }
         server.setCreateUserId(getUserId());
         server.setCreateTime(getTime());
 
