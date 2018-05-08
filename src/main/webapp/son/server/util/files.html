@@ -21,20 +21,79 @@
                 <th>操作</th>
             </tr>
             </thead>
+
             <tbody id="uploadingFiles"></tbody>
+
         </table>
     </div>
-    <div id="filelist"></div>
     <button type="button" class="layui-btn" id="uploadfiles" style="display: block">开始上传</button>
 </div>
 
 <pre id="console"></pre>
 
 <script src="../../../statics/plugins/layui/layui.js"></script>
-<script type="text/javascript" src="../../../statics/js/plupload.full.min.js"></script>
+<script src="../../../statics/src/js/plupload.js"></script>
 <script>
-    layui.use(['table'], function () {
+    layui.use(['jquery','layer'], function () {
         $ = layui.jquery;
+        var layer = layui.layer;
+
+        var uploader = new plupload.Uploader({
+            runtimes : 'html5,flash,html4',
+            browse_button : 'pickfiles',
+            container: document.getElementById('container'),
+            url : '../../../parses/uploadFile',
+            flash_swf_url : '../../../statics/src/images/Moxie.swf',
+            max_file_size : '10000mb',
+            // chunk_size: '10mb', //分片上传
+
+            filters : {
+                prevent_duplicates : true,
+                mime_types: [
+                    {title : "files", extensions : "zip,pdf,doc,exe,msi,xlsx,txt"}
+                ],
+            },
+
+            init: {
+                PostInit: function() {
+                    $("#uploadingFiles").html("");
+
+                    document.getElementById('uploadfiles').onclick = function() {
+                        uploader.start();
+                        return false;
+                    };
+                },
+
+                FilesAdded: function(up, files) {
+                    plupload.each(files, function(file) {
+                        $("#uploadingFiles").append('<tr id='+file.id+'>\n' +
+                            '    <td>'+ file.name+'</td>\n' +
+                            '    <td>'+plupload.formatSize(file.size)+'</td>\n' +
+                            '    <td>等待上传</td>\n' +
+                            '    <td>0%</td>\n' +
+                            '    <td><button class="layui-btn layui-btn-mini layui-btn-danger demo-delete" data-val='+file.id+'>删除</button></td>\n' +
+                            '</tr>\n');
+                    });
+                },
+
+                UploadProgress: function(up, file) {
+                    $("#" + file.id + " td:eq(3)").html(file.percent+"%");
+
+                },
+
+                FileUploaded: function(up, file) {
+                    $("#" + file.id + " td:eq(2)").html("上传成功");
+                },
+
+                Error: function(up, err) {
+                    $("#" + err.file.id + " td:eq(2)").html(err.message);
+                    console.log(err)
+                }
+            }
+
+        });
+
+        uploader.init();
 
         $(document).on('click','#uploadingFiles tr .demo-delete',function(){
             $(this).parent().parent().remove();
@@ -48,56 +107,6 @@
             uploader.files.splice(toremove, 1);
         });
     });
-
-    var uploader = new plupload.Uploader({
-        runtimes : 'html4,flash',
-        browse_button : 'pickfiles', // you can pass an id...
-        container: document.getElementById('container'), // ... or DOM Element itself
-        url : 'parses/uploadFile',
-        flash_swf_url : '../../../statics/js/Moxie.swf',
-
-        filters : {
-            max_file_size : '2000mb',
-            mime_types: [
-                {title : "files", extensions : "zip,pdf,doc,exe,msi,xlsx,txt"}
-            ]
-        },
-
-        init: {
-            PostInit: function() {
-                document.getElementById('filelist').innerHTML = '';
-
-                document.getElementById('uploadfiles').onclick = function() {
-                    uploader.start();
-                    return false;
-                };
-            },
-
-            FilesAdded: function(up, files) {
-                plupload.each(files, function(file) {
-                    document.getElementById('uploadingFiles').innerHTML +=
-                    '<tr id='+file.id+'>\n' +
-                    '    <td>'+ file.name+'</td>\n' +
-                    '    <td>'+plupload.formatSize(file.size)+'</td>\n' +
-                    '    <td>等待上传</td>\n' +
-                    '    <td>0%</td>\n' +
-                    '    <td><button class="layui-btn layui-btn-mini layui-btn-danger demo-delete" data-val='+file.id+'>删除</button></td>\n' +
-                    '</tr>\n'
-                });
-            },
-
-            UploadProgress: function(up, file) {
-                document.getElementById(file.id).getElementsByTagName('td')[3].innerHTML = file.percent + "%";
-            }
-
-            // Error: function(up, err) {
-            //     document.getElementById('console').appendChild(document.createTextNode("\nError #" + err.code + ": " + err.message));
-            // }
-        }
-
-    });
-
-    uploader.init();
 
 </script>
 </body>
