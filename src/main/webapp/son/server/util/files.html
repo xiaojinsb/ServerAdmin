@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>文件上传</title>
+    <link rel="stylesheet" href="../../../statics/plugins/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="layui-upload" id="container">
+    <button type="button" class="layui-btn layui-btn-normal" id="pickfiles">选择多文件</button>
+    <div class="layui-upload-list">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>文件名</th>
+                <th>大小</th>
+                <th>状态</th>
+                <th>进度</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="uploadingFiles"></tbody>
+        </table>
+    </div>
+    <div id="filelist"></div>
+    <button type="button" class="layui-btn" id="uploadfiles" style="display: block">开始上传</button>
+</div>
+
+<pre id="console"></pre>
+
+<script src="../../../statics/plugins/layui/layui.js"></script>
+<script type="text/javascript" src="../../../statics/js/plupload.full.min.js"></script>
+<script>
+    layui.use(['table'], function () {
+        $ = layui.jquery;
+
+        $(document).on('click','#uploadingFiles tr .demo-delete',function(){
+            $(this).parent().parent().remove();
+            var toremove = '';
+            var id=$(this).attr("data-val");
+            for(var i in uploader.files){
+                if(uploader.files[i].id === id){
+                    toremove = i;
+                }
+            }
+            uploader.files.splice(toremove, 1);
+        });
+    });
+
+    var uploader = new plupload.Uploader({
+        runtimes : 'html4,flash',
+        browse_button : 'pickfiles', // you can pass an id...
+        container: document.getElementById('container'), // ... or DOM Element itself
+        url : 'parses/uploadFile',
+        flash_swf_url : '../../../statics/js/Moxie.swf',
+
+        filters : {
+            max_file_size : '2000mb',
+            mime_types: [
+                {title : "files", extensions : "zip,pdf,doc,exe,msi,xlsx,txt"}
+            ]
+        },
+
+        init: {
+            PostInit: function() {
+                document.getElementById('filelist').innerHTML = '';
+
+                document.getElementById('uploadfiles').onclick = function() {
+                    uploader.start();
+                    return false;
+                };
+            },
+
+            FilesAdded: function(up, files) {
+                plupload.each(files, function(file) {
+                    document.getElementById('uploadingFiles').innerHTML +=
+                    '<tr id='+file.id+'>\n' +
+                    '    <td>'+ file.name+'</td>\n' +
+                    '    <td>'+plupload.formatSize(file.size)+'</td>\n' +
+                    '    <td>等待上传</td>\n' +
+                    '    <td>0%</td>\n' +
+                    '    <td><button class="layui-btn layui-btn-mini layui-btn-danger demo-delete" data-val='+file.id+'>删除</button></td>\n' +
+                    '</tr>\n'
+                });
+            },
+
+            UploadProgress: function(up, file) {
+                document.getElementById(file.id).getElementsByTagName('td')[3].innerHTML = file.percent + "%";
+            }
+
+            // Error: function(up, err) {
+            //     document.getElementById('console').appendChild(document.createTextNode("\nError #" + err.code + ": " + err.message));
+            // }
+        }
+
+    });
+
+    uploader.init();
+
+</script>
+</body>
+</html>
