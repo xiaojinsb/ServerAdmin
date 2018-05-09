@@ -50,13 +50,14 @@ public class SystemController extends AbstractController {
     public R add(SystemEntity sys) {
 
         //赋值运维人员id 创造者 创造时间
-        if (sys.getUserName() != "")
+        if (sys.getUserName() != ""){
             sys.setUserId(userDao.queryByUserName(sys.getUserName()).getUserId());
+        }
         sys.setCreateUserId(getUserId());
         sys.setCreateTime(getTime());
 
         systemDao.add(sys);
-        return R.ok();
+        return R.ok().put("id",sys.getSystemId());
     }
 
     /**

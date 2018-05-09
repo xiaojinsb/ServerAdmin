@@ -36,11 +36,10 @@
 
 <script src="../../../statics/plugins/layui/layui.js"></script>
 <script>
-    layui.use(['table', 'form', 'laydate'], function () {
+    layui.use(['table', 'form'], function () {
         var table = layui.table, //获取表格
             form = layui.form, //获取from
-            $ = layui.jquery, //获取jq
-            laydate = layui.laydate; //获取时间插件
+            $ = layui.jquery;
 
         //渲染表格
         var tablelist = table.render({

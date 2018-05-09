@@ -76,4 +76,18 @@ public class ParsesEntity {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "ParsesEntity{" +
+                "parId='" + parId + '\'' +
+                ", fileId='" + fileId + '\'' +
+                ", fileClassify='" + fileClassify + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", urlSite='" + urlSite + '\'' +
+                ", createUserId=" + createUserId +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

@@ -243,6 +243,36 @@
                     </div>
                 </div>
 
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">文件上传  <span style="font-size: 12px;color: #757575;">单个文件大小不能超过100MB 总文件大小不能超过1G</span></div>
+                        <div class="layui-card-body layui-row layui-col-space10">
+
+                            <div class="layui-upload" id="container">
+                                <button type="button" class="layui-btn layui-btn-normal" id="pickfiles">选择多文件</button>
+                                <div class="layui-upload-list">
+                                    <table class="layui-table">
+                                        <thead>
+                                        <tr>
+                                            <th>文件名</th>
+                                            <th>大小</th>
+                                            <th>状态</th>
+                                            <th>进度</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody id="uploadingFiles"></tbody>
+
+                                    </table>
+                                </div>
+                                <button type="button" class="layui-btn" id="uploadfiles" style="display: none">开始上传</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -250,9 +280,11 @@
         <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
         <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
     </form>
+
 </div>
 
 <script src="../../statics/plugins/layui/layui.js"></script>
+<script src="../../statics/src/js/plupload.js"></script>
 <script>
     layui.use(['table', 'form'], function () {
         var table = layui.table, //获取表格
@@ -324,6 +356,7 @@
                     $('form.layui-form').find('button[lay-filter=submitSave]').click();
                 },
                 success: function (layero, index) { //层弹出后的成功回调
+
                     //弹出窗口成功后渲染表单
                     form.on('submit(submitSave)', function (data) {
                         $.post("../../sys/add", data.field, function (res) {
@@ -333,6 +366,7 @@
 
                                 layer.close(index); //关闭当前窗口
                                 tablelist.reload(); //刷新
+
                             } else {
                                 if (res.msg != null) {
                                     layer.msg(res.msg);
@@ -710,56 +744,8 @@
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
             // get缓存问题 关闭ajax 缓存
             $.ajaxSetup({cache: false})
-            iePlaceholder();
         }
 
-        //判断浏览器是否支持placeholder属性
-        function iePlaceholder() {
-            supportPlaceholder = 'placeholder' in document.createElement('input'),
-
-                placeholder = function (input) {
-
-                    var text = input.attr('placeholder'),
-                        defaultValue = input.defaultValue;
-
-                    if (!defaultValue) {
-                        input.val(text).addClass("phcolor");
-                    }
-
-                    input.focus(function () {
-
-                        if (input.val() == text) {
-                            $(this).val("");
-                        }
-                    });
-
-                    input.blur(function () {
-
-                        if (input.val() == "") {
-                            $(this).val(text).addClass("phcolor");
-                        }
-                    });
-
-                    //输入的字符不为灰色
-                    input.keydown(function () {
-                        $(this).removeClass("phcolor");
-                    });
-                };
-
-            //当浏览器不支持placeholder属性时，调用placeholder函数
-            if (!supportPlaceholder) {
-
-                $('input').each(function () {
-
-                    text = $(this).attr("placeholder");
-
-                    if ($(this).attr("type") == "text") {
-
-                        placeholder($(this));
-                    }
-                });
-            }
-        }
     });
 </script>
 </body>

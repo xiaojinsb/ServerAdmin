@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sa.modules.dao.ParsesDao">
+
+
+    <!--查询文件-->
+    <select id="queryFile" resultType="com.sa.modules.entity.ParsesEntity">
+        select * from sa_parses where file_name = #{fileName}
+    </select>
+
+    <!--新增-->
+    <insert id="add" parameterType="com.sa.modules.entity.ParsesEntity" useGeneratedKeys="true" keyProperty="parId">
+        insert into sa_parses(file_id, file_classify, file_name, url_site, create_user_id, create_time)
+        VALUE (#{fileId}, #{fileClassify}, #{fileName}, #{urlSite}, #{createUserId}, #{createTime});
+    </insert>
+
+</mapper>
