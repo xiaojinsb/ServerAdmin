@@ -62,7 +62,13 @@
         <i class="layui-icon">&#xe654;</i>
         添加
     </button>
+    <button class="layui-btn" id="excel"  type="button">
+        <i class="layui-icon">&#xe62d;</i>
+        导出excel
+    </button>
 </div>
+
+
 
 <table id="tableList" lay-filter="tableList"></table>
 
@@ -274,6 +280,27 @@
             </div>
         </div>
 
+        <div class="layui-upload" id="container">
+            <button type="button" class="layui-btn layui-btn-normal" id="pickfiles">选择多文件</button>
+            <button type="button" class="layui-btn layui-btn-normal" id="empty">清空</button>
+            <div class="layui-upload-list">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>状态</th>
+                        <th>进度</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="uploadingFiles"></tbody>
+
+                </table>
+            </div>
+            <button type="button" class="layui-btn" id="uploadfiles" style="display: none">开始上传</button>
+        </div>
 
         <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
         <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
@@ -311,13 +338,23 @@
 
 </div>
 
+<!--文件上传信息模板-->
+<div id="filesTpl" style="display: none">
+    <span>上传总进度：<span id="percent"></span>%</span>
+    <br>
+    <span>已上传：<span id="uploaded"></span>个文件</span>
+    <br>
+    <span>需要上传：<span id="queued"></span>个文件</span>
+    <br>
+</div>
 <script src="../../statics/plugins/layui/layui.js"></script>
 <script src="../../statics/src/js/plupload.js"></script>
 <script>
-    layui.use(['table', 'form', 'laydate'], function () {
+    layui.use(['table', 'form', 'laydate','element'], function () {
         var table = layui.table, //获取表格
             form = layui.form, //获取from
-            $ = layui.jquery; //获取jq
+            element = layui.element,
+            $ = layui.jquery, //获取jq
             laydate = layui.laydate; //获取时间插件
 
         //渲染表格
@@ -381,7 +418,7 @@
         });
 
         $("#add").click(function () {
-            var isfiles = 0;
+
             layer.open({
                 title: '新增服务器' //窗口名
                 , type: 1 //打开类型
@@ -395,14 +432,27 @@
                     $('form.layui-form').find('button[lay-filter=submitSave]').click();
                 },
                 success: function (layero, index) { //层弹出后的成功回调
+
                     //弹出窗口成功后渲染表单
                     form.on('submit(submitSave)', function (data) {
                         $.post("../../server/add", data.field, function (res) {
 
                             if (res.msg == 'success') {
-                                layer.msg('添加服务器成功');
-                                layer.close(index); //关闭当前窗口
+
                                 tablelist.reload(); //刷新
+                                //动态的设置上传地址
+                                uploader.settings.url = '../../../parses/uploadFile?fileClassify=sever&fileId='+res.id;
+                                //开启上传
+                                $("#uploadfiles").click()
+
+                                layer.open({
+                                    title: '上传信息'
+                                    , type: 1
+                                    , closeBtn: 0
+                                    , area: ['420px', '240px']
+                                    , content: $('#filesTpl')
+                                });
+
                             } else {
                                 if (res.msg != null) {
                                     layer.msg(res.msg);
@@ -415,20 +465,47 @@
                         return false; //阻止表单跳转
                     });
                 },
-                cancel: function(index, layero){
-                    if (isfiles != 0){
-                        if(confirm('数据还未上传完毕，确定关闭')){ //只有当点击confirm框的确定时，该层才会关闭
-                            layer.close(index)
-                        }
-                        return false;
-                    }
-                },
                 end: function () {
                     $('form.layui-form').find('button[lay-filter=render]').click();
                     $("#uploadingFiles").html("");
                 }
             });
         });
+
+        //导出
+        $('#excel').on('click', function(){
+            //得到选择的值
+            var checkStatus = table.checkStatus('table')
+                ,data = checkStatus.data;
+            //for出id
+            var serverId = [];
+            for (var i=0; i<data.length;i++){
+                serverId[i] = data[i].serverId;
+            }
+            var download = "";
+            if (serverId.length == 0){
+                layer.confirm('是否要导出全部数据', {
+                    btn: ['是','否'] //按钮
+                }, function(index){
+                    download = "../../server/excel?id=0";
+                    dow(download);
+                    layer.close(index);
+                }, function(index){
+                    layer.close(index);
+                });
+            }else {
+                download = "../../server/excel?id=" + serverId.join(",");
+                dow(download);
+            }
+
+        });
+        //下载
+        function  dow(download){
+            var iframe  = document.createElement("iframe");
+            document.body.appendChild(iframe);
+            iframe.src = download;
+            iframe.style.display = "none";
+        }
 
         //监听操作条
         table.on('tool(tableList)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
@@ -656,6 +733,98 @@
             });
         }
 
+        //上传
+        var filesId = [];
+        var uploader = new plupload.Uploader({
+            runtimes : 'html5,flash,html4',
+            browse_button : 'pickfiles',
+            container: document.getElementById('container'),
+            // url : '../../../parses/uploadFile?id=',
+            flash_swf_url : '../../../statics/src/images/Moxie.swf',
+            max_file_size : '100mb',
+            // chunk_size: '10mb', //分片上传
+
+            filters : {
+                prevent_duplicates : true,
+                mime_types: [
+                    {title : "files", extensions : "zip,pdf,doc,exe,msi,xlsx,txt"}
+                ],
+            },
+
+            init: {
+                PostInit: function() {
+                    $("#uploadingFiles").html("");
+
+                    document.getElementById('uploadfiles').onclick = function() {
+                        $("#queued").html(uploader.total.queued);
+                        uploader.start();
+                        return false;
+                    };
+                },
+
+                FilesAdded: function(up, files) {
+                    plupload.each(files, function(file) {
+                        $("#uploadingFiles").append('<tr class="fileList" id='+file.id+'>\n' +
+                            '    <td>'+ file.name+'</td>\n' +
+                            '    <td>'+plupload.formatSize(file.size)+'</td>\n' +
+                            '    <td>等待上传</td>\n' +
+                            '    <td>0%</td>\n' +
+                            '    <td><button class="layui-btn layui-btn-mini layui-btn-danger fileDelete" data-val='+file.id+'>删除</button></td>\n' +
+                            '</tr>\n');
+                    });
+                },
+
+                UploadProgress: function(up, file) {
+                    $("#" + file.id + " td:eq(3)").html(file.percent+"%");
+
+                    $("#percent").html(uploader.total.percent);
+                    $("#uploaded").html(uploader.total.uploaded+1);
+                    if (uploader.total.queued == 1){
+                        layer.closeAll('page');
+                        // layer.msg('文件上传完成');
+                    }
+                },
+
+                FileUploaded: function(up, file) {
+                    $("#" + file.id + " td:eq(2)").html("上传成功");
+                },
+
+                Error: function(up, err) {
+                    $("#" + err.file.id + " td:eq(2)").html(err.message);
+                }
+            }
+
+        });
+
+        $("#empty").click(function () {
+            var fileDelete = $('.fileDelete');
+            var toremove = '';
+            $("#uploadingFiles").html("");
+            for (var i = 0; i < fileDelete.length; i++) {
+                var id=fileDelete.eq(i).attr("data-val");
+                for(var j in uploader.files){
+                    if(uploader.files[j].id === id){
+                        toremove = j;
+                    }
+                }
+                uploader.files.splice(toremove, 1);
+            }
+        });
+
+        uploader.init();
+
+        //删除上传队列
+        $(document).on('click','#uploadingFiles tr .fileDelete',function(){
+            $(this).parent().parent().remove();
+            var toremove = '';
+            var id=$(this).attr("data-val");
+            for(var i in uploader.files){
+                if(uploader.files[i].id === id){
+                    toremove = i;
+                }
+            }
+            uploader.files.splice(toremove, 1);
+        });
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

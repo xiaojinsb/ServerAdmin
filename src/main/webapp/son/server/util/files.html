@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>文件上传</title>
     <link rel="stylesheet" href="../../../statics/plugins/layui/css/layui.css" media="all">
+    <style>
+        .layui-form-label{width: 100px}
+        .layui-input-block{margin-left: 130px}
+    </style>
 </head>
 <body>
 
 <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="margin-left: 20px">
     <ul class="layui-tab-title">
-        <li class="layui-this">管理文件</li>
+        <li class="layui-this" >管理文件</li>
         <li>上传文件</li>
     </ul>
     <div class="layui-tab-content" style="height: 100px;">
@@ -21,6 +25,7 @@
 
             <div class="layui-upload" id="container">
                 <button type="button" class="layui-btn layui-btn-normal" id="pickfiles">选择多文件</button>
+                <button type="button" class="layui-btn layui-btn-normal" id="empty">清空</button>
                 <div class="layui-upload-list">
                     <table class="layui-table">
                         <thead>
@@ -87,33 +92,7 @@
             ]
         });
 
-        function sleep(a) {
-            return function(b) {
-                setTimeout(b, a);
-            };
-        }
-        co(
-            regeneratorRuntime.mark(function a() {
-                var b;
-                return regeneratorRuntime.wrap(
-                    function(d) {
-                        for (;;)
-                            switch ((d.prev = d.next)) {
-                                case 0:
-                                    return (b = Date.now()), (d.next = 3), sleep(2e3);
-                                case 3:
-                                    expect(Date.now() - b).to.not.be.below(2e3);
-                                case 4:
-                                case "end":
-                                    return d.stop();
-                            }
-                    },
-                    a,
-                    this
-                );
-            })
-        );
-
+        var filesId = [];
         //上传
         var uploader = new plupload.Uploader({
             runtimes : 'html5,flash,html4',
@@ -137,53 +116,21 @@
 
                     document.getElementById('uploadfiles').onclick = function() {
                         uploader.start();
+                        console.log("一共有"+uploader.total.queued);
                         return false;
                     };
                 },
 
                 FilesAdded: function(up, files) {
+                    console.log(uploader.total.size)
                     plupload.each(files, function(file) {
-
-                        var html = '<tr id='+file.id+'>\n' +
+                        $("#uploadingFiles").append('<tr class="fileList" id='+file.id+'>\n' +
                             '    <td>'+ file.name+'</td>\n' +
                             '    <td>'+plupload.formatSize(file.size)+'</td>\n' +
                             '    <td>等待上传</td>\n' +
                             '    <td>0%</td>\n' +
-                            '    <td><button class="layui-btn layui-btn-mini layui-btn-danger demo-delete" data-val='+file.id+'>删除</button></td>\n' +
-                            '</tr>\n'
-
-                        $.ajax({
-                            type: "GET",
-                            url: '../../../parses/isFile?fileName='+file.name,
-                            contentType: "application/json",
-                            async: false,
-                            dataType: "json",
-                            success: function (data) {
-                                if (data.msg == "文件已存在"){
-                                    sleep(10000000000)
-                                    layer.confirm('这个文件已经存在，确认要替换？', {
-                                        btn: ['是','否'] //按钮
-                                    }, function(index){
-                                        sleep(0)
-                                        $("#uploadingFiles").append(html);
-                                        layer.close(index);
-                                    }, function(){
-                                        sleep(0)
-                                        var toremove = '';
-                                        var id=file.id;
-                                        for(var i in uploader.files){
-                                            if(uploader.files[i].id === id){
-                                                toremove = i;
-                                            }
-                                        }
-                                        uploader.files.splice(toremove, 1);
-                                    });
-                                } else if(data.msg == "success"){
-                                    $("#uploadingFiles").append(html);
-                                }
-                            }
-                        });
-
+                            '    <td><button class="layui-btn layui-btn-mini layui-btn-danger fileDelete" data-val='+file.id+'>删除</button></td>\n' +
+                            '</tr>\n');
                     });
                 },
 
@@ -194,6 +141,8 @@
 
                 FileUploaded: function(up, file) {
                     $("#" + file.id + " td:eq(2)").html("上传成功");
+                    console.log("总进度"+uploader.total.percent);
+                    console.log("已完成"+uploader.total.uploaded);
                 },
 
                 Error: function(up, err) {
@@ -206,8 +155,23 @@
 
         uploader.init();
 
+        $("#empty").click(function () {
+            var fileDelete = $('.fileDelete');
+            var toremove = '';
+            $("#uploadingFiles").html("");
+            for (var i = 0; i < fileDelete.length; i++) {
+                var id=fileDelete.eq(i).attr("data-val");
+                for(var j in uploader.files){
+                    if(uploader.files[j].id === id){
+                        toremove = j;
+                    }
+                }
+                uploader.files.splice(toremove, 1);
+            }
+        })
+
         //删除上传队列
-        $(document).on('click','#uploadingFiles tr .demo-delete',function(){
+        $(document).on('click','#uploadingFiles tr .fileDelete',function(){
             $(this).parent().parent().remove();
             var toremove = '';
             var id=$(this).attr("data-val");

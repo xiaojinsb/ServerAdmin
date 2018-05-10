@@ -20,4 +20,9 @@ public interface MiddlewareDao extends BaseDao<MiddlewareEntity> {
      * 根据所在服务器查询
      */
     List<MiddlewareEntity> queryByServerAll(long id);
+
+    /**
+     * 查询出所有数据
+     */
+    List<MiddlewareEntity> queryAll();
 }

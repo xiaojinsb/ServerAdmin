@@ -5,11 +5,14 @@ import com.sa.common.utils.R;
 import com.sa.modules.dao.MiddlewareDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.MiddlewareEntity;
+import com.wuwenze.poi.ExcelKit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -94,5 +97,22 @@ public class MiddlewareController extends AbstractController {
     public Object queryByServerAll(long id) {
         List<MiddlewareEntity> list = middlewareDao.queryByServerAll(id);
         return R.ok().put("data", list);
+    }
+
+    /**
+     * 导出excel
+     */
+    @RequestMapping("/excel")
+    public void excel(HttpServletResponse response, long[] id){
+
+        List<MiddlewareEntity> list = new ArrayList<MiddlewareEntity>();
+        if (id[0]==0){
+            list = middlewareDao.queryAll();
+        }else {
+            list = middlewareDao.queryAllMidd(id);
+        }
+
+        // 生成Excel并使用浏览器下载
+        ExcelKit.$Export(MiddlewareEntity.class, response).toExcel(list, "中间件");
     }
 }

@@ -4,12 +4,15 @@ import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
 import com.sa.modules.dao.*;
 import com.sa.modules.entity.SystemEntity;
+import com.wuwenze.poi.ExcelKit;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -94,5 +97,22 @@ public class SystemController extends AbstractController {
     public Object queryByServerAll(long id) {
         List<SystemEntity> list = systemDao.queryByServerAll(id);
         return R.ok().put("data", list);
+    }
+
+    /**
+     * 导出excel
+     */
+    @RequestMapping("/excel")
+    public void excel(HttpServletResponse response, long[] id){
+
+        List<SystemEntity> list = new ArrayList<SystemEntity>();
+        if (id[0]==0){
+            list = systemDao.queryAll();
+        }else {
+            list = systemDao.queryAllsys(id);
+        }
+
+        // 生成Excel并使用浏览器下载
+        ExcelKit.$Export(SystemEntity.class, response).toExcel(list, "应用系统");
     }
 }

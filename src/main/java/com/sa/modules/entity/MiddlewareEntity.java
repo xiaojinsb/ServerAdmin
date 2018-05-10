@@ -1,22 +1,34 @@
 package com.sa.modules.entity;
 
 
+import com.wuwenze.poi.annotation.ExportConfig;
+
 import java.util.Date;
 
 public class MiddlewareEntity {
 
   private long middlewareId;
+  @ExportConfig("中间件名")
   private String middlewareName;
+  @ExportConfig("中间件版本")
   private String middlewareEdition;
+  @ExportConfig("中间件管理地址")
   private String middlewareUrl;
+  @ExportConfig("中间件安装地址")
   private String middlewareInstallUrl;
+  @ExportConfig("中间件管理账号")
   private String middlewareAdmin;
+  @ExportConfig("中间件管理密码")
   private String middlewarePas;
+  @ExportConfig("中间件介质位置")
   private String middlewareMedium;
+  @ExportConfig("中间件备注")
   private String middlewareContent;
   private long userId;
+  @ExportConfig("运维人员")
   private String userName;
   private String serverId;
+  @ExportConfig("服务器")
   private String serverName;
   private long createUserId;
   private Date createTime;

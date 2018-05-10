@@ -5,14 +5,12 @@ import com.sa.common.utils.R;
 import com.sa.modules.dao.ServerDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.ServerEntity;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.wuwenze.poi.ExcelKit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * @Author: moe
@@ -39,14 +37,13 @@ public class ServerController extends AbstractController {
         //条数和数据
         int total = serverDao.queryTotal(params);
         List<ServerEntity> list = serverDao.queryList(query);
-        System.out.println("请求ing");
         return R.ok().put("count", total).put("data", list);
     }
 
     /**
      * 新增
      */
-    @RequestMapping("/add")
+    @PostMapping("/add")
 //    @RequiresPermissions("server:add")
     public R add(ServerEntity server) {
 
@@ -64,7 +61,7 @@ public class ServerController extends AbstractController {
     /**
      * 更新
      */
-    @RequestMapping("/edit")
+    @PostMapping("/edit")
 //    @RequiresPermissions("server:edit")
     public R edit(ServerEntity server) {
 
@@ -80,7 +77,7 @@ public class ServerController extends AbstractController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
 //    @RequiresPermissions("server:delete")
     public R delete(long id) {
         serverDao.delete(id);
@@ -90,9 +87,28 @@ public class ServerController extends AbstractController {
     /**
      * 列出所有查询到的服务器
      */
-    @RequestMapping("/queryAllServer")
+    @PostMapping("/queryAllServer")
     public Object info(long[] id) {
         List<ServerEntity> list = serverDao.queryAllServer(id);
         return R.ok().put("data", list);
     }
+
+
+    /**
+     * 导出excel
+     */
+    @RequestMapping("/excel")
+    public void excel(HttpServletResponse response,long[] id){
+
+        List<ServerEntity> list = new ArrayList<ServerEntity>();
+        if (id[0]==0){
+            list = serverDao.queryAll();
+        }else {
+            list = serverDao.queryAllServer(id);
+        }
+
+        // 生成Excel并使用浏览器下载
+        ExcelKit.$Export(ServerEntity.class, response).toExcel(list, "服务器");
+    }
+
 }

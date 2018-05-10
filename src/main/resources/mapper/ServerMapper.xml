@@ -75,4 +75,9 @@
         </foreach>
     </select>
 
+    <!--查询出所有数据-->
+    <select id="queryAll" resultType="com.sa.modules.entity.ServerEntity">
+        select * from sa_server
+    </select>
+
 </mapper>

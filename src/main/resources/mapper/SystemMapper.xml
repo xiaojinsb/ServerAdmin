@@ -49,12 +49,21 @@
 
     <!--列出名字和id-->
     <select id="queryAllsys" resultType="com.sa.modules.entity.SystemEntity">
-       select system_id,system_name from sa_system where system_id = #{id}
+       select * from sa_system where system_id in
+        <foreach collection="array" item="id" index="index"
+                 open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 
     <!--根据所在服务器查询-->
     <select id="queryByServerAll" resultType="com.sa.modules.entity.SystemEntity">
         select *  from sa_system where find_in_set(#{id},server_id)
+    </select>
+
+    <!--查询出所有数据-->
+    <select id="queryAll" resultType="com.sa.modules.entity.SystemEntity">
+        select * from sa_system
     </select>
 
 </mapper>

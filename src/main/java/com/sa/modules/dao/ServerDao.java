@@ -15,4 +15,9 @@ public interface ServerDao extends BaseDao<ServerEntity> {
      * 列出服务器的id和名字
      */
     List<ServerEntity> queryAllServer(long[] id);
+
+    /**
+     * 查询出所有数据
+     */
+    List<ServerEntity> queryAll();
 }

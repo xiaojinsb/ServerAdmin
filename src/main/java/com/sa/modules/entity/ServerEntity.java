@@ -1,34 +1,61 @@
 package com.sa.modules.entity;
 
+import com.wuwenze.poi.annotation.ExportConfig;
+
 import java.util.Date;
 
 public class ServerEntity {
 
+
   private long serverId;
+  @ExportConfig("服务器名")
   private String serverName;
+  @ExportConfig("网络情况")
   private String serNet;
+  @ExportConfig("部署情况")
   private String depSituation;
+  @ExportConfig("设备类型")
   private String type;
+  @ExportConfig("设备型号")
   private String model;
+  @ExportConfig("机房位置")
   private String generator;
+  @ExportConfig("楼层房间号")
   private String houseHumber;
+  @ExportConfig("机柜位置编号")
   private String cabinetHumber;
+  @ExportConfig("机柜")
   private String cabinet;
+  @ExportConfig("设备资产编号")
   private String propertyNumber;
+  @ExportConfig("设备购买时间")
   private String equipmentBuyTime;
+  @ExportConfig("设备年限")
   private String equipmentAgeLimit;
+  @ExportConfig("设备领料人")
   private String leader;
+  @ExportConfig("硬件主要配置")
   private String hardwareConfiguration;
+  @ExportConfig("操作系统")
   private String os;
+  @ExportConfig("计算机名称")
   private String pcName;
+  @ExportConfig("ip地址")
   private String serverIp;
+  @ExportConfig("服务器管理账号")
   private String serverAdmin;
+  @ExportConfig("服务器管理密码")
   private String serverPas;
+  @ExportConfig("杀毒软件及安装位置")
   private String shaduSoft;
+  @ExportConfig("系统初始配置")
   private String beginConfig;
+  @ExportConfig("备注相关信息")
   private String serverContent;
+  @ExportConfig("管理口")
   private String managementPort;
   private long userId;
+  @ExportConfig("运维人员")
   private String userName;
   private long createUserId;
   private Date createTime;

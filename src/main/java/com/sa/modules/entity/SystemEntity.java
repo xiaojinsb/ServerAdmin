@@ -1,25 +1,38 @@
 package com.sa.modules.entity;
 
 
+import com.wuwenze.poi.annotation.ExportConfig;
+
 import java.util.Date;
 
 public class SystemEntity {
 
   private long systemId;
+  @ExportConfig("应用系统名")
   private String systemName;
+  @ExportConfig("应用系统ip")
   private String systemIp;
+  @ExportConfig("应用系统域名")
   private String systemDomain;
+  @ExportConfig("应用系统管理地址")
   private String systemUrl;
+  @ExportConfig("应用系统管理账号")
   private String systemAdmin;
+  @ExportConfig("应用系统管理密码")
   private String systemPas;
+  @ExportConfig("应用系统部署情况")
   private String systemDeployment;
   private long userId;
+  @ExportConfig("运维人员")
   private String userName;
   private String serverId;
+  @ExportConfig("服务器")
   private String serverName;
   private String dbId;
+  @ExportConfig("数据库")
   private String dbName;
   private String middlewareId;
+  @ExportConfig("中间件")
   private String middlewareName;
   private long createUserId;
   private Date createTime;

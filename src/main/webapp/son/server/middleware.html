@@ -42,6 +42,10 @@
         <i class="layui-icon">&#xe654;</i>
         添加
     </button>
+    <button class="layui-btn" id="excel"  type="button">
+        <i class="layui-icon">&#xe62d;</i>
+        导出excel
+    </button>
 </div>
 
 <table id="tableList" lay-filter="tableList"></table>
@@ -279,6 +283,41 @@
             });
         });
 
+        //导出
+        $('#excel').on('click', function(){
+            //得到选择的值
+            var checkStatus = table.checkStatus('table')
+                ,data = checkStatus.data;
+            //for出id
+            var serverId = [];
+            for (var i=0; i<data.length;i++){
+                serverId[i] = data[i].middlewareId;
+            }
+            var download = "";
+            if (serverId.length == 0){
+                layer.confirm('是否要导出全部数据', {
+                    btn: ['是','否'] //按钮
+                }, function(index){
+                    download = "../../midd/excel?id=0";
+                    dow(download);
+                    layer.close(index);
+                }, function(index){
+                    layer.close(index);
+                });
+            }else {
+                download = "../../midd/excel?id=" + serverId.join(",");
+                dow(download);
+            }
+
+        });
+        //下载
+        function  dow(download){
+            var iframe  = document.createElement("iframe");
+            document.body.appendChild(iframe);
+            iframe.src = download;
+            iframe.style.display = "none";
+        }
+
         //监听操作条
         table.on('tool(tableList)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
             var data = obj.data; //获得当前行数据
@@ -462,56 +501,7 @@
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
             // get缓存问题 关闭ajax 缓存
-            $.ajaxSetup({cache: false})
-            iePlaceholder();
-        }
-
-        //判断浏览器是否支持placeholder属性
-        function iePlaceholder() {
-            supportPlaceholder = 'placeholder' in document.createElement('input'),
-
-                placeholder = function (input) {
-
-                    var text = input.attr('placeholder'),
-                        defaultValue = input.defaultValue;
-
-                    if (!defaultValue) {
-                        input.val(text).addClass("phcolor");
-                    }
-
-                    input.focus(function () {
-
-                        if (input.val() == text) {
-                            $(this).val("");
-                        }
-                    });
-
-                    input.blur(function () {
-
-                        if (input.val() == "") {
-                            $(this).val(text).addClass("phcolor");
-                        }
-                    });
-
-                    //输入的字符不为灰色
-                    input.keydown(function () {
-                        $(this).removeClass("phcolor");
-                    });
-                };
-
-            //当浏览器不支持placeholder属性时，调用placeholder函数
-            if (!supportPlaceholder) {
-
-                $('input').each(function () {
-
-                    text = $(this).attr("placeholder");
-
-                    if ($(this).attr("type") == "text") {
-
-                        placeholder($(this));
-                    }
-                });
-            }
+            $.ajaxSetup({cache: false});
         }
     });
 </script>

@@ -68,4 +68,8 @@
         select *  from sa_data_base where find_in_set(#{id},server_id)
     </select>
 
+    <!--查询出所有数据-->
+    <select id="queryAll" resultType="com.sa.modules.entity.DataBaseEntity">
+        select * from sa_data_base
+    </select>
 </mapper>

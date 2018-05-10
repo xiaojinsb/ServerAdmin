@@ -5,11 +5,14 @@ import com.sa.common.utils.R;
 import com.sa.modules.dao.DataBaseDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.DataBaseEntity;
+import com.wuwenze.poi.ExcelKit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -98,5 +101,22 @@ public class DataBaseController extends AbstractController {
     public Object queryByServerAll(long id) {
         List<DataBaseEntity> list = dataBaseDao.queryByServerAll(id);
         return R.ok().put("data", list);
+    }
+
+    /**
+     * 导出excel
+     */
+    @RequestMapping("/excel")
+    public void excel(HttpServletResponse response, long[] id){
+
+        List<DataBaseEntity> list = new ArrayList<DataBaseEntity>();
+        if (id[0]==0){
+            list = dataBaseDao.queryAll();
+        }else {
+            list = dataBaseDao.queryAllData(id);
+        }
+
+        // 生成Excel并使用浏览器下载
+        ExcelKit.$Export(DataBaseEntity.class, response).toExcel(list, "数据库");
     }
 }
