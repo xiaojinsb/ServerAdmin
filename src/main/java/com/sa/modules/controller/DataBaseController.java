@@ -6,6 +6,7 @@ import com.sa.modules.dao.DataBaseDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.DataBaseEntity;
 import com.wuwenze.poi.ExcelKit;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +34,7 @@ public class DataBaseController extends AbstractController {
      * 列出所有用户
      */
     @RequestMapping("/list")
-//    @RequiresPermissions("data:list")
+    @RequiresPermissions("data:list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
@@ -47,7 +48,7 @@ public class DataBaseController extends AbstractController {
      * 新增
      */
     @RequestMapping("/add")
-//    @RequiresPermissions("data:add")
+    @RequiresPermissions("data:add")
     public R add(DataBaseEntity data) {
 
         //赋值运维人员id 创造者 创造时间
@@ -64,7 +65,7 @@ public class DataBaseController extends AbstractController {
      * 更新
      */
     @RequestMapping("/edit")
-//    @RequiresPermissions("data:edit")
+    @RequiresPermissions("data:edit")
     public R edit(DataBaseEntity data) {
         //赋值运维人员id 更新时间
         if (data.getUserName() != "")
@@ -79,7 +80,7 @@ public class DataBaseController extends AbstractController {
      * 删除
      */
     @RequestMapping("/delete")
-//    @RequiresPermissions("data:delete")
+    @RequiresPermissions("data:del")
     public R delete(long id) {
         dataBaseDao.delete(id);
         return R.ok();
@@ -107,6 +108,7 @@ public class DataBaseController extends AbstractController {
      * 导出excel
      */
     @RequestMapping("/excel")
+    @RequiresPermissions("data:excel")
     public void excel(HttpServletResponse response, long[] id){
 
         List<DataBaseEntity> list = new ArrayList<DataBaseEntity>();

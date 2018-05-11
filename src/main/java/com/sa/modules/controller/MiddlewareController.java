@@ -6,6 +6,7 @@ import com.sa.modules.dao.MiddlewareDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.MiddlewareEntity;
 import com.wuwenze.poi.ExcelKit;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +34,7 @@ public class MiddlewareController extends AbstractController {
      * 列出所有用户
      */
     @RequestMapping("/list")
-//    @RequiresPermissions("midd:list")
+    @RequiresPermissions("midd:list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
@@ -47,7 +48,7 @@ public class MiddlewareController extends AbstractController {
      * 新增
      */
     @RequestMapping("/add")
-//    @RequiresPermissions("midd:add")
+    @RequiresPermissions("midd:add")
     public R add(MiddlewareEntity midd) {
 
         //赋值运维人员id 创造者 创造时间
@@ -64,7 +65,7 @@ public class MiddlewareController extends AbstractController {
      * 更新
      */
     @RequestMapping("/edit")
-//    @RequiresPermissions("midd:edit")
+    @RequiresPermissions("midd:edit")
     public R edit(MiddlewareEntity midd) {
 
         middlewareDao.edit(midd);
@@ -75,7 +76,7 @@ public class MiddlewareController extends AbstractController {
      * 删除
      */
     @RequestMapping("/delete")
-//    @RequiresPermissions("midd:delete")
+    @RequiresPermissions("midd:del")
     public R delete(long id) {
         middlewareDao.delete(id);
         return R.ok();
@@ -103,6 +104,7 @@ public class MiddlewareController extends AbstractController {
      * 导出excel
      */
     @RequestMapping("/excel")
+    @RequiresPermissions("midd:excel")
     public void excel(HttpServletResponse response, long[] id){
 
         List<MiddlewareEntity> list = new ArrayList<MiddlewareEntity>();

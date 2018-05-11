@@ -297,7 +297,7 @@
         <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
     </form>
 
-    <div class="layui-fluid lookOthers">
+    <div class="layui-fluid" style="margin-top: 8px" id="fileAdmin">
         <div class="layui-row layui-col-space15">
 
             <div class="layui-col-md12" >
@@ -370,6 +370,10 @@
                                 <span>中间件</span>
                             </blockquote>
                             <table id="middList" lay-filter="middList"></table>
+                            <blockquote class="layui-elem-quote quoteBox">
+                                <span>文件</span>
+                            </blockquote>
+                            <table id="filellist" lay-filter="filellist"></table>
                         </div>
 
                     </div>
@@ -392,11 +396,14 @@
             $ = layui.jquery, //获取jq
             laydate = layui.laydate; //获取时间插件
 
+        //生成一个时间
+        var getTime =  new Date().getTime();
+
         //渲染表格
         var tablelist = table.render({
             id: 'table'
             , elem: '#tableList' //选择表单
-            , url: '../../server/list' //json返回地址
+            , url: '../../server/list?t='+getTime //json返回地址
             , page: true //分页 开启
             // , height: 'full-125' // 高度 距离底部
             , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
@@ -456,6 +463,7 @@
         $("#add").click(function () {
             //设置 上传 显示 隐藏
             element.tabChange('docDemoTabBrief', '2');
+            $("#fileAdmin").show();
             $("#adminFile").hide();
             layer.open({
                 title: '新增服务器' //窗口名
@@ -482,20 +490,24 @@
 
                             if (res.msg == 'success') {
 
+                                if (uploader.total.queued == 0){
+                                    layer.msg('添加服务器成功');
+                                    layer.close(index);
+                                } else {
+                                    //动态的设置上传地址
+                                    uploader.settings.url = '../../../parses/uploadFile?fileClassify=server&fileId='+res.id;
+                                    //开启上传
+                                    $("#uploadfiles").click()
+
+                                    layer.open({
+                                        title: '上传信息'
+                                        , type: 1
+                                        , closeBtn: 0
+                                        , area: ['420px', '240px']
+                                        , content: $('#filesTpl')
+                                    });
+                                }
                                 tablelist.reload(); //刷新
-                                //动态的设置上传地址
-                                uploader.settings.url = '../../../parses/uploadFile?fileClassify=server&fileId='+res.id;
-                                //开启上传
-                                $("#uploadfiles").click()
-
-                                layer.open({
-                                    title: '上传信息'
-                                    , type: 1
-                                    , closeBtn: 0
-                                    , area: ['420px', '240px']
-                                    , content: $('#filesTpl')
-                                });
-
                             } else {
                                 if (res.msg != null) {
                                     layer.msg(res.msg);
@@ -563,6 +575,7 @@
 
             if (layEvent === 'look') {//查看
 
+                $("#fileAdmin").hide();
                 //赋值
                 for (var key in data) {
                     $("[name='"+key+"']").val(data[key]);
@@ -596,6 +609,7 @@
 
                 //设置 上传 显示 隐藏
                 element.tabChange('docDemoTabBrief', '1');
+                $("#fileAdmin").show();
                 $("#adminFile").show();
                 adminFiles("server",serverId);
 
@@ -629,19 +643,24 @@
 
                                 if (res.msg == 'success') {
 
+                                    if (uploader.total.queued == 0) {
+                                        layer.msg('修改服务器成功');
+                                        layer.close(index);
+                                    } else {
+                                        //动态的设置上传地址
+                                        uploader.settings.url = '../../../parses/uploadFile?fileClassify=server&fileId=' + serverId;
+                                        //开启上传
+                                        $("#uploadfiles").click()
+
+                                        layer.open({
+                                            title: '上传信息'
+                                            , type: 1
+                                            , closeBtn: 0
+                                            , area: ['420px', '240px']
+                                            , content: $('#filesTpl')
+                                        });
+                                    }
                                     tablelist.reload(); //刷新
-
-                                    uploader.settings.url = '../../../parses/uploadFile?fileClassify=server&fileId='+serverId;
-                                    //开启上传
-                                    $("#uploadfiles").click()
-
-                                    layer.open({
-                                        title: '上传信息'
-                                        , type: 1
-                                        , closeBtn: 0
-                                        , area: ['420px', '240px']
-                                        , content: $('#filesTpl')
-                                    });
                                 } else {
                                     if (res.msg != null) {
                                         layer.msg(res.msg);
@@ -706,7 +725,7 @@
 
         //请求获取用户列表
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: '../../user/queryAllUser',
             contentType: "application/json",
             async: false,
@@ -795,6 +814,23 @@
                     ]
                 ]
                 , page: false
+            });
+
+            table.render({
+                id: 'table5'
+                , elem: '#filellist' //选择表单
+                , url: '../../../parses/list?fileClassify=server&fileId='+id //json返回地址
+                , page: true //分页 开启
+                , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                    [
+                        {type: 'checkbox', fixed: "left"}
+                        , {field: 'parId', title: 'id', align: 'center', sort: true, width: 70}
+                        , {field: 'fileName', title: '文件名',  align: 'center', width: 300}
+                        , {field: 'urlSite', title: '文件地址',  align: 'center', width: 300}
+                        , {field: 'createTime', title: '创建时间',  align: 'center', width: 150}
+                        , {field: 'updateTime', title: '更新时间',  align: 'center', width: 150}
+                    ]
+                ]
             });
         }
 

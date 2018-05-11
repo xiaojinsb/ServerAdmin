@@ -33,7 +33,7 @@ public class SystemController extends AbstractController {
      * 列出所有用户
      */
     @RequestMapping("/list")
-//    @RequiresPermissions("sys:list")
+    @RequiresPermissions("sys:list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
@@ -49,7 +49,7 @@ public class SystemController extends AbstractController {
      * 新增
      */
     @RequestMapping("/add")
-//    @RequiresPermissions("sys:add")
+    @RequiresPermissions("sys:add")
     public R add(SystemEntity sys) {
 
         //赋值运维人员id 创造者 创造时间
@@ -67,7 +67,7 @@ public class SystemController extends AbstractController {
      * 更新
      */
     @RequestMapping("/edit")
-//    @RequiresPermissions("sys:edit")
+    @RequiresPermissions("sys:edit")
     public R edit(SystemEntity sys) {
 
         //赋值运维人员id 创造者 创造时间
@@ -84,7 +84,7 @@ public class SystemController extends AbstractController {
      * 删除
      */
     @RequestMapping("/delete")
-//    @RequiresPermissions("sys:delete")
+    @RequiresPermissions("sys:del")
     public R delete(long id) {
         systemDao.delete(id);
         return R.ok();
@@ -103,6 +103,7 @@ public class SystemController extends AbstractController {
      * 导出excel
      */
     @RequestMapping("/excel")
+    @RequiresPermissions("sys:excel")
     public void excel(HttpServletResponse response, long[] id){
 
         List<SystemEntity> list = new ArrayList<SystemEntity>();

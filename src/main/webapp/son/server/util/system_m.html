@@ -16,14 +16,23 @@
     <!--搜索组-->
     <div class="layui-form-item" style="margin-bottom: 5px">
         <div class="layui-inline">
-            <label class="layui-form-label" style="width: 90px">用户名</label>
+            <label class="layui-form-label" style="width: 80px">应用名</label>
             <div class="layui-input-inline">
-                <input type="text" name="username" placeholder="请输入用户名" maxlength="50" autocomplete="off" class="layui-input" />
+                <input type="text" name="systemName" placeholder="支持模糊查询" maxlength="50" autocomplete="off" class="layui-input" />
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 90px">运维人员</label>
+            <div class="layui-input-inline">
+                <select name="userName" id="userName1">
+                    <option value="">全部</option>
+                </select>
             </div>
         </div>
         <!-- 按钮组 -->
         <button class="layui-btn layui-btn-normal" lay-filter="btnSearch" type="button"  lay-submit>搜索</button>
-        <button type="reset" id="btnRetSet" type="button" class="layui-btn layui-btn-primary">重置</button>
+        <button type="reset"  lay-filter="render" type="button" class="layui-btn layui-btn-primary">重置</button>
     </div>
 
 </form>
@@ -37,11 +46,14 @@
             form = layui.form, //获取from
             $ = layui.jquery; //获取jq
 
+        //生成一个时间
+        var getTime =  new Date().getTime();
+
         //渲染表格
         var tablelist = table.render({
             id: 'table'
             , elem: '#tableList' //选择表单
-            , url: '../../../sys/list' //json返回地址
+            , url: '../../../sys/list?t='+getTime //json返回地址
             , page: true //分页 开启
             // , height: 'full-125' // 高度 距离底部
             , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
@@ -69,7 +81,8 @@
         form.on('submit(btnSearch)', function (data) {
             table.reload('table', {
                 where: { //设定异步数据接口的额外参数
-                    username: data.field.username
+                    systemName: data.field.systemName,
+                    userName: data.field.userName
                 }
                 , page: {
                     curr: 1 //重新从第 1 页开始
@@ -78,60 +91,33 @@
             return false;
         });
 
+        //请求获取用户列表
+        $.ajax({
+            type: "POST",
+            url: '../../../user/queryAllUser',
+            contentType: "application/json",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                var html = "";
+                for (var i =0; i < data.length;i++){
+                    html += '<option value="'+data[i].username+'">'+data[i].username+'</option>';
+                }
+                $("#userName").append(html);
+                $("#userName1").append(html);
+                form.render('select');
+            },
+            error: function () {
+                alert("系统错误");
+            }
+        });
+
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
             // get缓存问题 关闭ajax 缓存
             $.ajaxSetup({cache: false})
-            iePlaceholder();
         }
 
-        //判断浏览器是否支持placeholder属性
-        function iePlaceholder() {
-            supportPlaceholder = 'placeholder' in document.createElement('input'),
-
-                placeholder = function (input) {
-
-                    var text = input.attr('placeholder'),
-                        defaultValue = input.defaultValue;
-
-                    if (!defaultValue) {
-                        input.val(text).addClass("phcolor");
-                    }
-
-                    input.focus(function () {
-
-                        if (input.val() == text) {
-                            $(this).val("");
-                        }
-                    });
-
-                    input.blur(function () {
-
-                        if (input.val() == "") {
-                            $(this).val(text).addClass("phcolor");
-                        }
-                    });
-
-                    //输入的字符不为灰色
-                    input.keydown(function () {
-                        $(this).removeClass("phcolor");
-                    });
-                };
-
-            //当浏览器不支持placeholder属性时，调用placeholder函数
-            if (!supportPlaceholder) {
-
-                $('input').each(function () {
-
-                    text = $(this).attr("placeholder");
-
-                    if ($(this).attr("type") == "text") {
-
-                        placeholder($(this));
-                    }
-                });
-            }
-        }
     });
 </script>
 </body>

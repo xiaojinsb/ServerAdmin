@@ -29,7 +29,7 @@
 
     <!--查询文件-->
     <select id="queryFile" resultType="com.sa.modules.entity.ParsesEntity">
-        select * from sa_parses where file_name = #{arg0} and file_id = #{arg1} and file_classify = #{arg2}
+        select * from sa_parses where file_name = #{fileName} and file_id = #{fileId} and file_classify = #{fileClassify}
     </select>
 
     <!--新增-->

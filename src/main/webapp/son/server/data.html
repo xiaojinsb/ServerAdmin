@@ -16,7 +16,7 @@
     <!--搜索组-->
     <div class="layui-form-item" style="margin-bottom: 5px">
         <div class="layui-inline">
-            <label class="layui-form-label" style="width: 90px">应用名</label>
+            <label class="layui-form-label" style="width: 90px">数据库名</label>
             <div class="layui-input-inline">
                 <input type="text" name="dbName" placeholder="支持模糊查询" maxlength="50" autocomplete="off" class="layui-input" />
             </div>
@@ -222,7 +222,7 @@
         <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
     </form>
 
-    <div class="layui-fluid lookOthers">
+    <div class="layui-fluid" style="margin-top: 8px">
         <div class="layui-row layui-col-space15">
 
             <div class="layui-col-md12" >
@@ -285,11 +285,14 @@
             element = layui.element,
             $ = layui.jquery; //获取jq
 
+        //生成一个时间
+        var getTime =  new Date().getTime();
+
         //渲染表格
         var tablelist = table.render({
             id: 'table'
             , elem: '#tableList' //选择表单
-            , url: '../../data/list' //json返回地址
+            , url: '../../data/list?t='+getTime //json返回地址
             , page: true //分页 开启
             // , height: 'full-125' // 高度 距离底部
             , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
@@ -359,25 +362,29 @@
 
                             if (res.msg == 'success') {
 
+                                if (uploader.total.queued == 0){
+                                    layer.msg('添加数据库成功');
+                                    layer.close(index);
+                                } else {
+                                    //动态的设置上传地址
+                                    uploader.settings.url = '../../../parses/uploadFile?fileClassify=data&fileId='+res.id;
+                                    //开启上传
+                                    $("#uploadfiles").click()
+
+                                    layer.open({
+                                        title: '上传信息'
+                                        , type: 1
+                                        , closeBtn: 0
+                                        , area: ['420px', '240px']
+                                        , content: $('#filesTpl')
+                                    });
+                                }
                                 tablelist.reload(); //刷新
-
-                               //动态的设置上传地址
-                                uploader.settings.url = '../../../parses/uploadFile?fileClassify=data&fileId='+res.id;
-                                //开启上传
-                                $("#uploadfiles").click()
-
-                                layer.open({
-                                    title: '上传信息'
-                                    , type: 1
-                                    , closeBtn: 0
-                                    , area: ['420px', '240px']
-                                    , content: $('#filesTpl')
-                                });
                             } else {
                                 if (res.msg != null) {
                                     layer.msg(res.msg);
                                 } else {
-                                    layer.msg('添加服务器失败');
+                                    layer.msg('添加数据库失败');
                                 }
                             }
 
@@ -475,24 +482,29 @@
 
                                 if (res.msg == 'success') {
 
+                                    if (uploader.total.queued == 0){
+                                        layer.msg('添加服务器成功');
+                                        layer.close(index);
+                                    } else {
+                                        //动态的设置上传地址
+                                        uploader.settings.url = '../../../parses/uploadFile?fileClassify=data&fileId='+dbId;
+                                        //开启上传
+                                        $("#uploadfiles").click()
+
+                                        layer.open({
+                                            title: '上传信息'
+                                            , type: 1
+                                            , closeBtn: 0
+                                            , area: ['420px', '240px']
+                                            , content: $('#filesTpl')
+                                        });
+                                    }
                                     tablelist.reload(); //刷新
-
-                                    uploader.settings.url = '../../../parses/uploadFile?fileClassify=data&fileId='+dbId;
-                                    //开启上传
-                                    $("#uploadfiles").click()
-
-                                    layer.open({
-                                        title: '上传信息'
-                                        , type: 1
-                                        , closeBtn: 0
-                                        , area: ['420px', '240px']
-                                        , content: $('#filesTpl')
-                                    });
                                 } else {
                                     if (res.msg != null) {
                                         layer.msg(res.msg);
                                     } else {
-                                        layer.msg('添加成功失败');
+                                        layer.msg('添加数据库失败');
                                     }
                                 }
 
@@ -547,7 +559,7 @@
 
         //请求获取用户列表
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: '../../user/queryAllUser',
             contentType: "application/json",
             async: false,
@@ -592,7 +604,9 @@
 
         //根据得到的值查询 服务器详细信息
         function serverTable(serverId){
-
+            if (serverId == ""){
+                serverId = 0;
+            }
             table.render({
                 id: 'table1'
                 , elem: '#serverTable' //选择表单

@@ -78,11 +78,14 @@
             form = layui.form, //获取from
             $ = layui.jquery; //获取jq
 
+        //生成一个时间
+        var getTime =  new Date().getTime();
+
         //渲染表格
         var tablelist = table.render({
             id: 'table'
             , elem: '#tableList' //选择表单
-            , url: '../../role/list' //json返回地址
+            , url: '../../role/list?t='+getTime //json返回地址
             , page: true //分页 开启
             // , height: 'full-125' // 高度 距离底部
             , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
@@ -162,7 +165,6 @@
                 },
                 end: function () {
                     $('form.layui-form').find('button[lay-filter=render]').click();
-                    iePlaceholder();
                 }
             });
         });
@@ -177,12 +179,14 @@
 
             } else if (layEvent === 'edit') {//修改
 
+                //赋值
                 $("#roleName").val(data.roleName);
                 $("#remark").val(data.remark);
+                var roleId = data.roleId;
 
                 //勾选已选中的菜单
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: '../../role/info?id=' + data.roleId,
                     contentType: "application/json",
                     async: false,
@@ -222,8 +226,7 @@
                         $('form.layui-form').find('button[lay-filter=submitSave]').click();
                     },
                     success: function (layero, index) {
-                        // 角色id
-                        var roleId = data.roleId;
+
                         form.on('submit(submitSave)', function(data){
 
                             //获取选择的菜单
@@ -259,7 +262,6 @@
                     ,
                     end: function () {
                         $('form.layui-form').find('button[lay-filter=render]').click();
-                        iePlaceholder();
                     }
                 });
             }else if (layEvent === 'delete') {//删除
@@ -307,7 +309,7 @@
         var ztree;
         //加载树
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: '../../menu/menuAllList',
             contentType: "application/json",
             async: false,
@@ -339,56 +341,8 @@
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
             // get缓存问题 关闭ajax 缓存
             $.ajaxSetup({cache: false})
-            iePlaceholder();
         }
 
-        //判断浏览器是否支持placeholder属性
-        function iePlaceholder() {
-            supportPlaceholder = 'placeholder' in document.createElement('input'),
-
-                placeholder = function (input) {
-
-                    var text = input.attr('placeholder'),
-                        defaultValue = input.defaultValue;
-
-                    if (!defaultValue) {
-                        input.val(text).addClass("phcolor");
-                    }
-
-                    input.focus(function () {
-
-                        if (input.val() == text) {
-                            $(this).val("");
-                        }
-                    });
-
-                    input.blur(function () {
-
-                        if (input.val() == "") {
-                            $(this).val(text).addClass("phcolor");
-                        }
-                    });
-
-                    //输入的字符不为灰色
-                    input.keydown(function () {
-                        $(this).removeClass("phcolor");
-                    });
-                };
-
-            //当浏览器不支持placeholder属性时，调用placeholder函数
-            if (!supportPlaceholder) {
-
-                $('input').each(function () {
-
-                    text = $(this).attr("placeholder");
-
-                    if ($(this).attr("type") == "text") {
-
-                        placeholder($(this));
-                    }
-                });
-            }
-        }
     });
 </script>
 </body>

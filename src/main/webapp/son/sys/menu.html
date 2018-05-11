@@ -126,10 +126,13 @@
             form = layui.form, //获取from
             $ = layui.jquery; //获取jq
 
+        //生成一个时间
+        var getTime =  new Date().getTime();
+
         var treeTable =treeGrid.render({
             id: 'table'
             ,elem: '#treeTable'
-            ,url:'../../menu/list'
+            ,url:'../../menu/list?t='+getTime
             ,treeId:'menuId'//树形id字段名称
             ,treeUpId:'parentId'//树形父id字段名称
             ,treeShowName:'menuName'//以树形式显示的字段
@@ -320,7 +323,7 @@
         });
 
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: '../../menu/catalog?type=0',
             contentType: "application/json",
             async: false,
@@ -354,55 +357,6 @@
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
             // get缓存问题 关闭ajax 缓存
             $.ajaxSetup({cache: false})
-            iePlaceholder();
-        }
-
-        //判断浏览器是否支持placeholder属性
-        function iePlaceholder() {
-            supportPlaceholder = 'placeholder' in document.createElement('input'),
-
-                placeholder = function (input) {
-
-                    var text = input.attr('placeholder'),
-                        defaultValue = input.defaultValue;
-
-                    if (!defaultValue) {
-                        input.val(text).addClass("phcolor");
-                    }
-
-                    input.focus(function () {
-
-                        if (input.val() == text) {
-                            $(this).val("");
-                        }
-                    });
-
-                    input.blur(function () {
-
-                        if (input.val() == "") {
-                            $(this).val(text).addClass("phcolor");
-                        }
-                    });
-
-                    //输入的字符不为灰色
-                    input.keydown(function () {
-                        $(this).removeClass("phcolor");
-                    });
-                };
-
-            //当浏览器不支持placeholder属性时，调用placeholder函数
-            if (!supportPlaceholder) {
-
-                $('input').each(function () {
-
-                    text = $(this).attr("placeholder");
-
-                    if ($(this).attr("type") == "text") {
-
-                        placeholder($(this));
-                    }
-                });
-            }
         }
     });
 </script>
