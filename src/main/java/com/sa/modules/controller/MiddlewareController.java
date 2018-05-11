@@ -57,7 +57,7 @@ public class MiddlewareController extends AbstractController {
         midd.setCreateTime(getTime());
 
         middlewareDao.add(midd);
-        return R.ok();
+        return R.ok().put("id",midd.getMiddlewareId());
     }
 
     /**

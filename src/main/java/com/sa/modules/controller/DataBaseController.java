@@ -57,7 +57,7 @@ public class DataBaseController extends AbstractController {
         data.setCreateTime(getTime());
 
         dataBaseDao.add(data);
-        return R.ok();
+        return R.ok().put("id",data.getDbId());
     }
 
     /**

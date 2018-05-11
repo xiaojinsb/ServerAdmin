@@ -69,6 +69,22 @@
     <button class="layui-btn layui-btn-sm  layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</button>
 </script>
 
+<!--文件管理工具栏    -->
+</script><script type="text/html" id="foperationTpl">
+    <button class="layui-btn layui-btn-sm" lay-event="fdow"><i class="layui-icon">&#xe601;</i>下载</button>
+    <button class="layui-btn layui-btn-sm  layui-btn-danger" lay-event="fdel"><i class="layui-icon">&#xe640;</i>删除</button>
+</script>
+
+<!--文件上传信息模板-->
+<div id="filesTpl" style="display: none">
+    <span>上传总进度：<span id="percent"></span>%</span>
+    <br>
+    <span>已上传：<span id="uploaded"></span>个文件</span>
+    <br>
+    <span>需要上传：<span id="queued"></span>个文件</span>
+    <br>
+</div>
+
 <!--添加-->
 <div id="addTpl" style="display: none;background-color: #F2F2F2;width: 100%;padding-bottom: 20px">
     <form class="layui-form" method="post" style="padding-top: 20px">
@@ -199,58 +215,65 @@
                     </div>
                 </div>
 
-                <div class="layui-col-md12" >
-                    <div class="layui-card">
-                        <div class="layui-card-header">文件上传</div>
-                        <div class="layui-card-body layui-row layui-col-space10" style="padding-bottom: 40px">
-
-                            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="margin-left: 20px">
-                                <ul class="layui-tab-title">
-                                    <li class="layui-this" >管理文件</li>
-                                    <li>上传文件</li>
-                                </ul>
-                                <div class="layui-tab-content" style="height: 100px;">
-                                    <div class="layui-tab-item layui-show">
-                                        <table id="filelist" lay-filter="filelist"></table>
-                                    </div>
-                                    <div class="layui-tab-item">
-
-                                        <div class="layui-upload" id="container">
-                                            <button type="button" class="layui-btn layui-btn-normal" id="pickfiles">选择多文件</button>
-                                            <button type="button" class="layui-btn layui-btn-normal" id="empty">清空</button>
-                                            <div class="layui-upload-list">
-                                                <table class="layui-table">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>文件名</th>
-                                                        <th>大小</th>
-                                                        <th>状态</th>
-                                                        <th>进度</th>
-                                                        <th>操作</th>
-                                                    </tr>
-                                                    </thead>
-
-                                                    <tbody id="uploadingFiles"></tbody>
-
-                                                </table>
-                                            </div>
-                                            <button type="button" class="layui-btn" id="uploadfiles" style="display: none">开始上传</button>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
         <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
         <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
     </form>
+
+    <div class="layui-fluid lookOthers">
+        <div class="layui-row layui-col-space15">
+
+            <div class="layui-col-md12" >
+                <div class="layui-card">
+                    <div class="layui-card-header">文件上传<span style="font-size: 12px;color: #757575;">  单个文件大小不能超过100MB 可上传类型zip,pdf,doc,exe,msi,xlsx,txt</span></div>
+                    <div class="layui-card-body layui-row layui-col-space10" style="padding-bottom: 40px">
+
+                        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="margin-left: 20px">
+                            <ul class="layui-tab-title">
+                                <li lay-id="1" id="adminFile">管理文件</li>
+                                <li lay-id="2">上传文件</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item">
+                                    <table id="filelist" lay-filter="filelist"></table>
+                                </div>
+                                <div class="layui-tab-item">
+
+                                    <div class="layui-upload" id="container">
+                                        <button type="button" class="layui-btn layui-btn-normal" id="pickfiles">选择多文件</button>
+                                        <button type="button" class="layui-btn layui-btn-normal" id="empty">清空</button>
+                                        <div class="layui-upload-list">
+                                            <table class="layui-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>文件名</th>
+                                                    <th>大小</th>
+                                                    <th>状态</th>
+                                                    <th>进度</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody id="uploadingFiles"></tbody>
+
+                                            </table>
+                                        </div>
+                                        <button type="button" class="layui-btn" id="uploadfiles" style="display: none">开始上传</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
 <script src="../../statics/plugins/layui/layui.js"></script>
@@ -306,8 +329,11 @@
             return false;
         });
 
+        var isfiels = 0;
         $("#add").click(function () {
-
+            //设置 上传 显示 隐藏
+            element.tabChange('docDemoTabBrief', '2');
+            $("#adminFile").hide();
             layer.open({
                 title: '新增数据库' //窗口名
                 , type: 1 //打开类型
@@ -321,15 +347,32 @@
                     $('form.layui-form').find('button[lay-filter=submitSave]').click();
                 },
                 success: function (layero, index) { //层弹出后的成功回调
+
+                    //判断上传初始
+                    if (isfiels == 0){
+                        uploader.init();
+                        isfiels = 1;
+                    }
                     //弹出窗口成功后渲染表单
                     form.on('submit(submitSave)', function (data) {
                         $.post("../../data/add", data.field, function (res) {
 
                             if (res.msg == 'success') {
-                                layer.msg('添加服务器成功');
 
-                                layer.close(index); //关闭当前窗口
                                 tablelist.reload(); //刷新
+
+                               //动态的设置上传地址
+                                uploader.settings.url = '../../../parses/uploadFile?fileClassify=data&fileId='+res.id;
+                                //开启上传
+                                $("#uploadfiles").click()
+
+                                layer.open({
+                                    title: '上传信息'
+                                    , type: 1
+                                    , closeBtn: 0
+                                    , area: ['420px', '240px']
+                                    , content: $('#filesTpl')
+                                });
                             } else {
                                 if (res.msg != null) {
                                     layer.msg(res.msg);
@@ -344,6 +387,12 @@
                 },
                 end: function () {
                     $('form.layui-form').find('button[lay-filter=render]').click();
+                    //清空上传列表
+                    $("#empty").click();
+                    //在ie上强制刷新页面
+                    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+                        location.reload();
+                    }
                 }
             });
         });
@@ -391,12 +440,17 @@
 
             if (layEvent === 'edit') {//修改
 
+                var dbId = data.dbId;
+                //设置 上传 显示 隐藏
+                element.tabChange('docDemoTabBrief', '1');
+                $("#adminFile").show();
+                adminFiles("data",dbId);
+
                 //赋值
                 for (var key in data) {
                     $("[name='"+key+"']").val(data[key]);
                 }
                 form.render('select');
-                var dbId = data.dbId;
 
                 //列出服务器
                 var serverId = $("#serverId").val();
@@ -420,10 +474,20 @@
                             $.post("../../data/edit", data.field, function (res) {
 
                                 if (res.msg == 'success') {
-                                    layer.msg('添加成功');
 
-                                    layer.close(index); //关闭当前窗口
                                     tablelist.reload(); //刷新
+
+                                    uploader.settings.url = '../../../parses/uploadFile?fileClassify=data&fileId='+dbId;
+                                    //开启上传
+                                    $("#uploadfiles").click()
+
+                                    layer.open({
+                                        title: '上传信息'
+                                        , type: 1
+                                        , closeBtn: 0
+                                        , area: ['420px', '240px']
+                                        , content: $('#filesTpl')
+                                    });
                                 } else {
                                     if (res.msg != null) {
                                         layer.msg(res.msg);
@@ -438,6 +502,12 @@
                     },
                     end: function () {
                         $('form.layui-form').find('button[lay-filter=render]').click();
+                        //清空上传列表
+                        $("#empty").click();
+                        //在ie上强制刷新页面
+                        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+                            location.reload();
+                        }
                     }
                 });
             }else if (layEvent === 'delete') {//删除
@@ -563,16 +633,69 @@
             });
         }
 
-        var filesId = [];
+        // 显示文件管理
+        function adminFiles(fileClassify,fileId) {
+            //渲染表格
+            var table4 = table.render({
+                id: 'table4'
+                , elem: '#filelist' //选择表单
+                , url: '../../../parses/list?fileClassify='+fileClassify+'&fileId='+fileId //json返回地址
+                , page: true //分页 开启
+                , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
+                    [
+                        {type: 'checkbox', fixed: "left"}
+                        , {field: 'parId', title: 'id', align: 'center', sort: true, width: 70}
+                        , {field: 'fileName', title: '文件名',  align: 'center', width: 300}
+                        , {field: 'urlSite', title: '文件地址',  align: 'center', width: 300}
+                        , {field: 'createTime', title: '创建时间',  align: 'center', width: 150}
+                        , {field: 'updateTime', title: '更新时间',  align: 'center', width: 150}
+                        , {title: '操作', toolbar: '#foperationTpl', fixed: "right", width: 250}
+                    ]
+                ]
+            });
+
+            table.on('tool(filelist)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'fdow') {//下载
+                    download = "../../parses/dow?urlSite=" +data.urlSite+"&fileName="+data.fileName;
+                    dow(download);
+                }else  if (layEvent === 'fdel') {//删除
+                    layer.confirm('确定删除这个文件？', {
+                        btn: ['确认', '关闭'] //按钮
+                    }, function () {
+                        $.post("../../parses/delete", {parId: data.parId,urlSite:data.urlSite,fileName:data.fileName}, function (res) {
+
+                            if (res.msg == 'success') {
+                                layer.msg('删除文件成功');
+
+                                table4.reload(); //刷新
+                            } else {
+                                if (res.msg != null) {
+                                    layer.msg(res.msg);
+                                } else {
+                                    layer.msg('删除文件失败');
+                                }
+                            }
+
+                        });
+                    });
+                }
+            });
+        }
+
+
+
         //上传
+        var filesId = [];
         var uploader = new plupload.Uploader({
-            runtimes : 'html5,flash,html4',
+            runtimes : 'html5,flash',
             browse_button : 'pickfiles',
             container: document.getElementById('container'),
-            // url : '../../../parses/uploadFile?fileClassify='+fileClassify+'&fileId='+fileId,
             flash_swf_url : '../../../statics/src/images/Moxie.swf',
             max_file_size : '100mb',
-            // chunk_size: '10mb', //分片上传
 
             filters : {
                 prevent_duplicates : true,
@@ -586,14 +709,13 @@
                     $("#uploadingFiles").html("");
 
                     document.getElementById('uploadfiles').onclick = function() {
+                        $("#queued").html(uploader.total.queued);
                         uploader.start();
-                        console.log("一共有"+uploader.total.queued);
                         return false;
                     };
                 },
 
                 FilesAdded: function(up, files) {
-                    console.log(uploader.total.size)
                     plupload.each(files, function(file) {
                         $("#uploadingFiles").append('<tr class="fileList" id='+file.id+'>\n' +
                             '    <td>'+ file.name+'</td>\n' +
@@ -608,23 +730,24 @@
                 UploadProgress: function(up, file) {
                     $("#" + file.id + " td:eq(3)").html(file.percent+"%");
 
+                    $("#percent").html(uploader.total.percent);
+                    $("#uploaded").html(uploader.total.uploaded+1);
+                    if (uploader.total.queued == 1){
+                        layer.closeAll('page');
+                        // layer.msg('文件上传完成');
+                    }
                 },
 
                 FileUploaded: function(up, file) {
                     $("#" + file.id + " td:eq(2)").html("上传成功");
-                    console.log("总进度"+uploader.total.percent);
-                    console.log("已完成"+uploader.total.uploaded);
                 },
 
                 Error: function(up, err) {
                     $("#" + err.file.id + " td:eq(2)").html(err.message);
-                    console.log(err)
                 }
             }
 
         });
-
-        uploader.init();
 
         $("#empty").click(function () {
             var fileDelete = $('.fileDelete');
@@ -639,7 +762,7 @@
                 }
                 uploader.files.splice(toremove, 1);
             }
-        })
+        });
 
         //删除上传队列
         $(document).on('click','#uploadingFiles tr .fileDelete',function(){

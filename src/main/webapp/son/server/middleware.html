@@ -191,13 +191,68 @@
         <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
         <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
     </form>
+
+    <div class="layui-fluid lookOthers">
+        <div class="layui-row layui-col-space15">
+
+            <div class="layui-col-md12" >
+                <div class="layui-card">
+                    <div class="layui-card-header">文件上传<span style="font-size: 12px;color: #757575;">  单个文件大小不能超过100MB 可上传类型zip,pdf,doc,exe,msi,xlsx,txt</span></div>
+                    <div class="layui-card-body layui-row layui-col-space10" style="padding-bottom: 40px">
+
+                        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="margin-left: 20px">
+                            <ul class="layui-tab-title">
+                                <li lay-id="1" id="adminFile">管理文件</li>
+                                <li lay-id="2">上传文件</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item">
+                                    <table id="filelist" lay-filter="filelist"></table>
+                                </div>
+                                <div class="layui-tab-item">
+
+                                    <div class="layui-upload" id="container">
+                                        <button type="button" class="layui-btn layui-btn-normal" id="pickfiles">选择多文件</button>
+                                        <button type="button" class="layui-btn layui-btn-normal" id="empty">清空</button>
+                                        <div class="layui-upload-list">
+                                            <table class="layui-table">
+                                                <thead>
+                                                <tr>
+                                                    <th>文件名</th>
+                                                    <th>大小</th>
+                                                    <th>状态</th>
+                                                    <th>进度</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody id="uploadingFiles"></tbody>
+
+                                            </table>
+                                        </div>
+                                        <button type="button" class="layui-btn" id="uploadfiles" style="display: none">开始上传</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
 <script src="../../statics/plugins/layui/layui.js"></script>
+<script src="../../statics/src/js/plupload.js"></script>
 <script>
-    layui.use(['table', 'form'], function () {
+    layui.use(['table', 'form','element'], function () {
         var table = layui.table, //获取表格
             form = layui.form, //获取from
+            element = layui.element,
             $ = layui.jquery; //获取jq
 
         //渲染表格
@@ -241,8 +296,11 @@
             return false;
         });
 
+        var isfiels = 0;
         $("#add").click(function () {
-
+            //设置 上传 显示 隐藏
+            element.tabChange('docDemoTabBrief', '2');
+            $("#adminFile").hide();
             layer.open({
                 title: '新增中间件' //窗口名
                 , type: 1 //打开类型
@@ -256,15 +314,31 @@
                     $('form.layui-form').find('button[lay-filter=submitSave]').click();
                 },
                 success: function (layero, index) { //层弹出后的成功回调
+
+                    //判断上传初始
+                    if (isfiels == 0){
+                        uploader.init();
+                        isfiels = 1;
+                    }
                     //弹出窗口成功后渲染表单
                     form.on('submit(submitSave)', function (data) {
                         $.post("../../midd/add", data.field, function (res) {
 
                             if (res.msg == 'success') {
-                                layer.msg('添加中间件成功');
 
-                                layer.close(index); //关闭当前窗口
                                 tablelist.reload(); //刷新
+                                //动态的设置上传地址
+                                uploader.settings.url = '../../../parses/uploadFile?fileClassify=data&fileId='+res.id;
+                                //开启上传
+                                $("#uploadfiles").click()
+
+                                layer.open({
+                                    title: '上传信息'
+                                    , type: 1
+                                    , closeBtn: 0
+                                    , area: ['420px', '240px']
+                                    , content: $('#filesTpl')
+                                });
                             } else {
                                 if (res.msg != null) {
                                     layer.msg(res.msg);
@@ -279,6 +353,11 @@
                 },
                 end: function () {
                     $('form.layui-form').find('button[lay-filter=render]').click();
+                    $("#empty").click();
+                    //在ie上强制刷新页面
+                    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+                        location.reload();
+                    }
                 }
             });
         });
@@ -326,12 +405,17 @@
 
             if (layEvent === 'edit') {//修改
 
+                var middlewareId = data.middlewareId;
+                //设置 上传 显示 隐藏
+                element.tabChange('docDemoTabBrief', '1');
+                $("#adminFile").show();
+                adminFiles("data",dbId);
+
                 //赋值
                 for (var key in data) {
                     $("[name='"+key+"']").val(data[key]);
                 }
                 form.render('select');
-                var middlewareId = data.middlewareId;
 
                 //列出服务器
                 var serverId = $("#serverId").val();

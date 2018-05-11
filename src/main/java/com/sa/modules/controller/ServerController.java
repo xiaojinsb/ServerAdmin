@@ -43,7 +43,7 @@ public class ServerController extends AbstractController {
     /**
      * 新增
      */
-    @PostMapping("/add")
+    @RequestMapping("/add")
 //    @RequiresPermissions("server:add")
     public R add(ServerEntity server) {
 
@@ -61,7 +61,7 @@ public class ServerController extends AbstractController {
     /**
      * 更新
      */
-    @PostMapping("/edit")
+    @RequestMapping("/edit")
 //    @RequiresPermissions("server:edit")
     public R edit(ServerEntity server) {
 
@@ -77,7 +77,7 @@ public class ServerController extends AbstractController {
     /**
      * 删除
      */
-    @PostMapping("/delete")
+    @RequestMapping("/delete")
 //    @RequiresPermissions("server:delete")
     public R delete(long id) {
         serverDao.delete(id);
@@ -87,7 +87,7 @@ public class ServerController extends AbstractController {
     /**
      * 列出所有查询到的服务器
      */
-    @PostMapping("/queryAllServer")
+    @RequestMapping("/queryAllServer")
     public Object info(long[] id) {
         List<ServerEntity> list = serverDao.queryAllServer(id);
         return R.ok().put("data", list);

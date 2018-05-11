@@ -70,7 +70,6 @@ public R uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest 
 
     //查询文件是否存在
      List<ParsesEntity> isfile = parsesDao.queryFile(fileName,fileId,fileClassify);
-
     if (isfile.size() != 0){
             isfile.get(0).setUpdateTime(getTime());
             parsesDao.edit(isfile.get(0));
