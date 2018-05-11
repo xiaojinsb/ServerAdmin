@@ -38,7 +38,7 @@
         VALUE (#{roleId},#{roleName},#{remark},#{createUserId},#{createTime});
     </insert>
 
-    <!--更新用户-->
+    <!--更新-->
     <update id="edit" parameterType="com.sa.modules.entity.RoleEntity">
         update sa_role set role_name = #{roleName}, remark = #{remark}where role_id = #{roleId}
     </update>

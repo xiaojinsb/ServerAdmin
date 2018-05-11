@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class ParsesEntity {
 
-    private String parId;
-    private String fileId;
+    private long parId;
+    private long fileId;
     private String fileClassify;
     private String fileName;
     private String urlSite;
@@ -13,19 +13,19 @@ public class ParsesEntity {
     private Date createTime;
     private Date updateTime;
 
-    public String getParId() {
+    public long getParId() {
         return parId;
     }
 
-    public void setParId(String parId) {
+    public void setParId(long parId) {
         this.parId = parId;
     }
 
-    public String getFileId() {
+    public long getFileId() {
         return fileId;
     }
 
-    public void setFileId(String fileId) {
+    public void setFileId(long fileId) {
         this.fileId = fileId;
     }
 
@@ -75,19 +75,5 @@ public class ParsesEntity {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "ParsesEntity{" +
-                "parId='" + parId + '\'' +
-                ", fileId='" + fileId + '\'' +
-                ", fileClassify='" + fileClassify + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", urlSite='" + urlSite + '\'' +
-                ", createUserId=" + createUserId +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
     }
 }

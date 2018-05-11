@@ -13,5 +13,6 @@ public interface ParsesDao extends BaseDao<ParsesEntity> {
     /**
      * 查询文件
      */
-    List<ParsesEntity> queryFile(String fileName);
+    List<ParsesEntity> queryFile(String fileName, long fileId,String fileClassify);
+
 }

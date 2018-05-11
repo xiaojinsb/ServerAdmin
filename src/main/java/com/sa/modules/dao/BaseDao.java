@@ -24,6 +24,8 @@ public interface BaseDao<T> {
 
 	//删除
 	int delete(long id);
+
+	int delete(T t);
 	
 	int delete(Map<String, Object> map);
 	
