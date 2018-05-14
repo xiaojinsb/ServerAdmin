@@ -57,6 +57,7 @@
 
 </form>
 
+<!--顶部按钮-->
 <div style="margin-left: 10px">
     <button class="layui-btn" id="add" type="button">
         <i class="layui-icon">&#xe654;</i>
@@ -67,8 +68,6 @@
         导出excel
     </button>
 </div>
-
-
 
 <table id="tableList" lay-filter="tableList"></table>
 
@@ -87,8 +86,19 @@
     <a href="javascript:;" class="layui-table-link" lay-event="look">{{ d.serverName }}</a>
 </script>
 
+<!--查看 应用系统 数据库 中间件信息-->
+<script type="text/html" id="ssLookTpl">
+    <a href="javascript:;" class="layui-table-link" lay-event="sslook">{{ d.systemName }}</a>
+</script>
+<script type="text/html" id="dLookTpl">
+    <a href="javascript:;" class="layui-table-link" lay-event="dlook">{{ d.dbName }}</a>
+</script>
+<script type="text/html" id="mLookTpl">
+    <a href="javascript:;" class="layui-table-link" lay-event="mlook">{{ d.middlewareName }}</a>
+</script>
+
 <!--文件上传信息模板-->
-<div id="filesTpl" style="display: none">
+<div id="filesTpl" style="display: none;text-align: center;line-height: 23px">
     <span>上传总进度：<span id="percent"></span>%</span>
     <br>
     <span>已上传：<span id="uploaded"></span>个文件</span>
@@ -104,38 +114,43 @@
         <div class="layui-fluid">
             <div class="layui-row layui-col-space15">
 
-                <div class="layui-col-md12">
+                <div class="layui-col-md14">
                     <div class="layui-card">
                         <div class="layui-card-header">服务器基本信息</div>
                         <div class="layui-card-body layui-row layui-col-space10">
-                            <div class="layui-col-lg3">
-                                <label class="layui-form-label">服务器名称<span class="remind">*</span>：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="serverName" lay-verify="serverName" placeholder="请输入服务器名称" autocomplete="off" class="layui-input">
+
+                            <div class="layui-col-md6 layui-col-space10">
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">服务器名称<span class="remind">*</span>：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="serverName" lay-verify="serverName" placeholder="请输入服务器名称" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">设备类型：</label>
+                                    <div class="layui-input-block">
+                                        <select name="type" lay-verify="type" lay-filter="type">
+                                            <option value=""></option>
+                                            <option value="物理机">物理机</option>
+                                            <option value="虚拟机">虚拟机</option>
+                                            <option value="储存">储存</option>
+                                            <option value="网络设备">网络设备</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-col-lg6">
+                                    <label class="layui-form-label">网络情况：</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="serNet" lay-verify="serNet" placeholder="请输入服务器网络情况" autocomplete="off" class="layui-input">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="layui-col-lg3">
-                                <label class="layui-form-label">设备类型：</label>
-                                <div class="layui-input-block">
-                                    <select name="type" lay-verify="type" lay-filter="type">
-                                        <option value=""></option>
-                                        <option value="物理机">物理机</option>
-                                        <option value="虚拟机">虚拟机</option>
-                                        <option value="储存">储存</option>
-                                        <option value="网络设备">网络设备</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-col-lg3">
-                                <label class="layui-form-label">网络情况：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="serNet" lay-verify="serNet" placeholder="请输入服务器网络情况" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-col-lg3">
-                                <label class="layui-form-label">部署情况：</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="depSituation" lay-verify="depSituation" placeholder="请输入服务器部署情况" autocomplete="off" class="layui-input">
+                            <div class="layui-col-md6">
+                                <div class="layui-col-lg12">
+                                    <label class="layui-form-label">部署情况：</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="depSituation" lay-verify="depSituation" placeholder="请输入服务器部署情况" class="layui-textarea"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -491,8 +506,7 @@
                             if (res.msg == 'success') {
 
                                 if (uploader.total.queued == 0){
-                                    layer.msg('添加服务器成功');
-                                    layer.close(index);
+                                    confirm('添加服务器成功');
                                 } else {
                                     //动态的设置上传地址
                                     uploader.settings.url = '../../../parses/uploadFile?fileClassify=server&fileId='+res.id;
@@ -503,16 +517,20 @@
                                         title: '上传信息'
                                         , type: 1
                                         , closeBtn: 0
-                                        , area: ['420px', '240px']
+                                        , area: ['260px', '170px']
                                         , content: $('#filesTpl')
+                                        , btn: ['确定']
+                                        ,yes: function(index, layero){
+                                            layer.closeAll();
+                                        }
                                     });
                                 }
                                 tablelist.reload(); //刷新
                             } else {
                                 if (res.msg != null) {
-                                    layer.msg(res.msg);
+                                    confirm(res.msg);
                                 } else {
-                                    layer.msg('添加服务器失败');
+                                    confirm('添加服务器失败');
                                 }
                             }
 
@@ -644,8 +662,7 @@
                                 if (res.msg == 'success') {
 
                                     if (uploader.total.queued == 0) {
-                                        layer.msg('修改服务器成功');
-                                        layer.close(index);
+                                        confirm('修改服务器成功');
                                     } else {
                                         //动态的设置上传地址
                                         uploader.settings.url = '../../../parses/uploadFile?fileClassify=server&fileId=' + serverId;
@@ -656,16 +673,20 @@
                                             title: '上传信息'
                                             , type: 1
                                             , closeBtn: 0
-                                            , area: ['420px', '240px']
+                                            , area: ['260px', '170px']
                                             , content: $('#filesTpl')
+                                            , btn: ['确定']
+                                            ,yes: function(index, layero){
+                                                layer.closeAll();
+                                            }
                                         });
                                     }
                                     tablelist.reload(); //刷新
                                 } else {
                                     if (res.msg != null) {
-                                        layer.msg(res.msg);
+                                        confirm(res.msg);
                                     } else {
-                                        layer.msg('修改失败');
+                                        confirm('修改服务器失败');
                                     }
                                 }
 
@@ -753,7 +774,7 @@
                 // , height: 'full-125' // 高度 距离底部
                 , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
                     [
-                        {field: 'systemName', title: '应用系统名称', align: 'center', width: 130, style: 'background-color: #eee;'}
+                        {field: 'systemName', title: '应用系统名称', toolbar: '#ssLookTpl', align: 'center', width: 130}
                         , {field: 'systemIp', title: 'ip地址', align: 'center', width: 100}
                         , {field: 'systemDomain', title: '访问域名', align: 'center', width: 100}
                         , {field: 'systemUrl', title: '管理地址', align: 'center', width: 100}
@@ -770,6 +791,28 @@
                 , page: false
             });
 
+            table.on('tool(sysList)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'sslook') {
+                    layer.open({
+                        title: '查看应用系统详细信息', //窗口名
+                        type: 2, //打开类型
+                        shade: 0, //遮罩 浓度0.4
+                        maxmin: true, //最小化开关 开
+                        content: 'util/look/sslook.html?id='+data.systemId, //打开div模版
+                        offset: 'auto', //坐标
+                        area: ['80%', '80%'], //弹出窗口大小 宽 高
+                        btn: ['关闭'],
+                        yes: function (index, layero) {
+                            layer.close(index); //关闭当前窗口
+                        }
+                    });
+                }
+            });
+
             table.render({
                 id: 'table2'
                 , elem: '#dataList' //选择表单
@@ -778,7 +821,7 @@
                 // , height: 'full-125' // 高度 距离底部
                 , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
                     [
-                        {field: 'dbName', title: '数据库名称', align: 'center', width: 130, style: 'background-color: #eee;'}
+                        {field: 'dbName', title: '数据库名称', toolbar: '#dLookTpl', align: 'center', width: 130}
                         , {field: 'dbType', title: '类型', align: 'center', width: 100}
                         , {field: 'dbAdmin', title: '管理员账号', align: 'center', width: 100}
                         , {field: 'dbPas', title: '管理密码', align: 'center', width: 100}
@@ -793,6 +836,29 @@
                 , page: false
             });
 
+            table.on('tool(dataList)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'dlook') {
+                    layer.open({
+                        title: '查看数据库详细信息', //窗口名
+                        type: 2, //打开类型
+                        shade: 0, //遮罩 浓度0.4
+                        maxmin: true, //最小化开关 开
+                        content: 'util/look/dlook.html?id='+data.dbId, //打开div模版
+                        offset: 'auto', //坐标
+                        area: ['80%', '80%'], //弹出窗口大小 宽 高
+                        btn: ['关闭'],
+                        yes: function (index, layero) {
+                            layer.close(index); //关闭当前窗口
+                        }
+                    });
+                }
+            });
+
+
             table.render({
                 id: 'table3'
                 , elem: '#middList' //选择表单
@@ -801,7 +867,7 @@
                 // , height: 'full-125' // 高度 距离底部
                 , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
                     [
-                        {field: 'middlewareName', title: '中间件名称', align: 'center', width: 130, style: 'background-color: #eee;'}
+                        {field: 'middlewareName', title: '中间件名称', toolbar: '#mLookTpl', align: 'center', width: 130}
                         , {field: 'middlewareEdition', title: '中间件版本', align: 'center', width: 100}
                         , {field: 'middlewareUrl', title: '管理地址', align: 'center', width: 100}
                         , {field: 'middlewareAdmin', title: '管理账号', align: 'center', width: 100}
@@ -816,6 +882,28 @@
                 , page: false
             });
 
+            table.on('tool(middList)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'mlook') {//下载
+                    layer.open({
+                        title: '查看中间件详细信息', //窗口名
+                        type: 2, //打开类型
+                        shade: 0, //遮罩 浓度0.4
+                        maxmin: true, //最小化开关 开
+                        content: 'util/look/mlook.html?id='+data.middlewareId, //打开div模版
+                        offset: 'auto', //坐标
+                        area: ['80%', '80%'], //弹出窗口大小 宽 高
+                        btn: ['关闭'],
+                        yes: function (index, layero) {
+                            layer.close(index); //关闭当前窗口
+                        }
+                    });
+                }
+            });
+
             table.render({
                 id: 'table5'
                 , elem: '#filellist' //选择表单
@@ -823,9 +911,7 @@
                 , page: true //分页 开启
                 , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
                     [
-                        {type: 'checkbox', fixed: "left"}
-                        , {field: 'parId', title: 'id', align: 'center', sort: true, width: 70}
-                        , {field: 'fileName', title: '文件名',  align: 'center', width: 300}
+                        {field: 'fileName', title: '文件名',  align: 'center', width: 300}
                         , {field: 'urlSite', title: '文件地址',  align: 'center', width: 300}
                         , {field: 'createTime', title: '创建时间',  align: 'center', width: 150}
                         , {field: 'updateTime', title: '更新时间',  align: 'center', width: 150}
@@ -860,7 +946,7 @@
                 var layEvent = obj.event; //获得 lay-event 对应的值
                 var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-                if (layEvent === 'fdow') {//下载
+                if (layEvent === 'fdow') {
                     download = "../../parses/dow?urlSite=" +data.urlSite+"&fileName="+data.fileName;
                         dow(download);
                 }else  if (layEvent === 'fdel') {//删除
@@ -933,10 +1019,6 @@
 
                     $("#percent").html(uploader.total.percent);
                     $("#uploaded").html(uploader.total.uploaded+1);
-                    if (uploader.total.queued == 1){
-                        layer.closeAll('page');
-                        // layer.msg('文件上传完成');
-                    }
                 },
 
                 FileUploaded: function(up, file) {
@@ -977,6 +1059,15 @@
             }
             uploader.files.splice(toremove, 1);
         });
+
+        //提示
+        function confirm(msg) {
+            layer.confirm(msg, {
+                btn: ['确认'] //按钮
+            }, function(){
+                layer.closeAll();
+            });
+        }
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

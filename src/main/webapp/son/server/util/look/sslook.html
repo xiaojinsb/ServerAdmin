@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>中间件查看</title>
+    <link rel="stylesheet" href="../../../../statics/plugins/layui/css/layui.css" media="all">
+    <style>
+        .layui-form-label{width: 100px}
+        .layui-input-block{margin-left: 130px}
+    </style>
+</head>
+<body style="background-color: rgb(242, 242, 242);">
+
+<form class="layui-form" method="post" style="padding-top: 20px">
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">应用系统基本信息</div>
+                    <div class="layui-card-body layui-row layui-col-space10">
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">应用名称<span class="remind">*</span>：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="systemName" lay-verify="systemName" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">部署情况：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="systemDeployment" lay-verify="systemDeployment" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">应用系统管理信息</div>
+                    <div class="layui-card-body layui-row layui-col-space10">
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">ip地址：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="systemIp" lay-verify="systemIp" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">访问域名：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="systemDomain" lay-verify="systemDomain" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">管理地址：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="systemUrl" lay-verify="systemUrl" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">运维人员：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="userName" lay-verify="userName" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">管理账号：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="systemAdmin" lay-verify="systemAdmin" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">管理密码：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="systemPas" lay-verify="systemPas" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <button class="layui-btn" lay-submit lay-filter="submitSave" style="display: none;">保存</button>
+    <button type="reset" class="layui-btn layui-btn-primary" lay-filter="render" style="display: none;">重置</button>
+</form>
+
+<script src="../../../../statics/plugins/layui/layui.js"></script>
+<script>
+    layui.use(['jquery'], function () {
+        var $ = layui.jquery; //获取jq
+
+        //获取url传过来的值
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for(var i = 0; i < strs.length; i ++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        var id =  theRequest['id'];
+
+        $.ajax({
+            type: "POST",
+            url: '../../../../sys/queryAllsys?id='+id,
+            contentType: "application/json",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                var d = data.data[0]
+                //赋值
+                for (var key in d) {
+                    $("[name='"+key+"']").val(d[key]);
+                }
+            },
+            error: function () {
+                layer.msg("系统错误");
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

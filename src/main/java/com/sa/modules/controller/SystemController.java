@@ -91,6 +91,15 @@ public class SystemController extends AbstractController {
     }
 
     /**
+     * 列出所有查询到的服务器
+     */
+    @RequestMapping("/queryAllsys")
+    public Object info(long[] id) {
+        List<SystemEntity> list = systemDao.queryAllsys(id);
+        return R.ok().put("data", list);
+    }
+
+    /**
      * 根据所在服务器查询
      */
     @RequestMapping("/queryByServerAll")

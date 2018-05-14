@@ -76,7 +76,7 @@
 </script>
 
 <!--文件上传信息模板-->
-<div id="filesTpl" style="display: none">
+<div id="filesTpl" style="display: none;text-align: center;line-height: 23px">
     <span>上传总进度：<span id="percent"></span>%</span>
     <br>
     <span>已上传：<span id="uploaded"></span>个文件</span>
@@ -363,8 +363,7 @@
                             if (res.msg == 'success') {
 
                                 if (uploader.total.queued == 0){
-                                    layer.msg('添加数据库成功');
-                                    layer.close(index);
+                                    confirm("添加数据库成功");
                                 } else {
                                     //动态的设置上传地址
                                     uploader.settings.url = '../../../parses/uploadFile?fileClassify=data&fileId='+res.id;
@@ -375,16 +374,20 @@
                                         title: '上传信息'
                                         , type: 1
                                         , closeBtn: 0
-                                        , area: ['420px', '240px']
+                                        , area: ['260px', '170px']
                                         , content: $('#filesTpl')
+                                        , btn: ['确定']
+                                        ,yes: function(index, layero){
+                                            layer.closeAll();
+                                        }
                                     });
                                 }
                                 tablelist.reload(); //刷新
                             } else {
                                 if (res.msg != null) {
-                                    layer.msg(res.msg);
+                                    confirm(res.msg);
                                 } else {
-                                    layer.msg('添加数据库失败');
+                                    confirm("添加数据库失败");
                                 }
                             }
 
@@ -447,6 +450,12 @@
 
             if (layEvent === 'edit') {//修改
 
+                //判断上传初始
+                if (isfiels == 0){
+                    uploader.init();
+                    isfiels = 1;
+                }
+
                 var dbId = data.dbId;
                 //设置 上传 显示 隐藏
                 element.tabChange('docDemoTabBrief', '1');
@@ -483,8 +492,7 @@
                                 if (res.msg == 'success') {
 
                                     if (uploader.total.queued == 0){
-                                        layer.msg('添加服务器成功');
-                                        layer.close(index);
+                                        confirm('修改数据库成功');
                                     } else {
                                         //动态的设置上传地址
                                         uploader.settings.url = '../../../parses/uploadFile?fileClassify=data&fileId='+dbId;
@@ -495,16 +503,20 @@
                                             title: '上传信息'
                                             , type: 1
                                             , closeBtn: 0
-                                            , area: ['420px', '240px']
+                                            , area: ['260px', '170px']
                                             , content: $('#filesTpl')
+                                            , btn: ['确定']
+                                            ,yes: function(index, layero){
+                                                layer.closeAll();
+                                            }
                                         });
                                     }
                                     tablelist.reload(); //刷新
                                 } else {
                                     if (res.msg != null) {
-                                        layer.msg(res.msg);
+                                        confirm(res.msg);
                                     } else {
-                                        layer.msg('添加数据库失败');
+                                        confirm('修改数据库失败');
                                     }
                                 }
 
@@ -534,7 +546,7 @@
                             tablelist.reload(); //刷新
                         } else {
                             if (res.msg != null) {
-                                layer.msg(res.msg);
+                                confirm(res.msg);
                             } else {
                                 layer.msg('删除数据库失败');
                             }
@@ -688,7 +700,7 @@
                                 table4.reload(); //刷新
                             } else {
                                 if (res.msg != null) {
-                                    layer.msg(res.msg);
+                                    confirm(res.msg);
                                 } else {
                                     layer.msg('删除文件失败');
                                 }
@@ -746,10 +758,6 @@
 
                     $("#percent").html(uploader.total.percent);
                     $("#uploaded").html(uploader.total.uploaded+1);
-                    if (uploader.total.queued == 1){
-                        layer.closeAll('page');
-                        // layer.msg('文件上传完成');
-                    }
                 },
 
                 FileUploaded: function(up, file) {
@@ -790,6 +798,15 @@
             }
             uploader.files.splice(toremove, 1);
         });
+
+        //提示
+        function confirm(msg) {
+            layer.confirm(msg, {
+                btn: ['确认'] //按钮
+            }, function(){
+                layer.closeAll();
+            });
+        }
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

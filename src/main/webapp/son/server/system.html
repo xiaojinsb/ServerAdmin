@@ -54,6 +54,16 @@
 <script type="text/html" id="lookTpl">
     <a href="javascript:;" class="layui-table-link" lay-event="look">{{ d.systemName }}</a>
 </script>
+<!--查看 服务器 数据库 中间件信息-->
+<script type="text/html" id="sLookTpl">
+    <a href="javascript:;" class="layui-table-link" lay-event="slook">{{ d.serverName }}</a>
+</script>
+<script type="text/html" id="dLookTpl">
+    <a href="javascript:;" class="layui-table-link" lay-event="dlook">{{ d.dbName }}</a>
+</script>
+<script type="text/html" id="mLookTpl">
+    <a href="javascript:;" class="layui-table-link" lay-event="mlook">{{ d.middlewareName }}</a>
+</script>
 
 <!--操作工具栏-->
 <script type="text/html" id="operationTpl">
@@ -67,7 +77,7 @@
 </script>
 
 <!--文件上传信息模板-->
-<div id="filesTpl" style="display: none">
+<div id="filesTpl" style="display: none;text-align: center;line-height: 23px">
     <span>上传总进度：<span id="percent"></span>%</span>
     <br>
     <span>已上传：<span id="uploaded"></span>个文件</span>
@@ -430,8 +440,7 @@
                             if (res.msg == 'success') {
 
                                 if (uploader.total.queued == 0){
-                                    layer.msg('添加应用系统成功');
-                                    layer.close(index);
+                                    confirm('添加应用系统成功');
                                 } else {
                                     //动态的设置上传地址
                                     uploader.settings.url = '../../../parses/uploadFile?fileClassify=sys&fileId='+res.id;
@@ -442,16 +451,20 @@
                                         title: '上传信息'
                                         , type: 1
                                         , closeBtn: 0
-                                        , area: ['420px', '240px']
+                                        , area: ['260px', '170px']
                                         , content: $('#filesTpl')
+                                        , btn: ['确定']
+                                        ,yes: function(index, layero){
+                                            layer.closeAll();
+                                        }
                                     });
                                 }
                                 tablelist.reload(); //刷新
                             } else {
                                 if (res.msg != null) {
-                                    layer.msg(res.msg);
+                                    confirm(res.msg);
                                 } else {
-                                    layer.msg('添加应用系统失败');
+                                    confirm('添加应用系统失败');
                                 }
                             }
 
@@ -624,8 +637,7 @@
                                 if (res.msg == 'success') {
 
                                     if (uploader.total.queued == 0){
-                                        layer.msg('修改应用系统成功');
-                                        layer.close(index);
+                                        confirm('修改应用系统成功');
                                     } else {
                                         //动态的设置上传地址
                                         uploader.settings.url = '../../../parses/uploadFile?fileClassify=sys&fileId='+serverId;
@@ -636,16 +648,20 @@
                                             title: '上传信息'
                                             , type: 1
                                             , closeBtn: 0
-                                            , area: ['420px', '240px']
+                                            , area: ['260px', '170px']
                                             , content: $('#filesTpl')
+                                            , btn: ['确定']
+                                            ,yes: function(index, layero){
+                                                layer.closeAll();
+                                            }
                                         });
                                     }
                                     tablelist.reload(); //刷新
                                 } else {
                                     if (res.msg != null) {
-                                        layer.msg(res.msg);
+                                        confirm(res.msg);
                                     } else {
-                                        layer.msg('修改应用系统失败');
+                                        confirm('修改应用系统失败');
                                     }
                                 }
 
@@ -761,7 +777,7 @@
                 // , height: 'full-125' // 高度 距离底部
                 , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
                     [
-                        {field: 'serverName', title: '服务器名称',  align: 'center', width: 130}
+                        {field: 'serverName', title: '服务器名称', toolbar: '#sLookTpl', align: 'center', width: 130}
                         , {field: 'serNet', title: '网络情况', align: 'center', width: '100'}
                         , {field: 'depSituation', title: '部署情况', align: 'center', width: '100'}
                         , {field: 'type', title: '设备类型', align: 'center', width: '100'}
@@ -773,23 +789,41 @@
                         , {field: 'os', title: '操作系统', align: 'center', width: '100'}
                         , {field: 'pcName', title: '计算机名称', align: 'center', width: '100'}
                         , {field: 'shaduSoft', title: '杀毒软件', align: 'center', width: '100'}
-                        , {field: 'beginConfig', title: '系统初始配置', align: 'center', width: '100'}
 
                         , {field: 'model', title: '设备编号', align: 'center', width: '100'}
                         , {field: 'generator', title: '机房位置', align: 'center', width: '100',}
                         , {field: 'houseHumber', title: '楼层房间号', align: 'center', width: '100'}
-                        , {field: 'cabinetHumber', title: '机柜位置编号', align: 'center', width: '100'}
+                        , {field: 'cabinetHumber', title: '机柜位置编号', align: 'center', width: '120'}
                         , {field: 'cabinet', title: '机柜', align: 'center', width: '100'}
-                        , {field: 'propertyNumber', title: '设备资产编号', align: 'center', width: '100'}
+                        , {field: 'propertyNumber', title: '设备资产编号', align: 'center', width: '120'}
                         , {field: 'equipmentBuyTime', title: '设备购买时间', align: 'center', width: '150'}
                         , {field: 'equipmentAgeLimit', title: '设备年限', align: 'center', width: '100'}
                         , {field: 'leader', title: '设备领料人', align: 'center', width: '100'}
 
-                        , {field: 'serverContent', title: '备注相关信息', align: 'center', width: '100'}
-                        , {field: 'hardwareConfiguration', title: '硬件配置', align: 'center', width: '100'}
-
                     ]
                 ]
+            });
+
+            table.on('tool(serverTable)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'slook') {
+                    layer.open({
+                        title: '查看数据库详细信息', //窗口名
+                        type: 2, //打开类型
+                        shade: 0, //遮罩 浓度0.4
+                        maxmin: true, //最小化开关 开
+                        content: 'util/look/slook.html?id='+data.serverId, //打开div模版
+                        offset: 'auto', //坐标
+                        area: ['93%', '93%'], //弹出窗口大小 宽 高
+                        btn: ['关闭'],
+                        yes: function (index, layero) {
+                            layer.close(index); //关闭当前窗口
+                        }
+                    });
+                }
             });
 
             $("#serverTable").parent().show()
@@ -831,7 +865,7 @@
                 , page: false //分页 关闭
                 , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
                     [
-                        {field: 'dbName', title: '数据库名称', align: 'center', width: 130}
+                        {field: 'dbName', title: '数据库名称', toolbar: '#dLookTpl', align: 'center', width: 130}
                         , {field: 'dbType', title: '类型', align: 'center', width: 100}
                         , {field: 'dbAdmin', title: '管理员账号', align: 'center', width: 100}
                         , {field: 'dbPas', title: '管理密码', align: 'center', width: 100}
@@ -842,6 +876,28 @@
                         , {field: 'serverId', title: '所在服务器', align: 'center', width: 100}
                     ]
                 ]
+            });
+
+            table.on('tool(dbTable)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'dlook') {
+                    layer.open({
+                        title: '查看数据库详细信息', //窗口名
+                        type: 2, //打开类型
+                        shade: 0, //遮罩 浓度0.4
+                        maxmin: true, //最小化开关 开
+                        content: 'util/look/dlook.html?id='+data.dbId, //打开div模版
+                        offset: 'auto', //坐标
+                        area: ['80%', '80%'], //弹出窗口大小 宽 高
+                        btn: ['关闭'],
+                        yes: function (index, layero) {
+                            layer.close(index); //关闭当前窗口
+                        }
+                    });
+                }
             });
 
             $("#dbTable").parent().show()
@@ -884,7 +940,7 @@
                 , page: false //分页 关闭
                 , cols: [ //表头 //sort 是否开启排序 //fixed 开启操作是否悬浮
                     [
-                         {field: 'middlewareName', title: '中间件名称', align: 'center', width: 130}
+                         {field: 'middlewareName', title: '中间件名称', toolbar: '#mLookTpl', align: 'center', width: 130}
                         , {field: 'middlewareEdition', title: '中间件版本', align: 'center', width: 100}
                         , {field: 'middlewareUrl', title: '管理地址', align: 'center', width: 100}
                         , {field: 'middlewareAdmin', title: '管理账号', align: 'center', width: 100}
@@ -895,6 +951,28 @@
                         , {field: 'serverId', title: '所在服务器', align: 'center', width: 100}
                     ]
                 ]
+            });
+
+            table.on('tool(middTable)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'mlook') {
+                    layer.open({
+                        title: '查看中间件详细信息', //窗口名
+                        type: 2, //打开类型
+                        shade: 0, //遮罩 浓度0.4
+                        maxmin: true, //最小化开关 开
+                        content: 'util/look/mlook.html?id='+data.middlewareId, //打开div模版
+                        offset: 'auto', //坐标
+                        area: ['80%', '80%'], //弹出窗口大小 宽 高
+                        btn: ['关闭'],
+                        yes: function (index, layero) {
+                            layer.close(index); //关闭当前窗口
+                        }
+                    });
+                }
             });
 
             $("#middTable").parent().show()
@@ -1019,10 +1097,6 @@
 
                     $("#percent").html(uploader.total.percent);
                     $("#uploaded").html(uploader.total.uploaded+1);
-                    if (uploader.total.queued == 1){
-                        layer.closeAll('page');
-                        // layer.msg('文件上传完成');
-                    }
                 },
 
                 FileUploaded: function(up, file) {
@@ -1063,6 +1137,15 @@
             }
             uploader.files.splice(toremove, 1);
         });
+
+        //提示
+        function confirm(msg) {
+            layer.confirm(msg, {
+                btn: ['确认'] //按钮
+            }, function(){
+                layer.closeAll();
+            });
+        }
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

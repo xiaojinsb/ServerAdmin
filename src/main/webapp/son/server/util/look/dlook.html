@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>数据库查看</title>
+    <link rel="stylesheet" href="../../../../statics/plugins/layui/css/layui.css" media="all">
+    <style>
+        .layui-form-label{width: 100px}
+        .layui-input-block{margin-left: 130px}
+    </style>
+</head>
+<body style="background-color: rgb(242, 242, 242);">
+
+<form class="layui-form" method="post" style="padding-top: 20px;">
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">数据基本信息</div>
+                    <div class="layui-card-body layui-row layui-col-space10">
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">数据库名称：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="dbName" lay-verify="dbName" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">安装路径：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="dbAddress" lay-verify="dbAddress" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">类型：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="dbType" lay-verify="dbType" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">运维人员：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="userName" lay-verify="userName" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">应用管理信息</div>
+                    <div class="layui-card-body layui-row layui-col-space10">
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">ip地址：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="dbIp" lay-verify="dbIp" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">连接工具：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="dbTool" lay-verify="dbTool"  autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">管理账号：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="dbAdmin" lay-verify="dbAdmin"  autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-col-lg6">
+                            <label class="layui-form-label">管理密码：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="dbPas" lay-verify="dbPas"  autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">备注</div>
+                    <div class="layui-card-body layui-row layui-col-space10">
+
+                        <div class="layui-col-md12">
+                            <textarea name="dbContent" lay-verify="dbContent"  class="layui-textarea"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+<script src="../../../../statics/plugins/layui/layui.js"></script>
+<script>
+    layui.use(['jquery'], function () {
+        var $ = layui.jquery; //获取jq
+
+        //获取url传过来的值
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for(var i = 0; i < strs.length; i ++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        var id =  theRequest['id'];
+
+        $.ajax({
+            type: "POST",
+            url: '../../../../data/queryAllData?id='+id,
+            contentType: "application/json",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                var d = data.data[0]
+                //赋值
+                for (var key in d) {
+                    $("[name='"+key+"']").val(d[key]);
+                }
+            },
+            error: function () {
+                layer.msg("系统错误");
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

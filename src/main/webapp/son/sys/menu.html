@@ -186,15 +186,13 @@
                         $.post("../../menu/add", data.field, function (res) {
 
                             if (res.msg == 'success') {
-                                layer.msg('添加菜单成功');
-
-                                layer.close(index); //关闭当前窗口
                                 treeTable.reload(); //刷新
+                                confirm("添加菜单成功");
                             } else {
                                 if (res.msg != null) {
-                                    layer.msg(res.msg);
+                                    confirm(res.msg);
                                 } else {
-                                    layer.msg('添加菜单失败');
+                                    confirm("添加菜单失败");
                                 }
                             }
 
@@ -261,15 +259,13 @@
                             $.post("../../menu/edit", data.field, function (res) {
 
                                 if (res.msg == 'success') {
-                                    layer.msg('修改模块成功');
-
-                                    layer.close(index); //关闭当前窗口
                                     treeTable.reload(); //刷新
+                                    confirm("修改菜单成功");
                                 } else {
                                     if (res.msg != null) {
-                                        layer.msg(res.msg);
+                                        confirm(res.msg);
                                     } else {
-                                        layer.msg('修改模块失败');
+                                        confirm("修改菜单失败");
                                     }
                                 }
 
@@ -352,6 +348,15 @@
 
             }
         });
+
+        //提示
+        function confirm(msg) {
+            layer.confirm(msg, {
+                btn: ['确认'] //按钮
+            }, function(){
+                layer.closeAll();
+            });
+        }
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

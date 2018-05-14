@@ -204,6 +204,7 @@
         //新增
         $("#add").click(function(){
 
+            ztree1();
             $('#password').val('123456');
             $('#pas').show();
             $('#pas1').hide();
@@ -236,15 +237,13 @@
                         $.post("../../user/add", data.field, function (res) {
 
                             if (res.msg == 'success') {
-                                layer.msg('添加成功');
-
-                                layer.close(index); //关闭当前窗口
                                 tablelist.reload(); //刷新
+                                confirm("添加用户成功");
                             } else {
                                 if (res.msg != null) {
-                                    layer.msg(res.msg);
+                                    confirm(res.msg);
                                 } else {
-                                    layer.msg('添加成功失败');
+                                    confirm("添加用户失败");
                                 }
                             }
 
@@ -286,6 +285,7 @@
                 form.render('radio');
                 $("input[name='password']").get(1).checked = true;
 
+                ztree1();
                 // 勾选已选中的菜单
                 $.ajax({
                     type: "POST",
@@ -294,7 +294,6 @@
                     async: false,
                     dataType: "json",
                     success: function (R) {
-                        ztree.checkAllNodes(false); //清空选择
                         if (R.code === 0) {
                             //勾选角色所拥有的菜单
                             var roleIds = R.roleList;
@@ -343,15 +342,14 @@
                             $.post("../../user/edit", data.field, function (res) {
 
                                 if (res.msg == 'success') {
-                                    layer.msg('修改用户成功');
 
-                                    layer.close(index); //关闭当前窗口
                                     tablelist.reload(); //刷新
+                                    confirm("修改用户成功");
                                 } else {
                                     if (res.msg != null) {
-                                        layer.msg(res.msg);
+                                        confirm(res.msg);
                                     } else {
-                                        layer.msg('修改用户失败');
+                                        confirm("修改用户失败");
                                     }
                                 }
 
@@ -386,7 +384,51 @@
             }
         });
 
-        /*下拉树*/
+        function ztree() {
+            /*下拉树*/
+            var setting = {
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "roleId",
+                        pIdKey: "parentId",
+                        rootPId: -1
+                    },
+                    key: {
+                        name: "roleName",
+                        url: "nourl"
+                    }
+                },
+                check: {
+                    enable: true,
+                    nocheckInherit: true
+                }
+            };
+            var ztree;
+
+            //加载树
+            $.ajax({
+                type: "POST",
+                url: '../../role/roleAllList',
+                contentType: "application/json",
+                async: false,
+                dataType: "json",
+                success: function (R) {
+                    if (R.code === 0) {
+                        ztree = $.fn.zTree.init($("#menuTree"), setting, R.data);
+                        //展开所有节点
+                        ztree.expandAll(true);
+                    } else {
+                        alert(R.msg);
+                    }
+                },
+                error: function () {
+                    alert("系统错误");
+                }
+            });
+        }
+
+        /*树*/
         var setting = {
             data: {
                 simpleData: {
@@ -408,25 +450,27 @@
         var ztree;
 
         //加载树
-        $.ajax({
-            type: "POST",
-            url: '../../role/roleAllList',
-            contentType: "application/json",
-            async: false,
-            dataType: "json",
-            success: function (R) {
-                if (R.code === 0) {
-                    ztree = $.fn.zTree.init($("#menuTree"), setting, R.data);
-                    //展开所有节点
-                    ztree.expandAll(true);
-                } else {
-                    alert(R.msg);
+        function ztree1(){
+            $.ajax({
+                type: "POST",
+                url: '../../role/roleAllList',
+                contentType: "application/json",
+                async: false,
+                dataType: "json",
+                success: function (R) {
+                    if (R.code === 0) {
+                        ztree = $.fn.zTree.init($("#menuTree"), setting, R.data);
+                        //展开所有节点
+                        ztree.expandAll(true);
+                    } else {
+                        alert(R.msg);
+                    }
+                },
+                error: function () {
+                    alert("系统错误");
                 }
-            },
-            error: function () {
-                alert("系统错误");
-            }
-        });
+            });
+        }
 
         //表单验证
         form.verify({
@@ -451,6 +495,14 @@
             }
         });
 
+        //提示
+        function confirm(msg) {
+            layer.confirm(msg, {
+                btn: ['确认'] //按钮
+            }, function(){
+                layer.closeAll();
+            });
+        }
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {

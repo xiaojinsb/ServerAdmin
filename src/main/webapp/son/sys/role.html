@@ -124,7 +124,6 @@
                 ,shade: 0.4//遮罩 浓度0.4
                 ,maxmin: true //最小化开关 开
                 ,content: $('#addTpl') //打开div模版
-                , offset: ['100px', '150px']  //坐标
                 ,area: ['480px', '490px']//弹出窗口大小 宽 高
                 , btn: ['保存', '取消']  // 低部按钮
                 , yes: function (index) { //确定按钮回调
@@ -147,15 +146,13 @@
                         $.post("../../role/add", data.field, function (res) {
 
                             if (res.msg == 'success') {
-                                layer.msg('添加角色成功');
-
-                                layer.close(index); //关闭当前窗口
                                 tablelist.reload(); //刷新
+                                confirm("添加角色成功");
                             } else {
                                 if (res.msg != null) {
-                                    layer.msg(res.msg);
+                                    confirm(res.msg);
                                 } else {
-                                    layer.msg('添加角色失败');
+                                    confirm("添加角色失败");
                                 }
                             }
 
@@ -218,7 +215,6 @@
                     ,shade: 0.4//遮罩 浓度0.4
                     ,maxmin: true //最小化开关 开
                     ,content: $('#addTpl') //打开div模版
-                    , offset: ['100px', '150px']  //坐标
                     ,area: ['480px', '490px']//弹出窗口大小 宽 高
                     , btn: ['保存', '取消']  // 低部按钮
                     , yes: function (index) { //确定按钮回调
@@ -243,15 +239,13 @@
                             $.post("../../role/edit", data.field, function (res) {
 
                                 if (res.msg == 'success') {
-                                    layer.msg('修改角色成功');
-
-                                    layer.close(index); //关闭当前窗口
                                     tablelist.reload(); //刷新
+                                    confirm("修改角色成功");
                                 } else {
                                     if (res.msg != null) {
-                                        layer.msg(res.msg);
+                                        confirm(res.msg);
                                     } else {
-                                        layer.msg('修改角色失败');
+                                        confirm("修改角色失败");
                                     }
                                 }
 
@@ -276,7 +270,7 @@
                             tablelist.reload(); //刷新
                         } else {
                             if (res.msg != null) {
-                                layer.msg(res.msg);
+                                confirm(res.msg);
                             } else {
                                 layer.msg('删除角色失败');
                             }
@@ -336,6 +330,15 @@
                 }
             }
         });
+
+        //提示
+        function confirm(msg) {
+            layer.confirm(msg, {
+                btn: ['确认'] //按钮
+            }, function(){
+                layer.closeAll();
+            });
+        }
 
         //解决ie兼容问题
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
