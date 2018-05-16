@@ -30,11 +30,14 @@ public class SystemController extends AbstractController {
     private UserDao userDao;
 
     /**
-     * 列出所有用户
+     * 列出所有应用
      */
     @RequestMapping("/list")
     @RequiresPermissions("sys:list")
     public R list(@RequestParam Map<String, Object> params) {
+        if (getUserId() != 1){
+            params.put("orUser",getUserId());
+        }
         //查询列表数据
         Query query = new Query(params);
 

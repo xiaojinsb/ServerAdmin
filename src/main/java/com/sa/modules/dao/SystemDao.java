@@ -24,4 +24,5 @@ public interface SystemDao extends BaseDao<SystemEntity> {
      * 查询出所有数据
      */
     List<SystemEntity> queryAll();
+
 }

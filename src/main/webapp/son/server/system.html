@@ -68,7 +68,7 @@
 <!--操作工具栏-->
 <script type="text/html" id="operationTpl">
     <button class="layui-btn layui-btn-sm" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</button>
-    <button class="layui-btn layui-btn-sm  layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</button>
+    <button class="layui-btn layui-btn-sm  layui-btn-danger delete" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</button>
 </script>
 <!--文件管理工具栏    -->
 </script><script type="text/html" id="foperationTpl">
@@ -1153,7 +1153,10 @@
             $.ajaxSetup({cache: false})
         }
 
+        // $("#add").hide();
+        // $("#operationTpl").html("");
     });
+
 </script>
 </body>
 </html>

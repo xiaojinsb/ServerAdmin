@@ -5,6 +5,9 @@
     <!--列出所有 数-->
     <select id="queryTotal" resultType="int">
         select count(*) from sa_system where 1=1
+        <if test="orUser !=null and orUser!=''">
+            AND create_user_id = #{orUser} or user_id =#{orUser}
+        </if>
         <if test="systemName !=null and systemName!=''">
             AND system_name LIKE "%"#{systemName}"%"
         </if>
@@ -16,6 +19,9 @@
     <!--列出所有-->
     <select id="queryList" resultType="com.sa.modules.entity.SystemEntity">
         select * from sa_system where 1=1
+        <if test="orUser !=null and orUser!=''">
+            AND create_user_id = #{orUser} or user_id =#{orUser}
+        </if>
         <if test="systemName !=null and systemName!=''">
             AND system_name LIKE "%"#{systemName}"%"
         </if>
@@ -26,6 +32,7 @@
             limit #{offset}, #{limit}
         </if>
     </select>
+
 
     <!--新增-->
     <insert id="add" parameterType="com.sa.modules.entity.SystemEntity" useGeneratedKeys="true" keyProperty="systemId">

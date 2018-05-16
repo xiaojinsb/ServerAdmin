@@ -5,6 +5,9 @@
     <!--列出所有 数-->
     <select id="queryTotal" resultType="int">
         select count(*) from sa_middleware where 1=1
+        <if test="orUser !=null and orUser!=''">
+            AND create_user_id = #{orUser} or user_id =#{orUser}
+        </if>
         <if test="middlewareName !=null and middlewareName!=''">
             AND middleware_name LIKE "%"#{middlewareName}"%"
         </if>
@@ -16,6 +19,9 @@
     <!--列出所有-->
     <select id="queryList" resultType="com.sa.modules.entity.MiddlewareEntity">
         select * from sa_middleware where 1=1
+        <if test="orUser !=null and orUser!=''">
+            AND create_user_id = #{orUser} or user_id =#{orUser}
+        </if>
         <if test="middlewareName !=null and middlewareName!=''">
             AND middleware_name LIKE "%"#{middlewareName}"%"
         </if>

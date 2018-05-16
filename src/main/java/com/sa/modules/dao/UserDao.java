@@ -40,4 +40,8 @@ public interface UserDao extends BaseDao<UserEntity>{
      */
     int editUserPas(String pas, String salt, String name);
 
+    /**
+     * 根据用户权限 显示按钮
+     */
+    List<String> queryUserPowers(String id,String url);
 }

@@ -64,7 +64,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        2017 &copy; ServerAdmin
+        2018 &copy; 中国烟草总公司郑州烟草研究院
     </div>
 </div>
 
@@ -219,11 +219,12 @@
             async: false,
             dataType: "json",
             success: function (data) {
-                username = data.name;
-                $("#userName").text(data.name);
-            },
-            error: function () {
-                window.location.href="/login.html";
+                if (data.msg == "未知异常，请联系管理员"){
+                    window.location.href="/login.html";
+                }else {
+                    username = data.name;
+                    $("#userName").text(data.name);
+                }
             }
         });
 

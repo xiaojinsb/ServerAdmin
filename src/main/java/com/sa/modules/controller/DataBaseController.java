@@ -31,11 +31,14 @@ public class DataBaseController extends AbstractController {
     private UserDao userDao;
 
     /**
-     * 列出所有用户
+     * 列出所有数据库
      */
     @RequestMapping("/list")
     @RequiresPermissions("data:list")
     public R list(@RequestParam Map<String, Object> params) {
+        if (getUserId() != 1){
+            params.put("orUser",getUserId());
+        }
         //查询列表数据
         Query query = new Query(params);
         //条数和数据

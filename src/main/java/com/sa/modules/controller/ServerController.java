@@ -33,6 +33,9 @@ public class ServerController extends AbstractController {
     @RequestMapping("/list")
     @RequiresPermissions("server:list")
     public R list(@RequestParam Map<String, Object> params) {
+        if (getUserId() != 1){
+            params.put("orUser",getUserId());
+        }
         //查询列表数据
         Query query = new Query(params);
         //条数和数据

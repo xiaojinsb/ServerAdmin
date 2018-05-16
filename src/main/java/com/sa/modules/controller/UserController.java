@@ -168,4 +168,14 @@ public class UserController extends AbstractController {
         return R.ok();
     }
 
+    /**
+     * 根据用户权限 显示按钮
+     */
+    @RequestMapping("/PButton")
+    public R PButton(String type) {
+
+        userDao.queryUserPowers(type);
+        return R.ok();
+    }
+
 }
