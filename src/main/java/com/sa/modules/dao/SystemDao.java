@@ -18,7 +18,7 @@ public interface SystemDao extends BaseDao<SystemEntity> {
     /**
      * 根据所在服务器查询
      */
-    List<SystemEntity> queryByServerAll(long id);
+    List<SystemEntity> queryByQuoteAll(long id,int type);
 
     /**
      * 查询出所有数据

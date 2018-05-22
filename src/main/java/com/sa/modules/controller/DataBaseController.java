@@ -3,8 +3,10 @@ package com.sa.modules.controller;
 import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
 import com.sa.modules.dao.DataBaseDao;
+import com.sa.modules.dao.SystemDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.DataBaseEntity;
+import com.sa.modules.entity.SystemEntity;
 import com.wuwenze.poi.ExcelKit;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class DataBaseController extends AbstractController {
     private DataBaseDao dataBaseDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private SystemDao systemDao;
 
     /**
      * 列出所有数据库
@@ -85,7 +89,12 @@ public class DataBaseController extends AbstractController {
     @RequestMapping("/delete")
     @RequiresPermissions("data:del")
     public R delete(long id) {
-        dataBaseDao.delete(id);
+        List<SystemEntity> slist= systemDao.queryByQuoteAll(id,2);
+        if (slist.size() != 0){
+            return R.error("这台数据库被应用引用了 无法删除");
+        }else {
+            dataBaseDao.delete(id);
+        }
         return R.ok();
     }
 

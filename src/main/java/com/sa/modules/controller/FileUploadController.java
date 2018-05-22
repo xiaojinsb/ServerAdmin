@@ -58,7 +58,8 @@ public class FileUploadController extends AbstractController {
 public R uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response, long fileId, String fileClassify) {
 
     //根据不同的分类设置文件路径
-    String filePath = "c:/files/" + fileClassify+"/"+fileId+"/";
+    String urlSite = fileClassify+"/"+fileId+"/";
+    String filePath = "c:/files/" + urlSite;
     //得到上传文件的名称
     String fileName = file.getOriginalFilename();
 
@@ -79,7 +80,7 @@ public R uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest 
         parsesEntity.setFileId(fileId);
         parsesEntity.setFileClassify(fileClassify);
         parsesEntity.setFileName(fileName);
-        parsesEntity.setUrlSite(filePath);
+        parsesEntity.setUrlSite(urlSite);
         parsesEntity.setCreateUserId(getUserId());
         parsesEntity.setCreateTime(getTime());
 
@@ -97,7 +98,7 @@ public R uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest 
     @RequestMapping(value = "/dow")
     @ResponseBody
     public R dow(HttpServletResponse response,String urlSite,String fileName) throws Exception{
-        String filePath = urlSite+fileName;
+        String filePath =  "c:/files/" +urlSite+fileName;
 
         if (filePath != null) {
             //设置文件路径

@@ -292,4 +292,39 @@ public class ServerEntity {
   public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
   }
+
+  @Override
+  public String toString() {
+    return "ServerEntity{" +
+            "serverId=" + serverId +
+            ", serverName='" + serverName + '\'' +
+            ", serNet='" + serNet + '\'' +
+            ", depSituation='" + depSituation + '\'' +
+            ", type='" + type + '\'' +
+            ", model='" + model + '\'' +
+            ", generator='" + generator + '\'' +
+            ", houseHumber='" + houseHumber + '\'' +
+            ", cabinetHumber='" + cabinetHumber + '\'' +
+            ", cabinet='" + cabinet + '\'' +
+            ", propertyNumber='" + propertyNumber + '\'' +
+            ", equipmentBuyTime='" + equipmentBuyTime + '\'' +
+            ", equipmentAgeLimit='" + equipmentAgeLimit + '\'' +
+            ", leader='" + leader + '\'' +
+            ", hardwareConfiguration='" + hardwareConfiguration + '\'' +
+            ", os='" + os + '\'' +
+            ", pcName='" + pcName + '\'' +
+            ", serverIp='" + serverIp + '\'' +
+            ", serverAdmin='" + serverAdmin + '\'' +
+            ", serverPas='" + serverPas + '\'' +
+            ", shaduSoft='" + shaduSoft + '\'' +
+            ", beginConfig='" + beginConfig + '\'' +
+            ", serverContent='" + serverContent + '\'' +
+            ", managementPort='" + managementPort + '\'' +
+            ", userId=" + userId +
+            ", userName='" + userName + '\'' +
+            ", createUserId=" + createUserId +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
+            '}';
+  }
 }

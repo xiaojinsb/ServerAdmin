@@ -171,11 +171,11 @@ public class UserController extends AbstractController {
     /**
      * 根据用户权限 显示按钮
      */
-    @RequestMapping("/PButton")
-    public R PButton(String type) {
-
-        userDao.queryUserPowers(type);
-        return R.ok();
-    }
+//    @RequestMapping("/PButton")
+//    public R PButton(String type) {
+//
+//        userDao.queryUserPowers(type);
+//        return R.ok();
+//    }
 
 }

@@ -78,4 +78,5 @@
     <select id="queryAll" resultType="com.sa.modules.entity.DataBaseEntity">
         select * from sa_data_base
     </select>
+
 </mapper>

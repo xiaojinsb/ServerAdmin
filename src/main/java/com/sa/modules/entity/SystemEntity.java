@@ -189,4 +189,29 @@ public class SystemEntity {
   public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
   }
+
+  @Override
+  public String toString() {
+    return "SystemEntity{" +
+            "systemId=" + systemId +
+            ", systemName='" + systemName + '\'' +
+            ", systemIp='" + systemIp + '\'' +
+            ", systemDomain='" + systemDomain + '\'' +
+            ", systemUrl='" + systemUrl + '\'' +
+            ", systemAdmin='" + systemAdmin + '\'' +
+            ", systemPas='" + systemPas + '\'' +
+            ", systemDeployment='" + systemDeployment + '\'' +
+            ", userId=" + userId +
+            ", userName='" + userName + '\'' +
+            ", serverId='" + serverId + '\'' +
+            ", serverName='" + serverName + '\'' +
+            ", dbId='" + dbId + '\'' +
+            ", dbName='" + dbName + '\'' +
+            ", middlewareId='" + middlewareId + '\'' +
+            ", middlewareName='" + middlewareName + '\'' +
+            ", createUserId=" + createUserId +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
+            '}';
+  }
 }

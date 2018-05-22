@@ -3,8 +3,10 @@ package com.sa.modules.controller;
 import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
 import com.sa.modules.dao.MiddlewareDao;
+import com.sa.modules.dao.SystemDao;
 import com.sa.modules.dao.UserDao;
 import com.sa.modules.entity.MiddlewareEntity;
+import com.sa.modules.entity.SystemEntity;
 import com.wuwenze.poi.ExcelKit;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class MiddlewareController extends AbstractController {
     private MiddlewareDao middlewareDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private SystemDao systemDao;
 
     /**
      * 列出所有中间件
@@ -81,7 +85,12 @@ public class MiddlewareController extends AbstractController {
     @RequestMapping("/delete")
     @RequiresPermissions("midd:del")
     public R delete(long id) {
-        middlewareDao.delete(id);
+        List<SystemEntity> slist= systemDao.queryByQuoteAll(id,3);
+        if (slist.size() != 0){
+            return R.error("这台中间件被应用引用了 无法删除");
+        }else {
+            middlewareDao.delete(id);
+        }
         return R.ok();
     }
 

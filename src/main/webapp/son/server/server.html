@@ -716,7 +716,7 @@
                             tablelist.reload(); //刷新
                         } else {
                             if (res.msg != null) {
-                                layer.msg(res.msg);
+                                confirm(res.msg);
                             } else {
                                 layer.msg('删除服务器失败');
                             }

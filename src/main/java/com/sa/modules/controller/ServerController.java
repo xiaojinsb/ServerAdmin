@@ -2,9 +2,11 @@ package com.sa.modules.controller;
 
 import com.sa.common.utils.Query;
 import com.sa.common.utils.R;
-import com.sa.modules.dao.ServerDao;
-import com.sa.modules.dao.UserDao;
+import com.sa.modules.dao.*;
+import com.sa.modules.entity.DataBaseEntity;
+import com.sa.modules.entity.MiddlewareEntity;
 import com.sa.modules.entity.ServerEntity;
+import com.sa.modules.entity.SystemEntity;
 import com.wuwenze.poi.ExcelKit;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,12 @@ public class ServerController extends AbstractController {
     private ServerDao serverDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private SystemDao systemDao;
+    @Autowired
+    private DataBaseDao dataBaseDao;
+    @Autowired
+    private MiddlewareDao middlewareDao;
 
     /**
      * 列出所有用户
@@ -84,7 +92,16 @@ public class ServerController extends AbstractController {
     @RequestMapping("/delete")
     @RequiresPermissions("server:del")
     public R delete(long id) {
-        serverDao.delete(id);
+        List<SystemEntity> slist= systemDao.queryByQuoteAll(id,1);
+        List<DataBaseEntity> dlist = dataBaseDao.queryByServerAll(id);
+        List<MiddlewareEntity> mlist = middlewareDao.queryByServerAll(id);
+
+        if (slist.size() !=0||dlist.size()!=0||mlist.size()!=0){
+            return R.error("这台服务器被引用了 无法删除");
+        }else {
+            serverDao.delete(id);
+        }
+
         return R.ok();
     }
 

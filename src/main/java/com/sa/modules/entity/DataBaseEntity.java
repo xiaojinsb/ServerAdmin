@@ -161,4 +161,26 @@ public class DataBaseEntity {
   public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
   }
+
+  @Override
+  public String toString() {
+    return "DataBaseEntity{" +
+            "dbId=" + dbId +
+            ", dbName='" + dbName + '\'' +
+            ", dbType='" + dbType + '\'' +
+            ", dbIp='" + dbIp + '\'' +
+            ", dbAddress='" + dbAddress + '\'' +
+            ", dbTool='" + dbTool + '\'' +
+            ", dbAdmin='" + dbAdmin + '\'' +
+            ", dbPas='" + dbPas + '\'' +
+            ", dbContent='" + dbContent + '\'' +
+            ", userId=" + userId +
+            ", userName='" + userName + '\'' +
+            ", serverId='" + serverId + '\'' +
+            ", serverName='" + serverName + '\'' +
+            ", createUserId=" + createUserId +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
+            '}';
+  }
 }

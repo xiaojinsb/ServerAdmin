@@ -45,7 +45,7 @@
 
     <!--更新-->
     <update id="edit" parameterType="com.sa.modules.entity.SystemEntity">
-        update sa_system set system_id = #{systemId}, system_name = #{systemName}, system_ip = #{systemIp}, system_domain = #{systemDomain}, system_url = #{systemUrl}, system_admin = #{systemAdmin},
+        update sa_system set system_name = #{systemName}, system_ip = #{systemIp}, system_domain = #{systemDomain}, system_url = #{systemUrl}, system_admin = #{systemAdmin},
         system_pas = #{systemPas}, system_deployment = #{systemDeployment}, user_id = #{userId}, user_name = #{userName}, server_id = #{serverId}, server_name = #{serverName} ,db_id = #{dbId}, db_name = #{dbName}, middleware_id = #{middlewareId}, middleware_name = #{middlewareName}, update_time = #{updateTime} where system_id = #{systemId}
     </update>
 
@@ -64,8 +64,17 @@
     </select>
 
     <!--根据所在服务器查询-->
-    <select id="queryByServerAll" resultType="com.sa.modules.entity.SystemEntity">
-        select *  from sa_system where find_in_set(#{id},server_id)
+    <select id="queryByQuoteAll" resultType="com.sa.modules.entity.SystemEntity">
+        select *  from sa_system where 1=1
+        <if test="type == '1'">
+            find_in_set(#{id},server_id)
+        </if>
+        <if test="type == '2'">
+            find_in_set(#{id},db_id)
+        </if>
+        <if test="type == '3'">
+            find_in_set(#{id},middleware_id)
+        </if>
     </select>
 
     <!--查询出所有数据-->

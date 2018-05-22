@@ -107,7 +107,7 @@ public class SystemController extends AbstractController {
      */
     @RequestMapping("/queryByServerAll")
     public Object queryByServerAll(long id) {
-        List<SystemEntity> list = systemDao.queryByServerAll(id);
+        List<SystemEntity> list = systemDao.queryByQuoteAll(id,1);
         return R.ok().put("data", list);
     }
 

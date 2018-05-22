@@ -161,4 +161,26 @@ public class MiddlewareEntity {
   public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
   }
+
+  @Override
+  public String toString() {
+    return "MiddlewareEntity{" +
+            "middlewareId=" + middlewareId +
+            ", middlewareName='" + middlewareName + '\'' +
+            ", middlewareEdition='" + middlewareEdition + '\'' +
+            ", middlewareUrl='" + middlewareUrl + '\'' +
+            ", middlewareInstallUrl='" + middlewareInstallUrl + '\'' +
+            ", middlewareAdmin='" + middlewareAdmin + '\'' +
+            ", middlewarePas='" + middlewarePas + '\'' +
+            ", middlewareMedium='" + middlewareMedium + '\'' +
+            ", middlewareContent='" + middlewareContent + '\'' +
+            ", userId=" + userId +
+            ", userName='" + userName + '\'' +
+            ", serverId='" + serverId + '\'' +
+            ", serverName='" + serverName + '\'' +
+            ", createUserId=" + createUserId +
+            ", createTime=" + createTime +
+            ", updateTime=" + updateTime +
+            '}';
+  }
 }
