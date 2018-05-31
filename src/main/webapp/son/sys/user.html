@@ -475,8 +475,8 @@
         //表单验证
         form.verify({
             username: function(value, item){ //value：表单的值、item：表单的DOM对象
-                if(!new RegExp("^[A-Za-z0-9]{2,6}$").test(value)){
-                    return '用户名必须为2-6位字母数字';
+                if(value == ""){
+                    return '用户名不能为空';
                 }
             },
             email: function(value, item){

@@ -12,7 +12,7 @@ public class DataBaseEntity {
   private String dbName;
   @ExportConfig("数据库类型")
   private String dbType;
-  @ExportConfig("数据库id")
+  @ExportConfig("ip地址")
   private String dbIp;
   @ExportConfig("数据库安装路径")
   private String dbAddress;
@@ -20,7 +20,7 @@ public class DataBaseEntity {
   private String dbTool;
   @ExportConfig("数据库管理账号")
   private String dbAdmin;
-  @ExportConfig("中间件名")
+  @ExportConfig("数据库管理密码")
   private String dbPas;
   @ExportConfig("数据库备注")
   private String dbContent;
