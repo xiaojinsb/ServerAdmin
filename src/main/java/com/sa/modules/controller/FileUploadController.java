@@ -59,7 +59,7 @@ public R uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest 
 
     //根据不同的分类设置文件路径
     String urlSite = fileClassify+"/"+fileId+"/";
-    String filePath = "c:/files/" + urlSite;
+    String filePath = "d:/files/" + urlSite;
     //得到上传文件的名称
     String fileName = file.getOriginalFilename();
 
@@ -98,7 +98,7 @@ public R uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest 
     @RequestMapping(value = "/dow")
     @ResponseBody
     public R dow(HttpServletResponse response,String urlSite,String fileName) throws Exception{
-        String filePath =  "c:/files/" +urlSite+fileName;
+        String filePath =  "d:/files/" +urlSite+fileName;
 
         if (filePath != null) {
             //设置文件路径
