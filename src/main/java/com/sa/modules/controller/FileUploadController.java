@@ -159,7 +159,7 @@ public R uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest 
         if (p != 0) {
 
             //设置路径 并删除本地文件
-            String filePath = parses.getUrlSite()+parses.getFileName();
+            String filePath = "d:/files/" +parses.getUrlSite()+parses.getFileName();
             File file=new File(filePath);
             if(file.exists()&&file.isFile()){
                 file.delete();

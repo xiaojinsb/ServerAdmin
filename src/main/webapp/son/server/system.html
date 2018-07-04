@@ -602,6 +602,7 @@
 
                 //列出服务器
                 var serverId = $("#serverId").val();
+
                 serverTable(serverId);
                 //列出数据库
                 var dbid = $("#dbId").val();
@@ -640,7 +641,7 @@
                                         confirm('修改应用系统成功');
                                     } else {
                                         //动态的设置上传地址
-                                        uploader.settings.url = '../../../parses/uploadFile?fileClassify=sys&fileId='+serverId;
+                                        uploader.settings.url = '../../../parses/uploadFile?fileClassify=sys&fileId='+systemId;
                                         //开启上传
                                         $("#uploadfiles").click()
 
